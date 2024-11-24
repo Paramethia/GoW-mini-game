@@ -1,11 +1,10 @@
 
 // Image declarations
 
-let spartan = document.getElementById('Spartan');
 let kratosAtSparta = document.getElementById('Kratos-at-Sparta');
 let sparta = document.getElementById('Sparta');
-let trader = document.getElementById('Trader');
-let atTrader = document.getElementById('At-Trader');
+let shop = document.getElementById('Shop');
+let inShop = document.getElementById('In-shop');
 let mVillager = document.getElementById('Mvillager');
 let boc = document.getElementById('B-o-c');
 let potion = document.getElementById('Potion');
@@ -215,6 +214,7 @@ const bladeDamage = document.getElementById('Blade-damage');
       bladeDamage.innerText = weapons[4].damage;
 const enemyName = document.getElementById('Enemy-name');
 const enemyInfo = document.getElementById('Enemy-info');
+const creatureDamage = document.getElementById('creature-damage');
 const enemyHealthText = document.getElementById('Enemy-health');
 
 // Container declarations
@@ -228,6 +228,7 @@ const gauntletInfo = document.querySelector('.Gauntlet-info');
 const clawsInfo = document.querySelector('.Claws-info');
 const bladeInfo = document.querySelector('.BladeO-info');
 const enemyStats = document.querySelector('.Enemy-stats');
+const enemyDamage = document.querySelector('.Enemy-damage');
 const hotbar = document.querySelector('.Hotbar');
 const pslot = document.getElementById('Pslot');
 const slot1 = document.getElementById('Slot1');
@@ -240,7 +241,7 @@ const slot5 = document.getElementById('Slot5');
 
 let settingsB = document.getElementById('settings');
 let musicOption = document.getElementById('music-option');
-let shop = document.getElementById('Shop');
+let shopB = document.getElementById('Shop-button');
 let sellWeaponB = document.getElementById('Sell-weapon');
 let potionB = document.getElementById('Buy-health');
 let nemesisWhipB = document.getElementById('Nemesis-whipB');
@@ -304,6 +305,7 @@ let clicks = 0;
 let play = false;
 let set = false;
 let volume = 100;
+let otherVolumes = 1;
 let expanded = false;
 let count = 0;
 let potionquantity = 0;
@@ -312,15 +314,6 @@ let gauntletClaimed = false;
 let clawsClaimed = false;
 let bladeClaimed = false;
 let timed = false;
-
-// Just an extra function
-
-gamebox.addEventListener('mouseover', event => {
-    spartan.style.display = 'inline-block';
-});
-gamebox.addEventListener('mouseout', event => {
-    spartan.style.display = 'none';
-});
 
 //                                                                                                       Initialize buttons
 
@@ -347,6 +340,7 @@ musicOption.addEventListener('click', event => {
     switch(play) {
       case false:
       menuTheme.play();
+      menuTheme.loop = true;
       musicOption.style.background = 'grey';
       play = true;
       break;
@@ -386,28 +380,31 @@ settingsB.addEventListener('click', event => {
 // Volume functions
 
 volup.addEventListener('click', event => {
-    if (volume <= 100 ) {
-       menuTheme.volume += 0.1;
-       battleTheme.volume += 0.1;
-       battleTheme2.volume += 0.1;
-       cyclopsBattle.volume += 0.1;
-       zeusBattle.volume += 0.1;
-       volume += 10;
-       voltext.innerText = volume;
-    }
+  if (volume < 100 ) {
+    menuTheme.volume = Math.min(parseFloat((menuTheme.volume + 0.1, 1).toFixed(2)), 1);;
+    otherVolumes = Math.min(parseFloat((otherVolumes + 0.1, 1).toFixed(2)), 1);;
+    battleTheme.volume = otherVolumes;
+    battleTheme2.volume = otherVolumes;
+    cyclopsBattle.volume = otherVolumes;
+    zeusBattle.volume = otherVolumes;
+    volume += 10;
+    voltext.innerText = volume;
+  }
 });
 voldown.addEventListener('click', event => {
-   if (volume <= 100) {
-      menuTheme.volume -= 0.1;
-      battleTheme.volume -= 0.1;
-      battleTheme2.volume -= 0.1;
-      cyclopsBattle.volume -= 0.1;
-      zeusBattle.volume -= 0.1;
-      volume -= 10;
-      voltext.innerText = volume;
-   } else if (volume <= 0) {
-      volume = 0;
-      voltext.innerText = volume;
+  if (volume <= 100) {
+    menuTheme.volume = Math.max(parseFloat((menuTheme.volume - 0.1).toFixed(2)), 0);;
+    otherVolumes = Math.max(parseFloat((otherVolumes - 0.1).toFixed(2)), 0);;
+    battleTheme.volume = otherVolumes;
+    battleTheme2.volume = otherVolumes;
+    cyclopsBattle.volume = otherVolumes;
+    zeusBattle.volume = otherVolumes;
+    console.log(otherVolumes);
+    volume -= 10;
+    voltext.innerText = volume;
+  } else if (volume <= 0) {
+    volume = 0;
+    voltext.innerText = volume;
    }
 });
 mute.addEventListener('click', event => {
@@ -522,33 +519,33 @@ expand.addEventListener('click', event => {
 
 // Main menu buttons functions
 
-shop.addEventListener('mouseover', event => {
+shopB.addEventListener('mouseover', event => {
   hoverSound.play();
   gamebox.style.background = '#09090b';
   kratosAtSparta.style.position = 'absolute';
   kratosAtSparta.style.left = '40cm';
-  trader.style.display = 'block';
+  shop.style.display = 'block';
   text.innerText = "You can go to the shop to get weapons with orbs to get stronger to defeat stronger enemies. \n 🏪";
-  shop.style.background = '#09090b';
-  shop.style.animation = 'tilt-n-move-shaking 0.5s';
+  shopB.style.background = '#09090b';
+  shopB.style.animation = 'tilt-n-move-shaking 0.5s';
 });
-shop.addEventListener('mouseout', event => {
+shopB.addEventListener('mouseout', event => {
   hoverSound.pause(); 
   hoverSound.currentTime = 0;
   gamebox.style.background = '#464646';
   kratosAtSparta.style.position = 'relative';
   kratosAtSparta.style.left = '0';
-  trader.style.display = 'none';
+  shop.style.display = 'none';
   text.innerText = "Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use the buttons below to go where you want.";
-  shop.style.background = '#4b3f33';
-  shop.style.animation = 'grow';
+  shopB.style.background = '#4b3f33';
+  shopB.style.animation = 'grow';
 });
-shop.addEventListener('click', event => {
+shopB.addEventListener('click', event => {
   selection.play();
   text.style.display = 'none';
   text2.style.display = 'inline-block';
   text2.innerText = 'You enter the shop. You see a bunch of weapons that vary in power.. also a potion of healing. Get the ones you can, or take a look at them for now if you are currently a brokie.';
-  shop.style.display = 'none';
+  shopB.style.display = 'none';
   setTimeout(() => {
     gamebox.style.background = '#09090b';
   }, 5);
@@ -557,7 +554,7 @@ shop.addEventListener('click', event => {
   kratosAtSparta.style.display = 'none';
   underworldB.style.display = 'none';
   olympusB.style.display = 'none';
-  atTrader.style.display = 'block';
+  inShop.style.display = 'block';
   sellWeaponB.style.display = 'inline';
   sellWeaponB.style.animationDuration = '2s';
   sellWeaponB.style.animationTimingFunction = 'linear';
@@ -588,7 +585,7 @@ underworldB.addEventListener('mouseover', event => {
   kratosAtSparta.style.position = 'absolute';
   kratosAtSparta.style.left = '40cm';
   underworld.style.display = 'block';
-  text.innerText = "This is the underworld. Where you will see a bunch of strange creatures you will have to defeat to get stronger so you can defeat Zeus. \n 🔥";
+  text.innerText = "This is the underworld. Where you will see a bunch of strange creatures you will have to defeat to get stronger so you can defeat Zeus.";
   underworldB.style.background = '#2f1c12';
   underworldB.style.animation = 'tilt-n-move-shaking 0.5s';
 });
@@ -650,7 +647,7 @@ olympusB.addEventListener('mouseover', event => {
   kratosAtSparta.style.position = 'absolute';
   kratosAtSparta.style.left = '40cm';
   mountOlympus.style.display = 'block';
-  text.innerText = "This is Mount Olympus. Where you will fight the gods of olympus and where you can fight Zeus when you are ready. I suggest you only come here when you have defeated all the createres of the underworld. Otherwise, you are not ready for this smoke.";
+  text.innerText = "This is Mount Olympus. Where you will fight the gods of olympus including Zeus when you are ready. It is suggested you only go here when you have defeated all the createres of the underworld. Otherwise, you will die.";
   olympusB.style.background = 'rgba(102,47,18,255)';
   olympusB.style.animation = 'tilt-n-move-shaking 0.5s';
 });
@@ -703,7 +700,7 @@ function mainDisappear() {
   text2.style.display = 'inline-block';
   kratosAtSparta.style.display = 'none';
   olympusB.style.display = 'none';
-  shop.style.display = 'none';
+  shopB.style.display = 'none';
   underworldB.style.display = 'none';
   showHotbar()
 }
@@ -766,7 +763,7 @@ sellWeaponB.addEventListener('click', sellWeapon );
 potionB.addEventListener('mouseover', event => {
   hoverSound.play();
   potionB.style.animation = 'tilt-shaking 0.5s';
-  atTrader.style.display = 'none';
+  inShop.style.display = 'none';
   potion.style.display = 'inline-block';
   potionInfo.style.display = 'inline-block';
 });
@@ -774,7 +771,7 @@ potionB.addEventListener('mouseout', event => {
   hoverSound.pause();
   hoverSound.currentTime = 0;
   potionB.style.animation = 'grow';
-  atTrader.style.display = 'block';
+  inShop.style.display = 'block';
   potion.style.display = 'none';
   potionInfo.style.display = 'none';
 });
@@ -783,7 +780,7 @@ potionB.addEventListener('click', buyPotion );
 nemesisWhipB.addEventListener('mouseover', event => {
   hoverSound.play();
   nemesisWhipB.style.animation = 'tilt-shaking 0.5s';
-  atTrader.style.display = 'none';
+  inShop.style.display = 'none';
   nemesisWhip.style.display = 'inline-block';
   whipInfo.style.display = 'inline-block';
 });
@@ -791,7 +788,7 @@ nemesisWhipB.addEventListener('mouseout', event => {
   hoverSound.pause();
   hoverSound.currentTime = 0;
   nemesisWhipB.style.animation = 'grow';
-  atTrader.style.display = 'block';
+  inShop.style.display = 'block';
   nemesisWhip.style.display = 'none';
   whipInfo.style.display = 'none';
 });
@@ -800,7 +797,7 @@ nemesisWhipB.addEventListener('click', buyWhip);
 gauntletB.addEventListener('mouseover', event => {
   hoverSound.play();
   gauntletB.style.animation = 'tilt-shaking 0.5s';
-  atTrader.style.display = 'none';
+  inShop.style.display = 'none';
   gauntletZeus.style.display = 'inline-block';
   gauntletInfo.style.display = 'inline-block';
 });
@@ -808,7 +805,7 @@ gauntletB.addEventListener('mouseout', event => {
   hoverSound.pause();
   hoverSound.currentTime = 0;
   gauntletB.style.animation = 'grow';
-  atTrader.style.display = 'block'
+  inShop.style.display = 'block'
   gauntletZeus.style.display = 'none';
   gauntletInfo.style.display = 'none';
 });
@@ -817,7 +814,7 @@ gauntletB.addEventListener('click', buyGauntlet);
 clawsB.addEventListener('mouseover', event => {
   hoverSound.play();
   clawsB.style.animation = 'tilt-shaking 0.5s';
-  atTrader.style.display = 'none';
+  inShop.style.display = 'none';
   clawsHades.style.display = 'inline-block';
   clawsInfo.style.display = 'inline-block';
   clawsInfo.style.right = '2.8cm';
@@ -826,7 +823,7 @@ clawsB.addEventListener('mouseout', event => {
   hoverSound.pause();
   hoverSound.currentTime = 0;
   clawsB.style.animation = 'grow';
-  atTrader.style.display = 'block';
+  inShop.style.display = 'block';
   clawsHades.style.display = 'none';
   clawsInfo.style.display = 'none';
 });
@@ -835,7 +832,7 @@ clawsB.addEventListener('click', buyClaws );
 bladeOlympusB.addEventListener('mouseover', event => {
   hoverSound.play();
   bladeOlympusB.style.animation = 'tilt-shaking 0.5s';
-  atTrader.style.display = 'none';
+  inShop.style.display = 'none';
   bladeOlympus.style.display = 'inline-block';
   bladeInfo.style.display = 'inline-block';
 });
@@ -843,7 +840,7 @@ bladeOlympusB.addEventListener('mouseout', event => {
   hoverSound.pause();
   hoverSound.currentTime = 0;
   bladeOlympusB.style.animation = 'grow';
-  atTrader.style.display = 'block';
+  inShop.style.display = 'block';
   bladeOlympus.style.display = 'none';
   bladeInfo.style.display = 'none';
 });
@@ -853,8 +850,8 @@ leaveShop.addEventListener('mouseover', event => {
   hoverSound.play();
   gamebox.style.background = '#20130c';
   leaveShop.style.animation = 'horizontal-shaking 0.5s';
-  atTrader.style.position = 'absolute';
-  atTrader.style.left = '40cm';
+  inShop.style.position = 'absolute';
+  inShop.style.left = '40cm';
   sparta.style.display = 'block';
 });
 leaveShop.addEventListener('mouseout', event => {
@@ -862,14 +859,14 @@ leaveShop.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   gamebox.style.background = '#09090b';
   leaveShop.style.animation = 'grow';
-  atTrader.style.position = 'relative';
-  atTrader.style.left = '0';
+  inShop.style.position = 'relative';
+  inShop.style.left = '0';
   sparta.style.display = 'none';
 });
 leaveShop.addEventListener('click', event => {
   returnSound.play();
   musicOption.style.background = '#464646';
-  atTrader.style.display = 'none';
+  inShop.style.display = 'none';
   sellWeaponB.style.display = 'none';
   potionB.style.display = 'none';
   nemesisWhipB.style.display = 'none';
@@ -958,7 +955,7 @@ function sellWeapon() {
     currentWeapon = inventory.shift();
     text2.innerText = "You sold the " + currentWeapon + ".";
     text2.innerText += " In your inventory you have: " + inventory;
-    atTrader.style.display = 'none';
+    inShop.style.display = 'none';
     mVillager.style.display = 'block';
     boc.style.display = 'none';
     nemesisWhip.style.display = 'none';
@@ -969,7 +966,7 @@ function sellWeapon() {
       mVillager.style.display = 'none';
       text2.style.color = '#ffad15';
       text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
-      atTrader.style.display = 'block';
+      inShop.style.display = 'block';
     }, 2200 );
   } else {
     bruh.play();
@@ -1070,8 +1067,8 @@ function buyGauntlet() {
     text2.innerText = "You now have the " + gauntlet + ".";
     text2.innerText = " In your inventory you have: " + inventory;
     text2.style.color = '#191970';
-    atTrader.style.position = 'absolute';
-    atTrader.style.left = '40cm';   
+    inShop.style.position = 'absolute';
+    inShop.style.left = '40cm';   
     gauntletClaim.style.display = 'block';
     slot1.style.border = '1.8px solid #5a3910';
     slot2.style.border = '1.8px solid #5a3910';
@@ -1165,8 +1162,8 @@ function buyBlade() {
     text2.innerText = "You now have the " + blade + ".";
     text2.innerText = " In your inventory you have: " + inventory;
     text2.style.color = '#191970';
-    atTrader.style.position = 'absolute';
-    atTrader.style.left = '40cm';   
+    inShop.style.position = 'absolute';
+    inShop.style.left = '40cm';   
     bladeClaim.style.display = 'block';
     slot1.style.border = '1.8px solid #5a3910';
     slot2.style.border = '1.8px solid #5a3910';
@@ -1195,19 +1192,19 @@ function buyBlade() {
 }
 
 function aTdis() {
-  atTrader.style.position = 'absolute';
-  atTrader.style.left = '40cm';
+  inShop.style.position = 'absolute';
+  inShop.style.left = '40cm';
 }
 function aTap() {
-  atTrader.style.position = 'relative';
-  atTrader.style.left = '0';
+  inShop.style.position = 'relative';
+  inShop.style.left = '0';
 }
 
 function revert() {
    text2.style.color = '#ffad15';
    text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
-   atTrader.style.position = 'relative';
-   atTrader.style.left = '0';
+   inShop.style.position = 'relative';
+   inShop.style.left = '0';
 }
 
 // Inventory functions 
@@ -1337,7 +1334,7 @@ function increaseHealth() {
     drink.play();
     potionquantity--;
     pqText.innerText = potionquantity;
-    health += 10;
+    health += 14;
     healthText.innerText = health;
     if (potionquantity == 0) {
       pslot.style.display = 'none';
@@ -1346,7 +1343,7 @@ function increaseHealth() {
     drink.play();
     potionquantity--;
     pqText.innerText = potionquantity;
-    health += 10;
+    health += 14;
     healthText.innerText = health;
     gamebox.style.boxShadow = 'none';
     if (potionquantity == 0) {
@@ -1369,6 +1366,7 @@ document.addEventListener('keydown', event => {
    increaseHealth()
   }
 });
+
 // Underworld functions
 
 hopliteB.addEventListener('mouseover', event => {
@@ -1376,7 +1374,9 @@ hopliteB.addEventListener('mouseover', event => {
   kratosUnderworld.style.display = 'none';
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = "An enemy that appears to be a skeletal corpse adorned in standard Greek armor, and with two swords for weapons. \n Damage: 9 p3s"
+  enemyInfo.innerText = "An enemy that appears to be a skeletal corpse adorned in standard Greek armor, and with two swords for weapons.";
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "9";
   hoplite.style.display = 'block';
   hopliteB.style.animation = 'tilt-shaking 0.5s';
 });
@@ -1385,6 +1385,7 @@ hopliteB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   kratosUnderworld.style.display = 'block';
   hoplite.style.display = 'none';
   hopliteB.style.animation = 'grow';
@@ -1422,7 +1423,9 @@ bansheeB.addEventListener('mouseover', event => {
   bansheeSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = "The Banshee is known for having the ability to deliver a frightening inhuman scream that could harm and even kill humans. \n Damage: 15 p3s";
+  enemyInfo.innerText = "The Banshee is known for having the ability to deliver a frightening inhuman scream that could harm and even kill humans.";
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "17";
   kratosUnderworld.style.display = 'none';
   banshee.style.display = 'block';
   bansheeB.style.animation = 'tilt-shaking 1.8s';
@@ -1432,6 +1435,7 @@ bansheeB.addEventListener('mouseout', event => {
   bansheeSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   kratosUnderworld.style.display = 'block';
   banshee.style.display = 'none';
   bansheeB.style.animation = 'grow';
@@ -1471,7 +1475,9 @@ satyrB.addEventListener('mouseover', event => {
   hoverSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = "Satyrs are one of the most formidable opponents, able to go toe-to-toe with Kratos and make short work of him. They have the upper body of a man and the horns and back legs of a goat. Damage: 19 p3s";
+  enemyInfo.innerText = "Satyrs are one of the most formidable opponents, able to go toe-to-toe with Kratos and make short work of him. They have the upper body of a man and the horns and back legs of a goat.";
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "21";
   kratosUnderworld.style.display = 'none';
   satyr.style.display = 'block';
   satyrB.style.animation = 'tilt-shaking 0.5s';
@@ -1481,6 +1487,7 @@ satyrB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   kratosUnderworld.style.display = 'block';
   satyr.style.display = 'none';
   satyrB.style.animation = 'grow';
@@ -1539,7 +1546,9 @@ minotaurB.addEventListener('mouseover', event => {
   minotaurSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = "The Minotaur appears as a species of anthropomorphic bull, about eight feet tall. Minotaurs walk on their hind legs and carry a variety of massive war axes. Damage: 23 p3s";
+  enemyInfo.innerText = "The Minotaur appears as a species of anthropomorphic bull, about eight feet tall. Minotaurs walk on their hind legs and carry a variety of massive war axes.";
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "25";
   kratosUnderworld.style.display = 'none';
   minotaur.style.display = 'block';
   minotaurB.style.animation = 'tilt-shaking 1s';
@@ -1549,6 +1558,7 @@ minotaurB.addEventListener('mouseout', event => {
   minotaurSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   kratosUnderworld.style.display = 'block';
   minotaur.style.display = 'none';
   minotaurB.style.animation = 'grow';
@@ -1588,7 +1598,9 @@ medusaB.addEventListener('mouseover', event => {
   hoverSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = "Medusa was first of the Gorgon sisters in Greek mythology. Medusa has the power to turn Kratos to stone with her gaze, but she can also still attack with her snake-like lower body. Damage: 31 p3s";
+  enemyInfo.innerText = "Medusa was first of the Gorgon sisters in Greek mythology. Medusa has the power to turn Kratos to stone with her gaze, but she can also still attack with her snake-like lower body.";
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "33";
   kratosUnderworld.style.display = 'none';
   medusa.style.display = 'block';
   medusaB.style.animation = 'tilt-shaking 0.5s';
@@ -1598,6 +1610,7 @@ medusaB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   kratosUnderworld.style.display = 'block';
   medusa.style.display = 'none';
   medusaB.style.animation = 'grow';
@@ -1634,7 +1647,9 @@ cyclopsB.addEventListener('mouseover', event => {
   cyclopsSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = "Cyclopes are a species of burly, one-eyed giants, they give plenty of damage (43) so you will want to have a lot of health and/or a good weapon if you want to fight it.";
+  enemyInfo.innerText = "Cyclopes are a species of burly, one-eyed giants, they give plenty of damage, so you will want to have a lot of health and/or a good weapon if you want to fight it.";
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "45";
   kratosUnderworld.style.display = 'none';
   cyclops.style.display = 'block';
   cyclopsB.style.animation = 'tilt-shaking 1.6s';
@@ -1644,6 +1659,7 @@ cyclopsB.addEventListener('mouseout', event => {
   cyclopsSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   kratosUnderworld.style.display = 'block';
   cyclops.style.display = 'none';
   cyclopsB.style.animation = 'grow';
@@ -2013,7 +2029,7 @@ function cyclopsShapa() {
   }, 3400);
 }
 
-// Underworld battle functions complete
+// Button function continuance
 
 leaveUnderworld.addEventListener('mouseover', event => {
   hoverSound.play();
@@ -2056,7 +2072,9 @@ hermesB.addEventListener('mouseover', event => {
   hoverSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = 'Hermes (Greek: Ἑρμῆς) is the Olympian God of Travelers, Messengers, Thieves, Commerce, Sports, Athletics, and mostly.. Speed. \n Damage: 55 ps';
+  enemyInfo.innerText = "Hermes (Greek: Ἑρμῆς) is the Olympian God of Travelers, Messengers, Thieves, Commerce, Sports, Athletics, and mostly.. Speed.";
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "57";
   kratosOlympus.style.position = 'absolute';
   kratosOlympus.style.left = '35cm';
   hermes.style.display = 'block';
@@ -2067,6 +2085,7 @@ hermesB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   hermes.style.display = 'none';
   kratosOlympus.style.position = 'relative';
   kratosOlympus.style.left = '0';
@@ -2104,7 +2123,9 @@ herculesB.addEventListener('mouseover', event => {
   hoverSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = 'Hercules (Greek: Ἡρακλῆς) is the son of Zeus and half-brother to Kratos. He is known for having a lot of strength. \n Damage: 67 p3s';
+  enemyInfo.innerText = 'Hercules (Greek: Ἡρακλῆς) is the son of Zeus and half-brother to Kratos. He is known for having a lot of strength.';
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "69";
   kratosOlympus.style.position = 'absolute';
   kratosOlympus.style.left = '35cm';
   hercules.style.display = 'block';
@@ -2115,6 +2136,7 @@ herculesB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   hercules.style.display = 'none';
   kratosOlympus.style.position = 'relative';
   kratosOlympus.style.left = '0';
@@ -2168,7 +2190,9 @@ zeusB.addEventListener('mouseover', event => {
   hoverSound.play();
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
-  enemyInfo.innerText = 'Zeus (Greek: Ζεύς) is the King of Olympus and the ruler of the Greek Pantheon, as well as the God of the Sky, Storm, Thunder and Lightning. Also the father of Kratos. Damage: 79 p3s';
+  enemyInfo.innerText = 'Zeus (Greek: Ζεύς) is the King of Olympus and the ruler of the Greek Pantheon, as well as the God of the Sky, Storm, Thunder and Lightning. Also the father of Kratos.';
+  enemyDamage.style.display = "inline";
+  creatureDamage.innerText = "82";
   kratosOlympus.style.position = 'absolute';
   kratosOlympus.style.left = '35cm';
   zeus.style.display = 'block';
@@ -2179,6 +2203,7 @@ zeusB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'block';
   enemyInfo.style.display = 'none';
+  enemyDamage.style.display = "none";
   zeus.style.display = 'none';
   kratosOlympus.style.position = 'relative';
   kratosOlympus.style.left = '0';
@@ -2489,8 +2514,6 @@ function gaan(){
 // Battle functions
 
 function attack() {
-  //text2.innerText = "You approach the " + enemies[fighting].name + " and the " + enemies[fighting].name + " detects you and attacks attacks.";
-  //text2.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
   enemyHealth -= weapons[currentWeapon].damage + Math.floor(Math.random() * exp);    
   enemyHealthText.innerText = enemyHealth;
 }
@@ -2691,7 +2714,7 @@ function beatGame() {
   reset.style.display = 'inline';
   hermesxkratos.style.display = 'none';
   zeusKill.style.display = 'block';
-  var zeuef = setInterval(( )=> {
+  var zeuef = setInterval(( ) => {
     count += 2;
     orbs += enemies[fighting].level - 8;
     exp++;
@@ -2724,6 +2747,11 @@ function restart() {
   expText.innerText = exp;
   gamebox.style.boxShadow = 'none';
   musicOption.style.display = 'inline';
+  slot2.style.display = 'none';
+  slot3.style.display = 'none';
+  slot4.style.display = 'none';
+  slot5.style.display = 'none';
+  hideHotbar();
   text2.style.display = 'none';
   text.style.display='inline-block';
   text.innerText = "Welcome back to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use the buttons below to go where you want.";
@@ -2734,9 +2762,9 @@ function restart() {
   }
   kratosAtSparta.style.display = 'inline-block';
   reset.style.display = 'none';
-  shop.style.display = 'inline';
-  shop.style.animation = 'rotateX';
-  shop.style.animationDuration = '0.8s';
+  shopB.style.display = 'inline';
+  shopB.style.animation = 'rotateX';
+  shopB.style.animationDuration = '0.8s';
   underworldB.style.display = 'inline';
   underworldB.style.animation = 'rotateX';
   underworldB.style.animationDuration = '0.8s';
@@ -2785,13 +2813,14 @@ function mainAppear() {
   text.style.display = 'inline-block'
   text.innerText = "You have returned to Sparta. Where do you want to go next?";
   kratosAtSparta.style.display = 'block';
-  shop.style.display = 'inline-block';
-  shop.style.animation = 'rotateY';
-  shop.style.animationDuration = '0.8s';
+  shopB.style.display = 'inline-block';
+  shopB.style.animation = 'rotateY';
+  shopB.style.animationDuration = '0.8s';
   underworldB.style.display = 'inline-block';
   underworldB.style.animation = 'rotateY';
   underworldB.style.animationDuration = '0.8s';
   olympusB.style.display = 'inline-block';
   olympusB.style.animation = 'rotateY';
   olympusB.style.animationDuration = '0.8s';
+  hideHotbar();
 }
