@@ -1,13 +1,16 @@
-@font-face {
-	 font-family: GodOfWar;
-}
-
 html {
 	overflow-x: hidden;
 }
 
 body {
      background-color: black;
+}
+
+#version {
+	position: absolute;
+	top: 17px;
+	left: 12px;
+	color: white;
 }
 
 #Title {
@@ -62,7 +65,7 @@ body {
 	 border-radius: 8px;
 	 z-index: 2;
 	 width: 280px;
-	 height: 220px;
+	 height: 240px;
 	 margin-top: 12px;
 	 padding: 8px;
 	 position: absolute;
@@ -119,8 +122,12 @@ body {
 .Stats {
 	 margin-bottom: 12px;
      padding: 5px;
-     color: c78d2c;
+     color: #c78d2c;
 	 text-align: center;
+}
+.stat {
+	padding-right: 12px;
+	font-size: 17px;
 }
 
 #Exp-text, #Health-text, #Orbs-text {
@@ -131,6 +138,27 @@ body {
 	 padding: 5px;
 	 text-align: center;
 }
+
+.Sell-price, .Potion-info, .Whip-info, .Gauntlet-info, .Claws-info, .BladeO-info {
+    display: none;
+	max-width: 220px;
+	max-height: 80px;
+	padding: 8px;
+	position: relative;
+	bottom: 2cm;
+	z-index: 2;
+	border-radius: 5px;
+	background-color: #363636;
+	color: lightgrey;
+	text-align: center;
+	line-height: 17px;
+}
+
+.Gauntlet-info {
+	bottom: 2.8cm;
+	left: 1cm;
+}
+
 .Enemy-stats {
      display: none;
 	 border-radius: 12px;
@@ -144,11 +172,6 @@ body {
 	 animation-iteration-count: 1;
 	 animation-duration: 0.8s;
 	 animation-timing-function: linear;
-}
-
-.stat {
-     padding-right: 12px;
-	 font-size: 17px;
 }
 
 #text, #text2 {
@@ -166,6 +189,7 @@ body {
 
 #Enemy-info {
 	 display: none;
+	 max-height: 40px;
 	 margin-top: 15px;
 	 margin-bottom: 15px;
 	 padding: 5px;
@@ -182,6 +206,17 @@ body {
 	 animation-timing-function: ease-in-out;
 }
 
+.Enemy-damage {
+	display: none;
+	padding: 8px;
+	position: absolute;
+	top: 5.8cm;
+	right: 3.8cm;
+	z-index: 2;
+	border-radius: 5px;
+	background-color: lightslategrey;
+}
+
 /* Image styling */
 
 #Kratos-at-Sparta {
@@ -191,7 +226,7 @@ body {
 	 margin-bottom: 28px;
 }
 
-#Trader, #Mvillager, #At-Trader, #B-o-c, #Potion, 
+#Shop, #Mvillager, #In-shop, #B-o-c, #Potion, 
 #Nemesis-whip, #Whip-claim, #Gauntlet-of-Zeus, 
 #Gauntlet-claim, #Claws-of-Hades, #Claws-claim, 
 #Blade-of-Olympus, #Blade-claim, #Underworld, 
@@ -217,9 +252,14 @@ body {
 	border: 4px inset #20130c;
 }
 
-#Trader, #At-Trader {
+#Shop, #In-shop {
 	border: 4px inset #09090b;
 }
+/*
+#Shop, #Underworld, #Mount-Olympus {
+	animation: slide 0.4s linear;
+}
+*/
 #Mvillager, #Potion, #B-o-c, #Nemesis-whip, #Whip-claim, #Gauntlet-of-Zeus, #Gauntlet-claim, #Claws-of-Hades, #Claws-claim,
 #Blade-of-Olympus, #Blade-claim, #Hoplite, #Banshee, #Satyr, #Minotaur, #Medusa, #Cyclops, #Hermes, #Hercules, #Zeus,
 #Kratos-running, #You-dead, #Kratos-dead {
@@ -319,7 +359,7 @@ body {
 	border: 3px outset #3f383e;
 }
 #Zeus-fight {
-	border: #3px outset 483849;
+	border: 3px outset 483849;
 }
 #Zeus-kill {
 	border: 3px outset #a29078;
@@ -330,28 +370,6 @@ body {
 }
 #You-dead {
 	width: 580px;
-}
-
-/* Item info styling */
-
-.Sell-price, .Potion-info, .Whip-info, .Gauntlet-info, .Claws-info, .BladeO-info {
-    display: none;
-	max-width: 220px;
-	max-height: 80px;
-	padding: 8px;
-	position: relative;
-	bottom: 2cm;
-	z-index: 2;
-	border-radius: 5px;
-	background-color: #363636;
-	color: lightgrey;
-	text-align: center;
-	line-height: 17px;
-}
-
-.Gauntlet-info {
-	bottom: 2.8cm;
-	left: 1cm;
 }
 
 /* Buttons styling */
@@ -593,22 +611,4 @@ h2 {
 	text-align: center;
 	font-family: Montserrat;
 	color: #835512;
-}
-
-#Spartan {
-	 display: none;
-	 position: absolute;
-	 top: 370px;
-	 right: 0;
-	 height: 294px;
-	 width: 199;
-}
-
-#Kratos {
-	 display: none;
-	 height: 300px;
-	 width: 240px;
-	 position: relative;
-     top: 130px;
-	 display: black;
 }
