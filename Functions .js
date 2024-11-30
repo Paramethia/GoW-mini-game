@@ -214,13 +214,14 @@ const bladeDamage = document.getElementById('Blade-damage');
       bladeDamage.innerText = weapons[4].damage;
 const enemyName = document.getElementById('Enemy-name');
 const enemyInfo = document.getElementById('Enemy-info');
-const creatureDamage = document.getElementById('creature-damage');
+const enemyDamage = document.getElementById('creature-damage');
 const enemyHealthText = document.getElementById('Enemy-health');
 
 // Container declarations
 
 const gamebox = document.querySelector('.Game');
 const settings = document.querySelector('.Settings');
+const stats = document.querySelector('.Stats');
 const sellCon = document.querySelector('.Sell-price');
 const potionInfo = document.querySelector('.Potion-info');
 const whipInfo = document.querySelector('.Whip-info');
@@ -228,7 +229,7 @@ const gauntletInfo = document.querySelector('.Gauntlet-info');
 const clawsInfo = document.querySelector('.Claws-info');
 const bladeInfo = document.querySelector('.BladeO-info');
 const enemyStats = document.querySelector('.Enemy-stats');
-const enemyDamage = document.querySelector('.Enemy-damage');
+const damageCon = document.querySelector('.Enemy-damage');
 const hotbar = document.querySelector('.Hotbar');
 const pslot = document.getElementById('Pslot');
 const slot1 = document.getElementById('Slot1');
@@ -381,11 +382,13 @@ settingsB.addEventListener('click', event => {
 
 volup.addEventListener('click', event => {
   if (volume < 100 ) {
-    menuTheme.volume = Math.min(parseFloat((menuTheme.volume + 0.1, 1).toFixed(2)), 1);;
-    otherVolumes = Math.min(parseFloat((otherVolumes + 0.1, 1).toFixed(2)), 1);;
+    menuTheme.volume = Math.min(parseFloat((menuTheme.volume + 0.1).toFixed(2)), 1);
+    otherVolumes = Math.min(parseFloat((otherVolumes + 0.1).toFixed(2)), 1);
+	underworldAm.volume = otherVolumes;
     battleTheme.volume = otherVolumes;
     battleTheme2.volume = otherVolumes;
     cyclopsBattle.volume = otherVolumes;
+	olympusAm.volume = otherVolumes;
     zeusBattle.volume = otherVolumes;
     volume += 10;
     voltext.innerText = volume;
@@ -393,13 +396,14 @@ volup.addEventListener('click', event => {
 });
 voldown.addEventListener('click', event => {
   if (volume <= 100) {
-    menuTheme.volume = Math.max(parseFloat((menuTheme.volume - 0.1).toFixed(2)), 0);;
-    otherVolumes = Math.max(parseFloat((otherVolumes - 0.1).toFixed(2)), 0);;
+    menuTheme.volume = Math.max(parseFloat((menuTheme.volume - 0.1).toFixed(2)), 0);
+    otherVolumes = Math.max(parseFloat((otherVolumes - 0.1).toFixed(2)), 0);
+	underworldAm.volume = otherVolumes;
     battleTheme.volume = otherVolumes;
     battleTheme2.volume = otherVolumes;
     cyclopsBattle.volume = otherVolumes;
+	olympusAm.volume = otherVolumes;
     zeusBattle.volume = otherVolumes;
-    console.log(otherVolumes);
     volume -= 10;
     voltext.innerText = volume;
   } else if (volume <= 0) {
@@ -409,9 +413,11 @@ voldown.addEventListener('click', event => {
 });
 mute.addEventListener('click', event => {
     menuTheme.volume = 0;
+	underworldAm.volume = 0;
     battleTheme.volume = 0;
     battleTheme2.volume = 0;
     cyclopsBattle.volume = 0;
+	olympusAm.volume = 0;
     zeusBattle.volume = 0;
     volume = 0;
     voltext.innerText = volume;
@@ -549,8 +555,6 @@ shopB.addEventListener('click', event => {
   setTimeout(() => {
     gamebox.style.background = '#09090b';
   }, 5);
-  musicOption.style.background = '#09090b';
-  settingsB.style.background = '#09090b';
   kratosAtSparta.style.display = 'none';
   underworldB.style.display = 'none';
   olympusB.style.display = 'none';
@@ -616,6 +620,7 @@ underworldB.addEventListener('click', event => {
   }, 4);
   mainDisappear();
   settingsB.style.background = '#3c3837';
+  settings.style.top = '50px';
   text2.innerText = 'You have arrived in the underworld. You see some strange creatures. Choose which one you want to attack. Be sure to attack one that you are sure you can defeat.';
   kratosUnderworld.style.display = 'block';
   hopliteB.style.display = 'inline';
@@ -674,6 +679,7 @@ olympusB.addEventListener('click', event => {
     olympusAm.loop = true;
   }
   mainDisappear();
+  settings.style.top = '50px';
   text2.innerText = 'You have now arrived at Olympus. Choose which god you want to battle. Be sure to at least have the Gauntlet weapon as these gods are strong.';
   setTimeout(() => {
      gamebox.style.background = '#335168';
@@ -698,6 +704,7 @@ function mainDisappear() {
   musicOption.style.display = 'none';
   text.style.display = 'none';
   text2.style.display = 'inline-block';
+  stats.style.marginTop = '40px';
   kratosAtSparta.style.display = 'none';
   olympusB.style.display = 'none';
   shopB.style.display = 'none';
@@ -1330,32 +1337,33 @@ slot5.addEventListener('click', event => {
 });
 
 function increaseHealth() {
-  if (health <= 35) {
-    drink.play();
-    potionquantity--;
-    pqText.innerText = potionquantity;
-    health += 14;
-    healthText.innerText = health;
-    if (potionquantity == 0) {
-      pslot.style.display = 'none';
-    }
-  } else if (health <= 239) {
+  if (health <= 239) {
     drink.play();
     potionquantity--;
     pqText.innerText = potionquantity;
     health += 14;
     healthText.innerText = health;
     gamebox.style.boxShadow = 'none';
+	if (health > 240) {
+		health = 240;
+		healthText.innerText = health;
+		maxed.style.display = 'inline';
+		setTimeout(() => {
+			maxed.style.display = 'none'
+		}, 2000 );
+	}
     if (potionquantity == 0) {
       pslot.style.display = 'none';
     }
-  } else {
-    health = 240;
+  } else if (health <= 35) {
+    drink.play();
+    potionquantity--;
+    pqText.innerText = potionquantity;
+    health += 14;
     healthText.innerText = health;
-    maxed.style.display = 'inline';
-    setTimeout(() => {
-       maxed.style.display = 'none'
-    }, 2000 );
+    if (potionquantity == 0) {
+      pslot.style.display = 'none';
+    }
   }
 }
 
@@ -1375,8 +1383,8 @@ hopliteB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = "An enemy that appears to be a skeletal corpse adorned in standard Greek armor, and with two swords for weapons.";
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "9";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "9";
   hoplite.style.display = 'block';
   hopliteB.style.animation = 'tilt-shaking 0.5s';
 });
@@ -1385,7 +1393,7 @@ hopliteB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   kratosUnderworld.style.display = 'block';
   hoplite.style.display = 'none';
   hopliteB.style.animation = 'grow';
@@ -1424,8 +1432,8 @@ bansheeB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = "The Banshee is known for having the ability to deliver a frightening inhuman scream that could harm and even kill humans.";
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "17";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "17";
   kratosUnderworld.style.display = 'none';
   banshee.style.display = 'block';
   bansheeB.style.animation = 'tilt-shaking 1.8s';
@@ -1435,7 +1443,7 @@ bansheeB.addEventListener('mouseout', event => {
   bansheeSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   kratosUnderworld.style.display = 'block';
   banshee.style.display = 'none';
   bansheeB.style.animation = 'grow';
@@ -1476,8 +1484,8 @@ satyrB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = "Satyrs are one of the most formidable opponents, able to go toe-to-toe with Kratos and make short work of him. They have the upper body of a man and the horns and back legs of a goat.";
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "21";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "21";
   kratosUnderworld.style.display = 'none';
   satyr.style.display = 'block';
   satyrB.style.animation = 'tilt-shaking 0.5s';
@@ -1487,7 +1495,7 @@ satyrB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   kratosUnderworld.style.display = 'block';
   satyr.style.display = 'none';
   satyrB.style.animation = 'grow';
@@ -1547,8 +1555,8 @@ minotaurB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = "The Minotaur appears as a species of anthropomorphic bull, about eight feet tall. Minotaurs walk on their hind legs and carry a variety of massive war axes.";
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "25";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "25";
   kratosUnderworld.style.display = 'none';
   minotaur.style.display = 'block';
   minotaurB.style.animation = 'tilt-shaking 1s';
@@ -1558,7 +1566,7 @@ minotaurB.addEventListener('mouseout', event => {
   minotaurSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   kratosUnderworld.style.display = 'block';
   minotaur.style.display = 'none';
   minotaurB.style.animation = 'grow';
@@ -1599,8 +1607,8 @@ medusaB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = "Medusa was first of the Gorgon sisters in Greek mythology. Medusa has the power to turn Kratos to stone with her gaze, but she can also still attack with her snake-like lower body.";
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "33";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "33";
   kratosUnderworld.style.display = 'none';
   medusa.style.display = 'block';
   medusaB.style.animation = 'tilt-shaking 0.5s';
@@ -1610,7 +1618,7 @@ medusaB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   kratosUnderworld.style.display = 'block';
   medusa.style.display = 'none';
   medusaB.style.animation = 'grow';
@@ -1648,8 +1656,8 @@ cyclopsB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = "Cyclopes are a species of burly, one-eyed giants, they give plenty of damage, so you will want to have a lot of health and/or a good weapon if you want to fight it.";
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "45";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "45";
   kratosUnderworld.style.display = 'none';
   cyclops.style.display = 'block';
   cyclopsB.style.animation = 'tilt-shaking 1.6s';
@@ -1659,7 +1667,7 @@ cyclopsB.addEventListener('mouseout', event => {
   cyclopsSound.currentTime = 0;
   text2.style.display = 'inline-block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   kratosUnderworld.style.display = 'block';
   cyclops.style.display = 'none';
   cyclopsB.style.animation = 'grow';
@@ -2073,10 +2081,10 @@ hermesB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = "Hermes (Greek: Ἑρμῆς) is the Olympian God of Travelers, Messengers, Thieves, Commerce, Sports, Athletics, and mostly.. Speed.";
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "57";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "57";
   kratosOlympus.style.position = 'absolute';
-  kratosOlympus.style.left = '35cm';
+  kratosOlympus.style.left = '40cm';
   hermes.style.display = 'block';
   hermesB.style.animation = 'tilt-shaking 0.5s';
 });
@@ -2085,7 +2093,7 @@ hermesB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   hermes.style.display = 'none';
   kratosOlympus.style.position = 'relative';
   kratosOlympus.style.left = '0';
@@ -2124,10 +2132,10 @@ herculesB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = 'Hercules (Greek: Ἡρακλῆς) is the son of Zeus and half-brother to Kratos. He is known for having a lot of strength.';
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "69";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "69";
   kratosOlympus.style.position = 'absolute';
-  kratosOlympus.style.left = '35cm';
+  kratosOlympus.style.left = '40cm';
   hercules.style.display = 'block';
   herculesB.style.animation = 'tilt-shaking 0.5s';
 });
@@ -2136,7 +2144,7 @@ herculesB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   hercules.style.display = 'none';
   kratosOlympus.style.position = 'relative';
   kratosOlympus.style.left = '0';
@@ -2191,10 +2199,10 @@ zeusB.addEventListener('mouseover', event => {
   text2.style.display = 'none';
   enemyInfo.style.display = 'inline-block';
   enemyInfo.innerText = 'Zeus (Greek: Ζεύς) is the King of Olympus and the ruler of the Greek Pantheon, as well as the God of the Sky, Storm, Thunder and Lightning. Also the father of Kratos.';
-  enemyDamage.style.display = "inline";
-  creatureDamage.innerText = "82";
+  damageCon.style.display = "inline";
+  enemyDamage.innerText = "82";
   kratosOlympus.style.position = 'absolute';
-  kratosOlympus.style.left = '35cm';
+  kratosOlympus.style.left = '40cm';
   zeus.style.display = 'block';
   zeusB.style.animation = 'tilt-shaking 0.5s';
 });
@@ -2203,7 +2211,7 @@ zeusB.addEventListener('mouseout', event => {
   hoverSound.currentTime = 0;
   text2.style.display = 'block';
   enemyInfo.style.display = 'none';
-  enemyDamage.style.display = "none";
+  damageCon.style.display = "none";
   zeus.style.display = 'none';
   kratosOlympus.style.position = 'relative';
   kratosOlympus.style.left = '0';
