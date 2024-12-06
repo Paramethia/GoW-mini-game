@@ -129,7 +129,7 @@ let drink = new Audio('Audio/Drinking .mp3');
 
 let exp = 0;
 let health = 100;
-let orbs = 500;
+let orbs = 0;
 let currentWeapon = 0;
 let fighting;
 let enemyHealth;
@@ -1170,10 +1170,7 @@ function buyWhip() {
 	var whip = weapons[1].name;
 	inventory.push(whip);
 	currentWeapon = 1;
-	text2.innerText = "You now have the " + whip + ".";
-	text2.innerText += " In your inventory you have: " + inventory;
-	text2.style.color = '#191970';
-	inShop.style.display = 'none';   
+	weaponGot();  
 	whipClaim.style.display = 'block';
 	slot1.style.border = '1.8px solid #5a3910';
 	slot2.style.display = 'inline-block';
@@ -1217,10 +1214,7 @@ function buyGauntlet() {
 		var gauntlet = weapons[2].name;
 		inventory.push(gauntlet);
 		currentWeapon = 2;
-		text2.innerText = "You now have the " + gauntlet + ".";
-		text2.innerText = " In your inventory you have: " + inventory;
-		text2.style.color = '#191970';
-		inShop.style.display = 'none'; 
+		weaponGot();
 		gauntletClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
@@ -1264,10 +1258,7 @@ function buyClaws() {
 		var claws = weapons[3].name;
 		inventory.push(claws);
 		currentWeapon = 3;
-		text2.innerText = "You now have the " + claws + ".";
-		text2.innerText = " In your inventory you have: " + inventory;
-		text2.style.color = '#191970';
-		inShop.style.display = 'none';
+		weaponGot();
 		clawsClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
@@ -1311,10 +1302,7 @@ function buyBlade() {
 		var blade = weapons[4].name;
 		inventory.push(blade);
 		currentWeapon = 4;
-		text2.innerText = "You now have the " + blade + ".";
-		text2.innerText = " In your inventory you have: " + inventory;
-		text2.style.color = '#191970';
-		inShop.style.display = 'none';
+		weaponGot();
 		bladeClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
@@ -1342,10 +1330,31 @@ function buyBlade() {
 	}
 }
 
+function weaponGot() {
+	text2.innerText = "You now have the " + blade + ".";
+	text2.innerText = " In your inventory you have: " + inventory;
+	text2.style.color = '#191970';
+	inShop.style.display = 'none';
+	sellWeaponB.style.display = 'none';
+	potionB.style.display = 'none';
+	nemesisWhipB.style.display = 'none';
+	gauntletB.style.display = 'none';
+	clawsB.style.display = 'none';
+	bladeOlympusB.style.display = 'none';
+	leaveShop.style.display = 'none';
+}
+
 function revert() {
-   text2.style.color = '#ffad15';
-   text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
-   inShop.style.display = 'block';
+	text2.style.color = '#ffad15';
+	text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
+	inShop.style.display = 'block';
+	sellWeaponB.style.display = 'ilnline';
+	potionB.style.display = 'inline';
+	nemesisWhipB.style.display = 'inline';
+	gauntletB.style.display = 'inline';
+	clawsB.style.display = 'inline';
+	bladeOlympusB.style.display = 'inline';
+	leaveShop.style.display = 'inline';
 }
 
 // Inventory functions 
