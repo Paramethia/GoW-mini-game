@@ -1493,11 +1493,11 @@ function increaseHealth() {
 		} else if (health > 100) { 
 		    healthBar.style.width = `${health}px`;
 			healthFiller.style.background = '#299617';
-		} else if (helath <= 50) {
+		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		} else {
 			healthBar.width = '100px';
-			helathFiller.style.background = '#32cd33';
+			healthFiller.style.background = '#32cd33';
 		}
 		healthFiller.style.width = `${health}%`;
 		gamebox.style.boxShadow = 'none';
