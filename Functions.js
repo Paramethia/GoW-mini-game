@@ -1106,8 +1106,8 @@ function sellWeapon() {
 			break;
 		}
 		currentWeapon = inventory.shift();
-		text2.innerText = "You sold the " + currentWeapon + ".";
-		text2.innerText += " In your inventory you have: " + inventory;
+		text2.innerText = "You sold the " + weapons[currentWeapon].name + ".";
+		text2.innerText += "\n In your inventory you have: " + inventory;
 		inShop.style.display = 'none';
 		mVillager.style.display = 'block';
 		boc.style.display = 'none';
@@ -1121,9 +1121,9 @@ function sellWeapon() {
 			text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 			inShop.style.display = 'block';
 		}, 2200 );
-		} else {
-			bruh.play();
-			text2.innerText = "Don't sell your only weapon, fool.";
+	} else {
+		bruh.play();
+		text2.innerText = "Don't sell your only weapon, fool.";
 		setTimeout(() => {
 			text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 		}, 4000 );
@@ -1158,30 +1158,29 @@ function buyWhip() {
 	if(orbs >= 55 && !whipClaimed) {
 		whipClaimed = true;
 		achievement.play();
-	var bought = setInterval (() => {
-	    count++;
-	    orbs--;
-	    orbsText.innerText = orbs;
-	    if (count == 55) {
-			count = 0;
-			clearInterval(bought);
-	    }
-	}, 100 );
-	var whip = weapons[1].name;
-	inventory.push(whip);
-	currentWeapon = 1;
-	weaponGot();  
-	whipClaim.style.display = 'block';
-	slot1.style.border = '1.8px solid #5a3910';
-	slot2.style.display = 'inline-block';
-	slot2.style.border = '3px solid #5a3910';
-	slot3.style.border = '1.8px solid #5a3910';
-	slot4.style.border = '1.8px solid #5a3910';
-	slot5.style.border = '1.8px solid #5a3910';
-	setTimeout(() => {
-	    whipClaim.style.display = 'none';
-	    revert();
-	}, 4400 );
+		var bought = setInterval (() => {
+		    count++;
+		    orbs--;
+		    orbsText.innerText = orbs;
+		    if (count == 55) {
+				count = 0;
+				clearInterval(bought);
+		    }
+		}, 100 );
+		currentWeapon = 1;
+		inventory.push(weapons[currentWeapon].name);
+		weaponGot();  
+		whipClaim.style.display = 'block';
+		slot1.style.border = '1.8px solid #5a3910';
+		slot2.style.display = 'inline-block';
+		slot2.style.border = '3px solid #5a3910';
+		slot3.style.border = '1.8px solid #5a3910';
+		slot4.style.border = '1.8px solid #5a3910';
+		slot5.style.border = '1.8px solid #5a3910';
+		setTimeout(() => {
+		    whipClaim.style.display = 'none';
+		    revert();
+		}, 4400 );
 	} else {
 		if (!whipClaimed) {
 		    brokie.play();
@@ -1211,9 +1210,8 @@ function buyGauntlet() {
 				clearInterval(bought);
 		    }
 		}, 80 );
-		var gauntlet = weapons[2].name;
-		inventory.push(gauntlet);
 		currentWeapon = 2;
+		inventory.push(weapons[currentWeapon].name);
 		weaponGot();
 		gauntletClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
@@ -1255,9 +1253,8 @@ function buyClaws() {
 				clearInterval(bought);
 		    }
 		}, 55 );
-		var claws = weapons[3].name;
-		inventory.push(claws);
 		currentWeapon = 3;
+		inventory.push(weapons[currentWeapon].name);
 		weaponGot();
 		clawsClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
@@ -1299,9 +1296,8 @@ function buyBlade() {
 				clearInterval(bought);
 		    }
 		}, 35 );
-		var blade = weapons[4].name;
-		inventory.push(blade);
 		currentWeapon = 4;
+		inventory.push(weapons[currentWeapon].name);
 		weaponGot();
 		bladeClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
@@ -1331,8 +1327,7 @@ function buyBlade() {
 }
 
 function weaponGot() {
-	text2.innerText = "You now have the " + blade + ".";
-	text2.innerText = " In your inventory you have: " + inventory;
+	text2.innerText = "You now have the " + weapons[currentWeapon].name + ". \n" + " In your inventory you have: " + inventory;
 	text2.style.color = '#191970';
 	inShop.style.display = 'none';
 	sellWeaponB.style.display = 'none';
