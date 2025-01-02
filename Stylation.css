@@ -1,10 +1,8 @@
-html {
-	overflow-x: hidden;
-}
+html { overflow-x: hidden }
 
 body {
-     background-color: black;
-	 cursor: url(Imagery/boc-cursor.png) pointer;
+	background-color: black;
+	cursor: url(Imagery/boc-cursor.png) pointer;
 }
 
 #version {
@@ -14,25 +12,23 @@ body {
 	color: white;
 }
 
-#Title {
-	 margin-top: 55px;
-}
+#Title { margin-top: 55px }
 
 .Game {
-	 position: relative;
-     width: 840px;
-     max-height: 800px;
-	 border-radius: 12px;
-     background-color: #464646; /* #970b0c */
-     color: #501003; /* #ffad15 */
-     margin: 30px auto 0px;
-     padding: 12px;
-     font-family: GodOfWar;
-	 animation: tilt-n-move-shaking;
-	 animation-duration: 0.5s;
-	 animation-timing-function: linear;
-	 animation-iteration-count: infinite;
-	 animation-play-state: paused;
+	position: relative;
+	width: 840px;
+	max-height: 800px;
+	border-radius: 12px;
+	background-color: #464646; /* #970b0c */
+	color: #501003; /* #ffad15 */
+	margin: 30px auto 0px;
+	padding: 12px;
+	font-family: GodOfWar;
+	animation: tilt-n-move-shaking;
+	animation-duration: 0.5s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-play-state: paused;
 }
 
 /* Icons and containers styling */
@@ -53,10 +49,10 @@ body {
 }
 
 #porp {
+	display: none;
 	font-family: Arial;
 	font-size: 12px;
 	color: white;
-	display: none;
 }
 
 .Settings {
@@ -75,9 +71,7 @@ body {
 	color: lightgrey;
 }
 
-.Settings p {
-	text-align: center;
-}
+.Settings p { text-align: center }
 
 #Hbar-set, #Music-set, #Ambience-set, #Expand-set {
 	background: #614051;
@@ -90,9 +84,7 @@ body {
 	background: #412021;
 }
 
-#settings {
-	float: right;
-}
+#settings { float: right }
 
 .Music-con, .Ambience-con {
 	display: none;
@@ -102,15 +94,15 @@ body {
 	align-items: center;
 }
 
-#music-vol, #amb-vol { display: none };
+#music-vol, #amb-vol { display: none }
 
 #volume-slider {
 	-webkit-appearance: none;
 	appearance: none;
-    width: 150px;
-    cursor: pointer;
-    outline: none;
-    border-radius: 16px;
+	width: 150px;
+	cursor: pointer;
+	outline: none;
+	border-radius: 16px;
 }
 
 #volume-slider::-webkit-slider-runnable-track {
@@ -154,49 +146,43 @@ body {
 	color: #2e271d;
 }
 
-#music-volume, #ambience-volume {
-	color: #2e271d;
-}
+#music-volume, #ambience-volume { color: #2e271d }
 
-#expand {
-	margin-left: 12px;
-}
+#expand { margin-left: 12px }
 
 /* Containers and text syling */
 
 .Stats {
-	 margin-bottom: 12px;
-     padding: 5px;
-     color:  #c78d2c; /* c78d2c*/
-	 text-align: center;
+	margin-bottom: 12px;
+	padding: 5px;
+	color:  #c78d2c; /* c78d2c*/
+	text-align: center;
 }
 
-#Exp-text, #Health-text, #Orbs-text {
-	 color: #d3d3d3;
-}
+#Exp-text, #Health-text, #Orbs-text { color: #d3d3d3 }
 
 .Controls {
 	 padding: 5px;
 	 text-align: center;
 }
 .Enemy-stats {
-     display: none;
-	 border-radius: 12px;
-	 margin-bottom: 17px;
-	 width: 400px;
-     padding: 8px;
-	 text-align: center;
-     color: #7c6611;
-     background-color: #2e1a13;
-	 animation: slide;
-	 animation-iteration-count: 1;
-	 animation-duration: 0.8s;
-	 animation-timing-function: linear;
+	display: none;
+	border-radius: 12px;
+	margin-bottom: 17px;
+	width: 400px;
+	padding: 8px;
+	text-align: center;
+	color: #7c6611;
+	background-color: #2e1a13;
+	animation: slide;
+	animation-iteration-count: 1;
+	animation-duration: 0.8s;
+	animation-timing-function: linear;
 }
 
 .stat {
-     padding-right: 12px;
-	 font-size: 17px;
+	padding-right: 12px;
+	font-size: 17px;
 }
 
 .Health-bar, .Ehealth-bar {
@@ -216,15 +202,13 @@ body {
 	background: #32cd33;
 }
 
-.Efiller {
-	background: #7c6611;
-}
+.Efiller { background: #7c6611 }
 
 #text, #text2 {
-	 font-size: 17px;
-     color: white; /* #ffad15 */
-     padding: 10px;
-	 margin-bottom: 15px;
+	font-size: 17px;
+	color: white; /* #ffad15 */
+	padding: 10px;
+	margin-bottom: 15px;
 }
 
 #text2 {
@@ -290,7 +274,7 @@ body {
 	width: 480px;
 	border: 4px inset grey;
 	margin-bottom: 28px;
-    animation: opacity;
+        animation: opacity;
 }
 
 #Sparta { border: 4px inset #20130c }
@@ -307,72 +291,36 @@ body {
 	border: none;
 }
 
-#Mvillager {
-	width: 180px;
-}
-#Potion {
-	width: 220px;
-}
-#Gauntlet-of-Zeus {
-	width: 227px;
-}
-#Gauntlet-claim {
-	width: 140px;
-}
-#Claws-claim { 
-    width: 329px 
-}
-#Blade-claim {
-	width: 440px;
-}
-#Blade-of-Olympus {
-	width: 365px;
-}
+#Mvillager { width: 180px }
+#Potion { width: 220px }
+#Gauntlet-of-Zeus { width: 227px }
+#Gauntlet-claim { width: 140px }
+#Claws-claim { width: 329px }
+#Blade-claim { width: 440px }
+#Blade-of-Olympus { width: 365px }
 
 #Underworld {
 	width: 580px;
 	border: 4px inset #2f1c12;
 }
 
-#Kratos-in-Underworld {
-	border: 4px outset #3c3837;
-}
-#Hoplite {
-	width: 420px;
-}
-#Banshee {
-	width: 155px;
-}
-#Satyr {
-	width: 178px;
-}
-#Medusa {
-	width: 300px;
-}
-#Medusa-attack {
-	width: 390px;
-}
-#Minotaur-attack, #Medusa-attack, #Medusa-kill {
-	width: 400px;
-}
+#Kratos-in-Underworld { border: 4px outset #3c3837 }
+#Hoplite { width: 420px }
+#Banshee { width: 155px }
+#Satyr { width: 178px }
+#Medusa { width: 300px }
+#Medusa-attack { width: 390px }
+#Minotaur-attack, #Medusa-attack, #Medusa-kill { width: 400px }
 
 #Mount-Olympus {
 	width: 440px;
 	border: 4px inset rgba(102,47,18,255);
 }
 
-#Kratos-at-Olympus {
-	border: 4px inset #32506a;
-}
-#Hermes, #Hercules {
-	width: 188px;
-}
-#HermesxKratos {
-	border: 4px outset #0f2738;
-}
-#Hermes-fight, #Hermes-kill {
-	border: 4px outset #3f2b0b;
-}
+#Kratos-at-Olympus { border: 4px inset #32506a }
+#Hermes, #Hercules { width: 188px }
+#HermesxKratos { border: 4px outset #0f2738 }
+#Hermes-fight, #Hermes-kill { border: 4px outset #3f2b0b }
 #HerculesxKratos {
 	width: 445px;
 	border: 4px outset #59636f;
@@ -385,30 +333,18 @@ body {
 	width: 435px;
 	border: 4px outset #5c9aab;
 }
-#Zeus {
-	width: 135px;
-}
-#ZeusxKratos {
-	border: 3px outset #3f383e;
-}
-#Zeus-fight {
-	border: 3px outset 483849;
-}
-#Zeus-kill {
-	border: 3px outset #a29078;
-}
+#Zeus { width: 135px }
+#ZeusxKratos { border: 3px outset #3f383e }
+#Zeus-fight { border: 3px outset 483849 }
+#Zeus-kill { border: 3px outset #a29078 }
 
-#Kratos-running {
-	width: 380px;
-}
-#You-dead {
-	width: 580px;
-}
+#Kratos-running { width: 380px }
+#You-dead { width: 580px }
 
 /* Item info styling */
 
 .Sell-price, .Potion-info, .Whip-info, .Gauntlet-info, .Claws-info, .BladeO-info {
-    display: none;
+        display: none;
 	max-width: 220px;
 	max-height: 80px;
 	padding: 8px;
@@ -430,16 +366,16 @@ body {
 /* Buttons styling */
 
 .Controls button {
-    cursor: pointer;
+	cursor: pointer;
 	background-color: #4b3f33; /* #9e5c08; */
-    border: none;
-    padding-bottom: 2px;
-    margin-bottom: 17px;
+	border: none;
+	padding-bottom: 2px;
+	margin-bottom: 17px;
 	margin-right: 8px;
 	height: 30px;
 	width: 5cm;
 	border-radius: 10px;
-    color: #0a0a23;
+	color: #0a0a23;
 	font-size: 17px;
 	font-family: GodOfWar;
 }
@@ -468,32 +404,23 @@ body {
 	animation-duration: 2s;
 }
 
-#Leave-shop, #Leave-Underworld, #Leave-Olympus {
-	margin: 0 auto;
-}
+#Leave-shop, #Leave-Underworld, #Leave-Olympus { margin: 0 auto }
 
-#Blade-of-OlympusB, #Leave-Underworld, #Leave-Olympus {
-	width: 5.2cm;
-}
+#Blade-of-OlympusB, #Leave-Underworld, #Leave-Olympus { width: 5.2cm }
 
-#Hoplite-kill, #Banshee-kill {
-	animation: opacity 1.2s linear;
-}
+#Hoplite-kill, #Banshee-kill { animation: opacity 1.2s linear }
 
-#Satyr-kill, #Minotaur-kill, #Medusa-kill, #Cyclops-kill {
-	animation: rotateX 1.2s linear;
-}
+#Satyr-kill, #Minotaur-kill, #Medusa-kill, #Cyclops-kill { animation: rotateX 1.2s linear }
 
-#Mercules-kill, #Hermes-kill, #Zeus-kill {
-	animation: rotateY 1.2s linear;
-}
+#Mercules-kill, #Hermes-kill, #Zeus-kill { animation: rotateY 1.2s linear }
 
 /* Hotbar styling */
 
 .Hotbar {
+	display: none;
+	position: relative;
 	margin-top: 20px;
 	margin-bottom: 12px;
-	display: none;
 }
 
 #Maxed {
@@ -538,9 +465,9 @@ body {
 
 #Pslot span { float: left }
 #potion-quantity {
-    position: absolute;
-    bottom: -12px;
-    right: 1px;
+	position: absolute;
+	bottom: -12px;
+	right: 1px;
 }
 
 #Slot1 { background-image: url('Imagery/boc .png') }
