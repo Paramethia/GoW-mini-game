@@ -517,9 +517,7 @@ body {
 	background-attachment: fixed;
 }
 
-#Slot1 {
-	 border: 3px solid #5a3910; 
-}
+#Slot1 { border: 3px solid #5a3910 }
 
 #Pslot, #Slot2, #Slot3, #Slot4, #Slot5 {
 	 display: none;
@@ -527,13 +525,7 @@ body {
 	 animation: slide-from-right 1.2s ease-in-out;
 }
 
-#Pslot:hover, #Slot1:hover, #Slot2:hover, #Slot3:hover, #Slot4:hover, #Slot5:hover {
-	 cursor: pointer;
-}
-
-#Pslot p {
-	text-align: right;
-}
+#Pslot:hover, #Slot1:hover, #Slot2:hover, #Slot3:hover, #Slot4:hover, #Slot5:hover { cursor: pointer }
 
 #Pslot {
 	margin-right: 50px;
@@ -542,35 +534,31 @@ body {
 	padding: 5px;
 	animation: slide-from-left 1.2s ease-in-out;
 }
+#Pslot:hover { border: 3px solid #5a3910 }
 
-#Pslot:hover {
-   border: 3px solid #5a3910; 
+#Pslot span { float: left }
+#potion-quantity {
+    position: absolute;
+    bottom: -12px;
+    right: 1px;
 }
 
-#Slot1 {
-	 background-image: url('Imagery/boc .png');
+#Slot1 { background-image: url('Imagery/boc .png') }
+
+#Slot2 { 
+	background-image: url('Imagery/Nemesis Whip .png');
+	background-position: center;
 }
 
-#Slot2 {
-	 background-image: url('Imagery/Nemesis Whip .png');
-	 background-position: center;
-}
-
-#Slot3 {
-	 background-image: url('Imagery/goz .png');
-}
+#Slot3 { background-image: url('Imagery/goz .png') }
 #Slot3:hover {
 	 transition: all 0.3s ease 0s;
 	 background-position: center;
 }
 
-#Slot4 {
-	 background-image: url('Imagery/coh .png');
-}
+#Slot4 { background-image: url('Imagery/coh .png') }
 
-#Slot5 {
-	 background-image: url('Imagery/boo .png');
-}
+#Slot5 { background-image: url('Imagery/boo .png') }
 #Slot5:hover {
 	 transition: all 0.3s ease 0s;
 	 background-position: center;
