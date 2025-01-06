@@ -856,23 +856,23 @@ sellWeaponB.addEventListener('mouseover', event => {
 	sellCon.style.display = 'inline';
 	switch (currentWeapon) {
 		case 0:
-		    boc.style.display = 'block';
+		    boc.style.display = 'inline-block';
 		    sellText.innerText = "Sell the " + weapons[currentWeapon].name + " for 17 orbs?";
 		break;
 		case 1:
-		    nemesisWhip.style.display = 'block';
+		    nemesisWhip.style.display = 'inline-block';
 		    sellText.innerText = "Sell the " + weapons[currentWeapon].name + " for 25 orbs?";
 		break;
 		case 2:
-		    gauntletZeus.style.display = 'block';
+		    gauntletZeus.style.display = 'inline-block';
 		    sellText.innerText = "Sell the " + weapons[currentWeapon].name + " for 42 orbs?";
 		break;
 		case 3: 
-		    clawsHades.style.display = 'block';
+		    clawsHades.style.display = 'inline-block';
 		    sellText.innerText = "Sell the " + weapons[currentWeapon].name + " for 70 orbs?";
 		break;
 		case 4:
-		    bladeOlympus.style.display= 'block';
+		    bladeOlympus.style.display= 'inline-block';
 		    sellText.innerText = "Sell the " + weapons[currentWeapon].name + " for 100 orbs?";
 		break;
 	}
@@ -1530,7 +1530,7 @@ hopliteB.addEventListener('mouseover', event => {
 	enemyInfo.innerText = "An enemy that appears to be a skeletal corpse adorned in standard Greek armor, and with two swords for weapons.";
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "9";
-	hoplite.style.display = 'block';
+	hoplite.style.display = 'inline-block';
 	hopliteB.style.animation = 'tilt-shaking 0.5s';
 });
 hopliteB.addEventListener('mouseout', event => {
@@ -1583,7 +1583,7 @@ bansheeB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "17";
 	kratosUnderworld.style.display = 'none';
-	banshee.style.display = 'block';
+	banshee.style.display = 'inline-block';
 	bansheeB.style.animation = 'tilt-shaking 1.8s';
 });
 bansheeB.addEventListener('mouseout', event => {
@@ -1636,7 +1636,7 @@ satyrB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "21";
 	kratosUnderworld.style.display = 'none';
-	satyr.style.display = 'block';
+	satyr.style.display = 'inline-block';
 	satyrB.style.animation = 'tilt-shaking 0.5s';
 });
 satyrB.addEventListener('mouseout', event => {
@@ -1708,7 +1708,7 @@ minotaurB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "25";
 	kratosUnderworld.style.display = 'none';
-	minotaur.style.display = 'block';
+	minotaur.style.display = 'inline-block';
 	minotaurB.style.animation = 'tilt-shaking 1s';
 });
 minotaurB.addEventListener('mouseout', event => {
@@ -1761,7 +1761,7 @@ medusaB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "33";
 	kratosUnderworld.style.display = 'none';
-	medusa.style.display = 'block';
+	medusa.style.display = 'inline-block';;
 	medusaB.style.animation = 'tilt-shaking 0.5s';
 });
 medusaB.addEventListener('mouseout', event => {
@@ -1814,7 +1814,7 @@ cyclopsB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "45";
 	kratosUnderworld.style.display = 'none';
-	cyclops.style.display = 'block';
+	cyclops.style.display = 'inline-block';
 	cyclopsB.style.animation = 'tilt-shaking 1.6s';
 });
 cyclopsB.addEventListener('mouseout', event => {
@@ -2259,7 +2259,7 @@ hermesB.addEventListener('mouseover', event => {
 	enemyDamage.innerText = "57";
 	kratosOlympus.style.position = 'absolute';
 	kratosOlympus.style.left = '40cm';
-	hermes.style.display = 'block';
+	hermes.style.display = 'inline-block';
 	hermesB.style.animation = 'tilt-shaking 0.5s';
 });
 hermesB.addEventListener('mouseout', event => {
@@ -2311,7 +2311,7 @@ herculesB.addEventListener('mouseover', event => {
 	enemyDamage.innerText = "69";
 	kratosOlympus.style.position = 'absolute';
 	kratosOlympus.style.left = '40cm';
-	hercules.style.display = 'block';
+	hercules.style.display = 'inline-block';
 	herculesB.style.animation = 'tilt-shaking 0.5s';
 });
 herculesB.addEventListener('mouseout', event => {
@@ -2379,7 +2379,7 @@ zeusB.addEventListener('mouseover', event => {
 	enemyDamage.innerText = "82";
 	kratosOlympus.style.position = 'absolute';
 	kratosOlympus.style.left = '40cm';
-	zeus.style.display = 'block';
+	zeus.style.display = 'inline-block';
 	zeusB.style.animation = 'tilt-shaking 0.5s';
 });
 zeusB.addEventListener('mouseout', event => {
