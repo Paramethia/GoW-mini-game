@@ -377,7 +377,6 @@ body {
 }
 
 .Controls button {
-	cursor: pointer;
 	background-color: #4b3f33; /* #9e5c08; */
 	border: none;
 	padding-bottom: 2px;
@@ -389,6 +388,7 @@ body {
 	color: #0a0a23;
 	font-size: 17px;
 	font-family: GodOfWar;
+	cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989342/Hand_pressing_qi6ops.png"), pointer;
 }
 
 .Controls button:hover {
@@ -463,7 +463,7 @@ body {
 	 animation: slide-from-right 1.2s ease-in-out;
 }
 
-#Pslot:hover, #Slot1:hover, #Slot2:hover, #Slot3:hover, #Slot4:hover, #Slot5:hover { cursor: pointer }
+#Pslot:hover, #Slot1:hover, #Slot2:hover, #Slot3:hover, #Slot4:hover, #Slot5:hover { cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989342/Hand_pressing_qi6ops.png"), pointer; }
 
 #Pslot {
 	margin-right: 50px;
