@@ -2,7 +2,7 @@ html { overflow-x: hidden }
 
 body {
 	background-color: black;
-	cursor: url(Imagery/boc-cursor.png) pointer;
+	cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735988665/Default_hand_hh4p1f.png"), auto;
 }
 
 #version {
@@ -29,6 +29,7 @@ body {
 	animation-timing-function: linear;
 	animation-iteration-count: infinite;
 	animation-play-state: paused;
+	cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989343/Hand_hover_prhklh.png"), pointer;
 }
 
 /* Icons and containers styling */
@@ -43,7 +44,7 @@ body {
 
 #music-option:hover, #settings:hover {
 	 background: grey;
-	 cursor: pointer;
+	 cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989342/Hand_pressing_qi6ops.png"), pointer;
 	 border: 2px solid #332822;
 	 box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
@@ -80,7 +81,7 @@ body {
 }
 
 #Hbar-set:hover, #Music-set:hover, #Ambience-set:hover, #Expand-set:hover {
-	cursor: pointer;
+	cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989342/Hand_pressing_qi6ops.png"), pointer;
 	background: #412021;
 }
 
@@ -100,7 +101,7 @@ body {
 	-webkit-appearance: none;
 	appearance: none;
 	width: 150px;
-	cursor: pointer;
+	cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989342/Hand_pressing_qi6ops.png"), pointer;
 	outline: none;
 	border-radius: 16px;
 }
@@ -142,7 +143,7 @@ body {
 
 #music-mutei:hover, #music-lvi:hover, #music-hvi:hover,
 #amb-mutei:hover, #amb-lvi:hover, #amb-hvi:hover {
-	cursor: pointer;
+	cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989342/Hand_pressing_qi6ops.png"), pointer;
 	color: #2e271d;
 }
 
@@ -219,40 +220,41 @@ body {
 
 #Enemy-info {
 	 display: none;
-	 margin-top: 15px;
-	 margin-bottom: 15px;
-	 padding: 5px;
-	 border-radius: 8px;
 	 width: 666px;
+	 margin: 10px 0;
+	 padding: 5px;
 	 border: 3px outset #501003;
+	 border-radius: 8px;
 	 text-align: center;
 	 font-size: 17px;
 	 color: #1d0807;
 	 background-color: #97897c;
-	 animation: slide;
-	 animation-iteration-count: 1;
-	 animation-duration: 0.8s;
-	 animation-timing-function: ease-in-out;
+	 animation: slide .8s linear;
 }
 
 .Enemy-damage {
 	display: none;
 	padding: 8px;
 	position: absolute;
-	top: 5.8cm;
-	right: 3.8cm;
+	top: 2.8cm;
+	right: 1.8cm;
 	z-index: 2;
 	border-radius: 5px;
 	background-color: lightslategrey;
 }
 
+.Mid {
+	position: relative;
+	width: 666px;
+}
+
 /* Image styling */
 
 #Kratos-at-Sparta {
-	 height: 220px;
-	 width: 480px;
-	 border: 4px inset #464646;
-	 margin-bottom: 28px;
+	height: 220px;
+	width: 480px;
+	border: 4px inset #464646;
+	margin-bottom: 28px;
 }
 
 #Shop, #In-shop, #Mvillager, #B-o-c, #Potion, 
@@ -289,6 +291,7 @@ body {
 #Cyclops, #Cyclops-attack, #Cyclops-kill, #Hermes, #Hercules, #Zeus,
 #Kratos-running, #You-dead, #Kratos-dead {
 	border: none;
+	margin-top: 4.5px;
 }
 
 #Mvillager { width: 180px }
@@ -348,14 +351,16 @@ body {
 	max-width: 220px;
 	max-height: 80px;
 	padding: 8px;
-	position: relative;
+	position: absolute;
 	bottom: 2cm;
+	right: 2.8cm;
 	z-index: 2;
 	border-radius: 5px;
 	background-color: #363636;
 	color: lightgrey;
 	text-align: center;
 	line-height: 17px;
+	font-weight: 550;
 }
 
 .Gauntlet-info {
@@ -364,6 +369,12 @@ body {
 }
 
 /* Buttons styling */
+
+.Controls { 
+        width: 650px;
+        text-align: center;
+	margin: 0 auto;
+}
 
 .Controls button {
 	cursor: pointer;
