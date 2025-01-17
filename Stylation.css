@@ -183,12 +183,12 @@ body {
 
 .stat {
 	padding-right: 12px;
-	font-size: 17px;
+	font-size: 20px;
 }
 
 .Health-bar, .Ehealth-bar {
 	display: none;
-	height: 17px;
+	height: 20px;
 	width: 100px;
 	border: 2px solid black;
 	border-radius: 8px;
