@@ -573,9 +573,9 @@ expandSet.addEventListener('click', event => {
 			expandSet.style.fontSize = '20px';
 			
 			stat.forEach(element => {
-				element.style.fontSize = '20px';
+				element.style.fontSize = '24px';
 			});
-			healthBar.style.height = '20px';
+			healthBar.style.height = '24px';
 
 			text.style.fontSize = '20px';
 			text2.style.fontSize = '20px';
@@ -623,9 +623,9 @@ expandSet.addEventListener('click', event => {
 			expandSet.style.fontSize = '17px';
 			
 			stat.forEach(element => {
-				element.style.fontSize = '17px';
+				element.style.fontSize = '20px';
 			});
-			healthBar.style.height = '17px';
+			healthBar.style.height = '20px';
 
 			text.style.fontSize = '17px';
 			text2.style.fontSize = '17px';
