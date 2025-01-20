@@ -162,10 +162,6 @@ body {
 
 #Exp-text, #Health-text, #Orbs-text { color: #d3d3d3 }
 
-.Controls {
-	 padding: 5px;
-	 text-align: center;
-}
 .Enemy-stats {
 	display: none;
 	border-radius: 12px;
@@ -365,7 +361,11 @@ body {
 
 .Gauntlet-info {
 	bottom: 2.8cm;
-	left: 1cm;
+	right: 2cm;
+}
+.BladeO-info { 
+        bottom: 4cm; 
+	right: 2cm; 
 }
 
 /* Buttons styling */
@@ -374,7 +374,9 @@ body {
         width: 650px;
         text-align: center;
 	margin: 0 auto;
+	padding: 5px;
 }
+
 
 .Controls button {
 	background-color: #4b3f33; /* #9e5c08; */
@@ -469,6 +471,7 @@ body {
 	margin-right: 50px;
 	background-image: url('Imagery/Health potion .png');
 	color: white;
+	font-weight: 700;
 	padding: 5px;
 	animation: slide-from-left 1.2s ease-in-out;
 }
