@@ -146,14 +146,14 @@ let weapons = [
 
 let enemies = [
     {
-	    name: "Hoplite",
-	    level: 2,
-	    health: 55
+	name: "Hoplite",
+	level: 2,
+	health: 55
     },
     {
-		name: "Banshee",
-		level: 4,
-		health: 80
+	name: "Banshee",
+	level: 4,
+	health: 80
     },
     {
         name: "Satyr",
@@ -466,11 +466,6 @@ ambienceSet.onclick = () => {
 }
 
 // Volume functions
-/*
-vSlider.addEventListener('input', event => {
-  voltext.innerText = vSlider.value
-});
-*/
 
 mVolup.onclick = () => {
 	if (musicVolume < 100 ) {
@@ -482,7 +477,6 @@ mVolup.onclick = () => {
 		zeusBattle.volume = musicVolumes;
 		musicVolume += 10;
 		musicVoltext.innerText = musicVolume;
-		//vSlider.value = volume;
   }
 }
 mVoldown.onclick = () => {
@@ -495,11 +489,9 @@ mVoldown.onclick = () => {
 		zeusBattle.volume = musicVolumes;
         musicVolume -= 10;
         musicVoltext.innerText = musicVolume;
-        //vSlider.value = musicVolume;
     } else if (volume <= 0) {
         musicVolume = 0;
         musicVoltext.innerText = musicVolume;
-        //vSlider.value = musicVolume;
     }
 }
 musicMute.onclick = () => {
@@ -510,7 +502,6 @@ musicMute.onclick = () => {
     zeusBattle.volume = 0;
     musicVolume = 0;
     musicVoltext.innerText = musicVolume;
-    //vSlider.value = musicVolume;
 }
 
 aVolup.onclick = () => {
@@ -520,7 +511,6 @@ aVolup.onclick = () => {
         olympusAm.volume = ambienceVolumes;
 		ambienceVolume += 10;
 		ambienceVoltext.innerText = ambienceVolume;
-		//vSlider.value = ambienceVolume;
   }
 }
 aVoldown.onclick = () => {
@@ -530,11 +520,9 @@ aVoldown.onclick = () => {
 		olympusAm.volume = ambienceVolumes;
         ambienceVolume -= 10;
         ambienceVoltext.innerText = ambienceVolume;
-        //vSlider.value = ambienceVolume;
     } else if (volume <= 0) {
         ambienceVolume = 0;
         ambienceVoltext.innerText = ambienceVolume;
-        //vSlider.value = ambienceVolume;
     }
 }
 ambMute.onclick = () => {
@@ -542,7 +530,6 @@ ambMute.onclick = () => {
 	olympusAm.volume = 0;
     ambienceVolume = 0;
     ambienceVoltext.innerText = ambienceVolume;
-    //vSlider.value = ambienceVolume;
 }
 
 expandSet.addEventListener('mouseover', event => { expand.style.scale = '1.2' });
@@ -1034,8 +1021,10 @@ function iSap() {
 function sellWeapon() {
 	if (inventory.length > 1) {
 		hmmmm.play();
+		var soldWeapon;
 		switch (currentWeapon) {
 			case 0:
+			    inventory.shift();
 				slot1.style.display = 'none';
 				var sold = setInterval(() => {
 				  count++;
@@ -1046,9 +1035,10 @@ function sellWeapon() {
 					clearInterval(sold);
 				  }
 				}, 155);
-				currentWeapon -= 1;
+				currentWeapon++;
 			break;
 			case 1:
+			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
 				slot2.style.display = 'none';
 				whipClaimed = false;
 				var sold2 = setInterval(() => {
@@ -1060,9 +1050,11 @@ function sellWeapon() {
 					clearInterval(sold2);
 				  }
 				}, 140);
-				currentWeapon -= 2;
+				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
+				soldWeapon = blade;
 			break;
 			case 2:
+			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
 				slot3.style.display = 'none';
 				gauntletClaimed = false;
 				var sold3 = setInterval(() => {
@@ -1074,9 +1066,11 @@ function sellWeapon() {
 					clearInterval(sold3);
 				  }
 				}, 125);
-				currentWeapon -= 3;
+				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
+				soldWeapon = blade;
 			break;
 			case 3:
+			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
 				slot4.style.display = 'none';
 				var sold4 = setInterval(() => {
 				  clawsClaimed = false;
@@ -1088,9 +1082,11 @@ function sellWeapon() {
 					clearInterval(sold4);
 				  }
 				}, 110);
-				currentWeapon -= 4;
+				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
+				soldWeapon = blade;
 			break;
 			case 4:
+			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
 				slot5.style.display = 'none';
 				bladeClaimed = false;
 				var sold5 = setInterval(() => {
@@ -1102,12 +1098,12 @@ function sellWeapon() {
 					clearInterval(sold5);
 				  }
 				}, 100);
-				currentWeapon -= 5;
+				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
+				soldWeapon = blade;
 			break;
 		}
-		currentWeapon = inventory.shift();
-		text2.innerText = "You sold the " + weapons[currentWeapon].name + ".";
-		text2.innerText += "\n In your inventory you have: " + inventory;
+		text2.innerText = "You sold the " + soldWeapon + ".";
+		text2.innerText += "\n In your inventory you have: " + inventory.join(", ";
 		inShop.style.display = 'none';
 		mVillager.style.display = 'block';
 		boc.style.display = 'none';
@@ -1115,15 +1111,29 @@ function sellWeapon() {
 		gauntletZeus.style.display = 'none';
 		clawsHades.style.display = 'none';
 		bladeOlympus.style.display = 'none';
+		sellWeaponB.style.display = 'none';
+		potionB.style.display = 'none';
+		nemesisWhipB.style.display = 'none';
+		gauntletB.style.display = 'none';
+		clawsB.style.display = 'none';
+		bladeOlympusB.style.display = 'none';
+		leaveShop.style.display = 'none';
 		setTimeout(() => {
 			mVillager.style.display = 'none';
 			text2.style.color = '#ffad15';
 			text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 			inShop.style.display = 'block';
+			sellWeaponB.style.display = 'inline';
+			potionB.style.display = 'inline';
+			nemesisWhipB.style.display = 'inline';
+			gauntletB.style.display = 'inline';
+			clawsB.style.display = 'inline';
+			bladeOlympusB.style.display = 'inline';
+			leaveShop.style.display = 'inline';
 		}, 2200 );
-	} else {
-		bruh.play();
-		text2.innerText = "Don't sell your only weapon, fool.";
+		} else {
+			bruh.play();
+			text2.innerText = "Don't sell your only weapon, fool.";
 		setTimeout(() => {
 			text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 		}, 4000 );
@@ -1327,7 +1337,7 @@ function buyBlade() {
 }
 
 function weaponGot() {
-	text2.innerText = "You now have the " + weapons[currentWeapon].name + ". \n" + " In your inventory you have: " + inventory;
+	text2.innerText = "You now have the " + weapons[currentWeapon].name + ". \n" + " In your inventory you have: " + inventory.join(", ");
 	text2.style.color = '#191970';
 	inShop.style.display = 'none';
 	sellWeaponB.style.display = 'none';
@@ -1343,7 +1353,7 @@ function revert() {
 	text2.style.color = '#ffad15';
 	text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 	inShop.style.display = 'block';
-	sellWeaponB.style.display = 'ilnline';
+	sellWeaponB.style.display = 'inline';
 	potionB.style.display = 'inline';
 	nemesisWhipB.style.display = 'inline';
 	gauntletB.style.display = 'inline';
@@ -1354,26 +1364,14 @@ function revert() {
 
 // Inventory functions 
 
-function showHotbar() {
-    hotbar.style.display = 'block';
-}
-function hideHotbar() {
-    hotbar.style.display = 'none';
-}
+function showHotbar() { hotbar.style.display = 'block' }
+function hideHotbar() { hotbar.style.display = 'none' }
 
 pslot.addEventListener('click', increaseHealth );
 
-slot1.addEventListener('mouseover', event => {
-	if (currentWeapon != 0) {
-		slot1.style.border = '3px solid #5a3910';
-	}
-})
+slot1.addEventListener('mouseover', event => { if (currentWeapon != 0) { slot1.style.border = '3px solid #5a3910' }})
 
-slot1.addEventListener('mouseout', event => {
-	if (currentWeapon != 0) {
-	    slot1.style.border = '1.8px solid #5a3910';
-	}
-});
+slot1.addEventListener('mouseout', event => { if (currentWeapon != 0) {slot1.style.border = '1.8px solid #5a3910' }});
 slot1.addEventListener('click', event => {
 	bocsound.play();
 	if (currentWeapon != 0) {
@@ -1386,16 +1384,8 @@ slot1.addEventListener('click', event => {
 	}
 });
 
-slot2.addEventListener('mouseover', event => {
-	if (currentWeapon != 1) {
-	    slot2.style.border = '3px solid #5a3910';
-	}
-})
-slot2.addEventListener('mouseout', event => {
-	if (currentWeapon != 1) {
-	    slot2.style.border = '1.8px solid #5a3910';
-	}
-});
+slot2.addEventListener('mouseover', event => { if (currentWeapon != 1) { slot2.style.border = '3px solid #5a3910' }})
+slot2.addEventListener('mouseout', event => { if (currentWeapon != 1) { slot2.style.border = '1.8px solid #5a3910';}});
 slot2.addEventListener('click', event => {
 	nwsound.play();
 	if (currentWeapon != 1) {
@@ -1408,15 +1398,9 @@ slot2.addEventListener('click', event => {
 	}
 });
 
-slot3.addEventListener('mouseover', event => {
-	if (currentWeapon != 2) {
-	    slot3.style.border = '3px solid #5a3910';
-	}
+slot3.addEventListener('mouseover', event => { if (currentWeapon != 2) { slot3.style.border = '3px solid #5a3910' }
 });
-slot3.addEventListener('mouseout', event => {
-	if (currentWeapon != 2) {
-	    slot3.style.border = '1.8px solid #5a3910';
-	}
+slot3.addEventListener('mouseout', event => { if (currentWeapon != 2) { slot3.style.border = '1.8px solid #5a3910' }
 });
 slot3.addEventListener('click', event => {
 	gozsound.play();
@@ -1430,16 +1414,8 @@ slot3.addEventListener('click', event => {
   }
 });
 
-slot4.addEventListener('mouseover', event => {
-	if (currentWeapon != 3) {
-	    slot4.style.border = '3px solid #5a3910';
-	}
-})
-slot4.addEventListener('mouseout', event => {
-	if (currentWeapon != 3) {
-	    slot4.style.border = '1.8px solid #5a3910';
-	}
-});
+slot4.addEventListener('mouseover', event => { if (currentWeapon != 3) { slot4.style.border = '3px solid #5a3910' }})
+slot4.addEventListener('mouseout', event => { if (currentWeapon != 3) { slot4.style.border = '1.8px solid #5a3910' }});
 slot4.addEventListener('click', event => {
 	cohsound.play();
 	if (currentWeapon != 3) {
@@ -1452,73 +1428,65 @@ slot4.addEventListener('click', event => {
 	}
 });
 
-slot5.addEventListener('mouseover', event => {
-	if (currentWeapon != 4) {
-	    slot5.style.border = '3px solid #5a3910';
-	}
-})
-slot2.addEventListener('mouseout', event => {
-	if (currentWeapon != 4) {
-	    slot5.style.border = '1.8px solid #5a3910';
-	}
-});
+slot5.addEventListener('mouseover', event => { if (currentWeapon != 4) { slot5.style.border = '3px solid #5a3910'}})
+slot2.addEventListener('mouseout', event => { if (currentWeapon != 4) { slot5.style.border = '1.8px solid #5a3910'}});
 slot5.addEventListener('click', event => {
 	swordThud.play();
 	if (currentWeapon != 4) {
 		currentWeapon = 4;
-		slot5.style.border = '3px solid #5a3910';
+		slot4.style.border = '3px solid #5a3910';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
 		slot3.style.border = '1.8px solid #5a3910';
-		slot4.style.border = '1.8px solid #5a3910';
+		slot5.style.border = '1.8px solid #5a3910';
+		
 	}
 });
 
 function increaseHealth() {
-	if (health <= 199) {
-		drink.play();
-		potionquantity--;
-		pqText.innerText = potionquantity;
-		health += 14;
-		healthText.innerText = health;
-		healthFiller.style.width = `${health}%`;
-		if (health > 200) {
-			health = 200;
-			healthText.innerText = health;
-			healthBar.style.width = '200px';
-			maxed.style.display = 'inline';
-			setTimeout(() => {
-				maxed.style.display = 'none'
-			}, 2000 );
-		} else if (health > 100) { 
-		    healthBar.style.width = `${health}px`;
-			healthFiller.style.background = '#299617';
-		} else if (health <= 50) {
-			healthFiller.style.background = '#ed7014'
-		} else {
-			healthBar.width = '100px';
-			healthFiller.style.background = '#32cd33';
+    if (health <= 199) {
+        drink.play();
+        potionquantity--;
+        pqText.innerText = potionquantity;
+
+        health += 14;
+        if (health > 200) health = 200; // Cap health at 200
+        
+        healthText.innerText = health;
+        healthFiller.style.width = `${health}%`;
+
+        // Adjust health bar and filler styles based on health
+        if (health > 100) {
+            healthBar.style.width = `${health}px`;
+            healthFiller.style.background = '#299617'; // Healthy green
+		} else if (health > 50) {
+			healthBar.style.width = '100px';
+			healthFiller.style.background = '#32cd33'; // Default green
+		} else if (health > 25) {
+            healthFiller.style.background = '#ed7014'; // Warning orange
 		}
-		healthFiller.style.width = `${health}%`;
-		gamebox.style.boxShadow = 'none';
-		if (potionquantity === 0) pslot.style.display = 'none';
-	} else if (health <= 25) {
-		drink.play();
-		potionquantity--;
-		pqText.innerText = potionquantity;
-		health += 14;
-		healthText.innerText = health;
-		healthFiller.style.width = `${health}%`;
-		healthFiller.style.background = '#900604';
-		if (potionquantity === 0) pslot.style.display = 'none'
-	}
+
+        // Handle max health reached
+        if (health === 200) {
+            healthBar.style.width = '200px';
+            maxed.style.display = 'inline';
+            setTimeout(() => {
+                maxed.style.display = 'none';
+            }, 2000);
+        }
+
+        // Hide potion slot if no potions are present
+		if (potionquantity === 0) {
+			pslot.style.display = 'none';
+		}
+
+        if (health > 25) gamebox.style.boxShadow = 'none';
+    }
 }
 
 // Key events
 
-document.addEventListener('keydown', event => {
-	if (event.key == 'f' && potionquantity >= 1) increaseHealth()
-});
+document.addEventListener('keydown', event => { if (event.key == 'f' && potionquantity >= 1) increaseHealth() });
 
 // Underworld functions
 
@@ -2936,6 +2904,7 @@ function restart() {
 	health = 100;
 	orbs = 0;
 	currentWeapon = 0;
+	potionquantity = 0;
 	inventory = ["blades of chaos"];
 	orbsText.innerText = orbs;
 	healthText.innerText = health;
@@ -2943,6 +2912,17 @@ function restart() {
 	healthFiller.style.width = '100%';
 	healthFiller.style.background = '#32cd33';
 	expText.innerText = exp;
+	pqText.innerText = potionquantity;
+	slot1.style.border = '3px solid #5a3910';
+	pslot.style.display = 'none';
+	slot2.style.display = 'none';
+	slot2.style.border = '1.8px solid #5a3910';
+	slot3.style.display = 'none';
+	slot3.style.border = '1.8px solid #5a3910';
+	slot4.style.display = 'none';
+	slot4.style.border = '1.8px solid #5a3910';
+	slot5.style.display = 'none';
+	slot5.style.border = '1.8px solid #5a3910';
 	gamebox.style.boxShadow = 'none';
 	musicOption.style.display = 'inline';
 	text2.style.display = 'none';
@@ -3000,7 +2980,9 @@ function mainAppear() {
 		menuTheme.play();
 	}
 	musicOption.style.display = 'inline';
-	gamebox.style.background = '#464646';
+	setTimeout(() => {
+		gamebox.style.background = '#464646';
+	}, 5 );
 	settingsB.style.background = '#464646';
 	text2.style.display = 'none';
 	text.style.display = 'inline-block'
