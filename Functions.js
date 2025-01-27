@@ -76,14 +76,14 @@ let battleTheme2 = new Audio('Audio/Gow CoO Battle theme 2.mp3');
 let cyclopsBattle = new Audio('Audio/Cyclops battle theme .mp3');
 let zeusBattle = new Audio('Audio/Battle theme Zeus .mp3');
 let underworldAm = new Audio('Audio/Underworld ambience .mp3');
-let hoplteSound;
+let hopliteSound = new Audio('Audio/Hoplite sound.mp3');
 let hopliteAttacks = new Audio('Audio/Hoplite attacks .mp3');
 let attacksHoplite = new Audio('Audio/Kratos attacks Hoplite .mp3');
 let bansheeSound = new Audio('Audio/Banshee sound .mp3');
 let bansheeAttacks = new Audio('Audio/Banshee attacks .mp3');
 let bansheeAttacks2 = new Audio('Audio/Banshee attacks 2 .mp3');
 let attacksBanshee = new Audio('Audio/Kratos attacks Banshee .mp3');
-let satyrSound;
+let satyrSound = new Audio('Audio/Satyr sound.mp3');
 let satyrAttacks = new Audio('Audio/Satyr attacks .mp3');
 let throwsSatyr = new Audio('Audio/Kratos throws Satyr .mp3');
 let attacksSatyr = new Audio('Audio/Kratos attacks Satyr .mp3');
@@ -1800,7 +1800,7 @@ document.addEventListener('keydown', event => {
 // Underworld functions
 
 hopliteB.onmouseover = () => {
-	hoverSound.play();
+	hopliteSound.play();
 	kratosUnderworld.style.display = 'none';
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -1811,8 +1811,8 @@ hopliteB.onmouseover = () => {
 	hopliteB.style.animation = 'tilt-shaking 0.5s';
 }
 hopliteB.onmouseout = () => {
-	hoverSound.pause();
-	hoverSound.currentTime = 0;
+	hopliteSound.pause();
+	hopliteSound.currentTime = 0;
 	text2.style.display = 'inline-block';
 	enemyInfo.style.display = 'none';
 	damageCon.style.display = 'none';
@@ -1906,7 +1906,7 @@ attackBanshee.onclick = () => {
 }
 
 satyrB.onmouseover = () => {
-	hoverSound.play();
+	satyrSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
 	enemyInfo.innerText = "Satyrs are one of the most formidable opponents, able to go toe-to-toe with Kratos and make short work of him. They have the upper body of a man and the horns and back legs of a goat.";
@@ -1917,8 +1917,8 @@ satyrB.onmouseover = () => {
 	satyrB.style.animation = 'tilt-shaking 0.5s';
 }
 satyrB.onmouseout = () => {
-	hoverSound.pause();
-	hoverSound.currentTime = 0;
+	satyrSound.pause();
+	satyrSound.currentTime = 0;
 	text2.style.display = 'inline-block';
 	enemyInfo.style.display = 'none';
 	damageCon.style.display = 'none';
