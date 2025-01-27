@@ -66,12 +66,12 @@ let hmmmm = new Audio('Audio/Hmm hmm Mc villager .mp3');
 let noice = new Audio('Audio/Noice .mp3');
 let bruh = new Audio('Audio/Bruh .mp3');
 let bocsound = new Audio('Audio/Blades of chaos sound .mp3');
-let gozsound = new Audio('Audio/Gauntlet of Zeus sound .mp3')
+let gozsound = new Audio('Audio/Gauntlet of zeus sound .mp3')
 let nwsound = new Audio('Audio/Nemesis whip sound .mp3');
 let cohsound = new Audio('Audio/Claws of Hades sound .mp3');
 let ncsound = new Audio('Audio/Nemean cestus sound .mp3');
 let brokie = new Audio('Audio/YOURE BROKE! .mp3');
-let battleTheme = new Audio('Audio/GoW CoO battle theme .mp3');
+let battleTheme = new Audio('Audio/Gow CoO Battle theme .mp3');
 let battleTheme2 = new Audio('Audio/Gow CoO Battle theme 2.mp3');
 let cyclopsBattle = new Audio('Audio/Cyclops battle theme .mp3');
 let zeusBattle = new Audio('Audio/Battle theme Zeus .mp3');
@@ -128,12 +128,27 @@ let drink = new Audio('Audio/Drinking .mp3');
 // Stats declarations
 
 let exp = 0;
+const savedExp = Number(localStorage.getItem('exp'));
+    if (savedExp) exp = savedExp;
+	
 let health = 100;
+const savedHealth = Number(localStorage.getItem('health'));
+    if (savedHealth) health = savedHealth;
+	
 let orbs = 0;
+const savedOrbs = Number(localStorage.getItem('orbs'));
+    if (savedOrbs) orbs = savedOrbs;
+	
 let currentWeapon = 0;
+const savedCurrentWeapon = Number(localStorage.getItem('currentWeapon'));
+    if (savedCurrentWeapon) currentWeapon = savedCurrentWeapon;
 let fighting;
 let enemyHealth;
+
 let inventory = ["Blades of chaos"];
+const savedInventory = JSON.parse(localStorage.getItem('inventory'));
+    if (savedInventory) inventory = savedInventory;
+	
 let weapons = [
     { name: "Blades of chaos", damage: 17 },
     { name: "Nemesis Whip", damage: 28},
@@ -141,19 +156,87 @@ let weapons = [
     { name: "Claws of Hades", damage: 64 },
     { name: "Blade of Olympus", damage: 88 }
 ];
+const whip = weapons[1].name;
+const gauntlet = weapons[2].name;
+const claws = weapons[3].name;
+const blade = weapons[4].name;
+
+// Other declarations
+
+let inMainMenu = true;
+let play = false;
+let clicks = 0;
+let set = false;
+let hBarOn = false;
+const savedHealthbarSet = localStorage.getItem('healthbarSet');
+    if (savedHealthbarSet === 'true') hBarOn = true
+let musicSetOn = false;
+let ambSetOn = false;
+let musicVolume = 100;
+const savedMusicVol = Number(localStorage.getItem('musicVolume'));
+    if (savedMusicVol) musicVolume = savedMusicVol
+let ambienceVolume = 100;
+const savedAmbienceVol = Number(localStorage.getItem('ambienceVolume'));
+    if (savedAmbienceVol) ambienceVolume = savedAmbienceVol
+let musicVolumes = musicVolume / 100;
+let ambienceVolumes = ambienceVolume / 100;
+let expanded = false;
+const savedExpandSet = localStorage.getItem('expandSet');
+    if (savedExpandSet === 'true') expanded = true
+let count = 0;
+let potionquantity = 0;
+const savedPotions = Number(localStorage.getItem('potions'));
+    if (savedPotions) potionquantity = savedPotions
+let whipClaimed = false;
+    if (inventory.includes(whip)) whipClaimed = true
+let gauntletClaimed = false;
+    if (inventory.includes(gauntlet)) gauntletClaimed = true
+let clawsClaimed = false;
+    if (inventory.includes(claws)) clawsClaimed = true
+let bladeClaimed = false;
+    if (inventory.includes(blade)) bladeClaimed = true;
+let timed = false;
+
+// Saved game checker
+
+let savedGame = false;
+
+if (savedExp || savedHealth || savedOrbs) { 
+    savedGame = true; 
+	console.log("Saved game found")
+} else { 
+    console.log("No saved game found");
+}
+
+// Saved volumes setting
+
+function setVolumes() {
+	if (savedMusicVol) {
+		menuTheme.volume = musicVolumes;
+		battleTheme.volume = musicVolumes;
+		battleTheme2.volume = musicVolumes;
+		cyclopsBattle.volume = musicVolumes;
+		zeusBattle.volume = musicVolumes;
+	} else if (savedAmbienceVol) {
+		underworldAm.volume = ambienceVolumes;
+		olympusAm.volume = ambienceVolumes;
+	}
+}
+
+setVolumes();
 
 // Enemies 
 
 let enemies = [
     {
-	name: "Hoplite",
-	level: 2,
-	health: 55
+	    name: "Hoplite",
+	    level: 2,
+	    health: 55
     },
     {
-	name: "Banshee",
-	level: 4,
-	health: 80
+		name: "Banshee",
+		level: 4,
+		health: 80
     },
     {
         name: "Satyr",
@@ -195,31 +278,39 @@ let enemies = [
 // Text declarations
 
 const porp = document.getElementById('porp');
+const expText = document.getElementById('Exp-text');
+    if (savedExp) expText.innerText = exp
+const healthText = document.getElementById('Health');
+    if (savedHealth) healthText.innerText = health
+const healthtext = document.getElementById('Health-text');
+const orbsText = document.getElementById('Orbs-text');
+    if (savedOrbs) orbsText.innerText = orbs;
+const musicVolText = document.getElementById('music-volume');
+const ambienceVolText = document.getElementById('ambience-volume');
 const text = document.getElementById('text');
 const text2 = document.getElementById('text2');
 const healthBarSet = document.getElementById('Hbar-set');
 const musicSet = document.getElementById('Music-set');
 const expandSet = document.getElementById('Expand-set');
 const ambienceSet = document.getElementById('Ambience-set');
-const musicVoltext = document.getElementById('music-volume');
-const ambienceVoltext = document.getElementById('ambience-volume');
-const currentMusicVol = document.getElementById('music-vol');
+const musicVoltext = document.getElementById('other-music-volume');
+    if (savedMusicVol) musicVoltext.innerText = musicVolume
+const ambienceVoltext = document.getElementById('other-ambience-volume');
+    if (savedAmbienceVol) ambienceVoltext.innerText = ambienceVolume
+const musicVolelement = document.getElementById('music-vol');
 const currentAmbVol = document.getElementById('amb-vol');
-const expText = document.getElementById('Exp-text');
-const healthText = document.getElementById('Health-text');
-const healthtext = document.getElementById('health-text');
-const orbsText = document.getElementById('Orbs-text');
 const maxed = document.getElementById('Maxed');
 const pqText = document.getElementById('potion-quantity');
+    if (savedPotions) pqText.innerText = potionquantity
 const sellText = document.getElementById('Sell-text');
 const whipDamage = document.getElementById('Whip-damage');
-      whipDamage.innerText = weapons[1].damage;
+    whipDamage.innerText = weapons[1].damage;
 const gauntletDamage = document.getElementById('Gauntlet-damage');
-      gauntletDamage.innerText = weapons[2].damage;
+    gauntletDamage.innerText = weapons[2].damage;
 const clawsDamage = document.getElementById('Claws-damage');
-      clawsDamage.innerText = weapons[3].damage;
+    clawsDamage.innerText = weapons[3].damage;
 const bladeDamage = document.getElementById('Blade-damage');
-      bladeDamage.innerText = weapons[4].damage;
+    bladeDamage.innerText = weapons[4].damage;
 const enemyName = document.getElementById('Enemy-name');
 const enemyInfo = document.getElementById('Enemy-info');
 const enemyDamage = document.getElementById('enemy-damage');
@@ -229,9 +320,13 @@ const enemyhealthtext = document.getElementById('enemy-health');
 // Container declarations
 
 const gamebox = document.querySelector('.Game');
+const mmButtons = document.querySelector('.Main-menu');
+const warning = document.querySelector('.Warning');
+const options = document.querySelector('.Options');
 const settings = document.querySelector('.Settings');
 const musicSetCon = document.querySelector('.Music-con');
 const ambSetCon = document.querySelector('.Ambience-con');
+const conButtons = document.querySelector('.Controls');
 const stats = document.querySelector('.Stats');
 const healthBar = document.querySelector('.Health-bar');
 const healthFiller = document.querySelector('.filler');
@@ -247,18 +342,54 @@ const eHealthBar = document.querySelector('.Ehealth-bar');
 const eHealthFiller = document.querySelector('.Efiller');
 const hotbar = document.querySelector('.Hotbar');
 const pslot = document.getElementById('Pslot');
+    if (savedPotions && savedPotions > 0) pslot.style.display = 'inline-block'
 const slot1 = document.getElementById('Slot1');
+    if (currentWeapon != 0) slot1.style.border = '1.8px solid #5a3910'
+	if (!inventory.includes('Blades of chaos')) slot1.style.display = 'none';
 const slot2 = document.getElementById('Slot2');
+    if (whipClaimed) slot2.style.display = 'inline-block'
+	if (currentWeapon === 1) slot2.style.border = '3px solid #5a3910'
 const slot3 = document.getElementById('Slot3');
+    if (gauntletClaimed) slot3.style.display = 'inline-block'
+	if (currentWeapon === 2) slot3.style.border = '3px solid #5a3910'
 const slot4 = document.getElementById('Slot4');
+    if (clawsClaimed) slot4.style.display = 'inline-block'
+	if (currentWeapon === 3) slot4.style.border = '3px solid #5a3910'
 const slot5 = document.getElementById('Slot5');
+    if (bladeClaimed) slot5.style.display = 'inline-block'
+	if (currentWeapon === 4) slot5.style.border = '3px solid #5a3910'
+const musicVolSlider = document.getElementById('music-vol-slider');
+const ambVolSlider = document.getElementById('ambience-vol-slider');
 
-//const vSlider = document.getElementById('volume-slider');
+// Saved healthBar settings 
+
+if (savedHealthbarSet && hBarOn) { 
+    turnOnHealthbar();
+	healthFiller.style.width = `${health}%`;
+	if (health > 100) {
+		healthBar.style.width = `${health}px`;
+		healthFiller.style.background = '#299617'; // Healthy green
+	} else if (health > 50) {
+		healthBar.style.width = '100px';
+		healthFiller.style.background = '#32cd33'; // Default green
+	} else if (health > 25) {
+		healthFiller.style.background = '#ed7014'; // Warning orange
+	} else if (health > 0) {
+		healthFiller.style.background  = '#900604' // Danger red
+	}
+}
 
 // Button declarations
 
 let settingsB = document.getElementById('settings');
 let musicOption = document.getElementById('music-option');
+let newGameB = document.getElementById('New-gameB');
+let loadGameB = document.getElementById('Load-gameB');
+    if (savedGame) loadGameB.style.filter = 'brightness(100%)';
+let optionsB = document.getElementById('OptionsB');
+let yesB = document.getElementById('YesB');
+let noB = document.getElementById('NoB');
+let closeB = document.getElementById('return');
 let shopB = document.getElementById('Shop-button');
 let sellWeaponB = document.getElementById('Sell-weapon');
 let potionB = document.getElementById('Buy-health');
@@ -306,6 +437,10 @@ const aVoldown = document.getElementById('amb-lvi');
 const aVolup = document.getElementById('amb-hvi');
 const expand = document.getElementById('expand');
 
+// Set expansion saved setting
+
+if (expanded) expansion()
+
 // function declarations
 
 let hopat;
@@ -320,33 +455,13 @@ let hermat;
 let hercat;
 let zeuat;
 
-// Other declarations 
-
-let clicks = 0;
-let play = false;
-let set = false;
-let hBarOn = false;
-let musicSetOn = false;
-let ambSetOn = false;
-let musicVolume = 100;
-let ambienceVolume = 100;
-let musicVolumes = 1;
-let ambienceVolumes = 1;
-let expanded = false;
-let count = 0;
-let potionquantity = 0;
-let whipClaimed = false;
-let gauntletClaimed = false;
-let clawsClaimed = false;
-let bladeClaimed = false;
-let timed = false;
-
 //                                                                                                       Initialize buttons
 
-//  Settings: 
+//  Music setting
 
-musicOption.addEventListener('mouseover', event => {
+musicOption.onmouseover = () => {
     hoverSound.play();
+	if (inMainMenu) musicOption.style.background = '#7a715e';
     musicnote.style.color = '#614051';
     porp.style.display = 'inline';
     if (play == true) {
@@ -354,40 +469,172 @@ musicOption.addEventListener('mouseover', event => {
     } else {
         porp.innerText = "Play main menu music?"
     }
-});
-musicOption.addEventListener('mouseout', event => {
+}
+musicOption.onmouseout = () => {
     hoverSound.pause(); 
     hoverSound.currentTime = 0;
+	if (inMainMenu) musicOption.style.background = '#463428';
     musicnote.style.color = '#0d0d0d';
     porp.style.display = 'none';
-});
+}
 
 musicOption.onclick = () => {
     switch(play) {
-      case false:
-      menuTheme.play();
-      musicOption.style.background = 'grey';
-      play = true;
-      menuTheme.loop = true;
-      break;
-      case true:
-      menuTheme.pause();
-      musicOption.style.background = '#464646';
-      play = false;
+        case false:
+			menuTheme.play();
+			musicOption.style.background = 'grey';
+			play = true;
+			menuTheme.loop = true;
+        break;
+        case true:
+			menuTheme.pause();
+			musicOption.style.background = '#464646';
+			play = false;
+		break;
     }
 }
 
-settingsB.addEventListener('mouseover', event => {
+// Main menu buttons functions
+
+newGameB.onmouseover = () => { hoverSound.play() }
+newGameB.onmouseout = () => { 
+    hoverSound.pause();
+	hoverSound.currentTime = 0;
+}
+newGameB.onclick = () => {
+	selection.play();
+	if (savedGame) {
+		warning.style.display = 'block';
+		mmButtons.style.display = 'none';
+	} else {
+		warning.style.display = 'none';
+		goToSparta()
+	}
+}
+
+yesB.onmouseover = () => { hoverSound.play() }
+yesB.onmouseout = () => { 
+    hoverSound.pause();
+	hoverSound.currentTime = 0;
+}
+yesB.onclick = () => { 
+    selection.play();
+	localStorage.removeItem('exp');
+	localStorage.removeItem('health');
+	localStorage.removeItem('orbs');
+	localStorage.removeItem('inventory');
+	localStorage.removeItem('currentWeapon');
+	exp = 0;
+	health = 100;
+	orbs = 0;
+	currentWeapon = 0;
+	potionquantity = 0;
+	inventory = ["Blades of chaos"];
+	orbsText.innerText = orbs;
+	healthText.innerText = health;
+	healthBar.style.width = '100px';
+	healthFiller.style.width = '100%';
+	healthFiller.style.background = '#32cd33';
+	expText.innerText = exp;
+	pqText.innerText = potionquantity;
+	slot1.style.border = '3px solid #5a3910';
+	pslot.style.display = 'none';
+	slot2.style.display = 'none';
+	slot2.style.border = '1.8px solid #5a3910';
+	slot3.style.display = 'none';
+	slot3.style.border = '1.8px solid #5a3910';
+	slot4.style.display = 'none';
+	slot4.style.border = '1.8px solid #5a3910';
+	slot5.style.display = 'none';
+	slot5.style.border = '1.8px solid #5a3910';
+	warning.style.display = 'none';
+	goToSparta()
+}
+
+noB.onmouseover = () => { hoverSound.play() }
+noB.onmouseout = () => {
+	hoverSound.pause();
+	hoverSound.currentTime = 0;
+}
+noB.onclick = () => {
+	selection.play();
+	warning.style.display = 'none';
+	mmButtons.style.display = 'block';
+}
+
+loadGameB.onmouseover = () => { hoverSound.play() }
+loadGameB.onmouseout = () => { 
+    hoverSound.pause();
+	hoverSound.currentTime = 0;
+}
+loadGameB.onclick = () => {
+	if (savedGame) {
+		selection.play();
+		goToSparta()
+	}
+}
+
+optionsB.onmouseover = () => { hoverSound.play() }
+optionsB.onmouseout = () => {
+	hoverSound.pause();
+	hoverSound.currentTIme = 0;
+}
+optionsB.onclick = () => {
+	selection.play();
+	mmButtons.style.display = 'none';
+	options.style.display = 'block';
+}
+
+closeB.onclick = () => { close()  }
+
+document.addEventListener('keydown', event => { if (event.key == 'Escape') close() })
+
+function close() {
+	selection.play();
+	options.style.display = 'none';
+	mmButtons.style.display = 'block';
+}
+
+function goToSparta() {
+	selection.play();
+	gamebox.style.background = '#464646';
+	mmButtons.style.display = 'none';
+	musicOption.style.background = '#464646';
+	settingsB.style.display = 'inline';
+	stats.style.display = 'block';
+	text.style.display = 'block';
+	kratosAtSparta.style.display = 'block';
+	conButtons.style.display = 'block';
+	inMainMenu = false;
+}
+
+function toMainMenu() {
+	selection.play();
+	gamebox.style.background = 'url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1733133212/Opening_menu_image_ippsju.webp")';
+	mmButtons.style.display = 'block';
+	musicOption.style.background = '#463428';
+	settingsB.style.display = 'none';
+	settings.style.display = 'none';
+	stats.style.display = 'none';
+	text.style.display = 'none';
+	kratosAtSparta.style.display = 'none';
+	conButtons.style.display = 'none';
+	inMainMenu = true;
+}
+
+// Settings
+
+settingsB.onmouseover = () => {
     hoverSound.play();
     gear.style.animation = 'rotateZ 0.7s';
     gear.style.color = '#332822';
-});
-settingsB.addEventListener('mouseout', event => {
+}
+settingsB.onmouseout = () => {
     hoverSound.pause();
     hoverSound.currentTime = 0;
     gear.style.animation = 'no';
     gear.style.color = '#0d0d0d';
-});
+}
 
 settingsB.onclick = () => {
     switch(set) {
@@ -407,46 +654,56 @@ settingsB.onclick = () => {
 healthBarSet.onclick = () => { 
     switch(hBarOn) {
 		case false:
-		    healthBarSet.innerText = "Turn off health bar";
-		    healthBar.style.display = 'inline-block';
-			healthtext.style.display = 'none';
-			eHealthBar.style.display = 'inline-block';
-			enemyhealthtext.style.display = 'none';
-			hBarOn = true
+			hBarOn = true;
+			localStorage.setItem('healthbarSet', hBarOn)
+			turnOnHealthbar();
 		break;
 		case true:
-		    healthBarSet.innerText = "Turn on health bar";
-		    healthBar.style.display = 'none';
-			healthtext.style.display = 'inline';
-			eHealthBar.style.display = 'none';
-			enemyhealthtext.style.display = 'inline';
 			hBarOn = false
+			localStorage.setItem('healthbarSet', hBarOn);
+			turnOffHealthbar();
 		break;
 	}
 }
 
-musicSet.addEventListener('mouseover', event => { musicSet.style.background = '#412021' });
-musicSet.addEventListener('mouseout', event => { if (!musicSetOn) musicSet.style.background = '#614051' });
+function turnOnHealthbar() {
+	healthBarSet.innerText = "Turn off health bar";
+	healthBar.style.display = 'inline-block';
+	healthtext.style.display = 'none';
+	eHealthBar.style.display = 'inline-block';
+	enemyhealthtext.style.display = 'none';
+}
+
+function turnOffHealthbar() {
+	healthBarSet.innerText = "Turn on health bar";
+	healthBar.style.display = 'none';
+	healthtext.style.display = 'inline';
+	eHealthBar.style.display = 'none';
+	enemyhealthtext.style.display = 'inline';
+}
+
+musicSet.onmouseover = () => { musicSet.style.background = '#412021' }
+musicSet.onmousout = () => { if (!musicSetOn) musicSet.style.background = '#614051' }
 
 musicSet.onclick = () => {
 	switch (musicSetOn) {
 		case false:
 		    musicSet.style.background = '#412021';
 		    musicSetCon.style.display = 'flex';
-		    currentMusicVol.style.display = 'block';
+		    musicVolelement.style.display = 'block';
 			musicSetOn =  true;
 		break;
 		case true:
 		    musicSet.style.background = '#614051';
             musicSetCon.style.display = 'none';
-			currentMusicVol.style.display = 'none';
+			musicVolelement.style.display = 'none';
 			musicSetOn = false;
 		break;
 	}
 }
 
-ambienceSet.addEventListener('mouseover', event => { ambienceSet.style.background = '#412021' });
-ambienceSet.addEventListener('mouseout', event => { if (!ambSetOn) ambienceSet.style.background = '#614051' });
+ambienceSet.onmouseover = () => { ambienceSet.style.background = '#412021' }
+ambienceSet.onmouseout = () => { if (!ambSetOn) ambienceSet.style.background = '#614051' }
 
 ambienceSet.onclick = () => {
 	switch (ambSetOn) {
@@ -467,6 +724,10 @@ ambienceSet.onclick = () => {
 
 // Volume functions
 
+musicVolSlider.addEventListener('change', event => { musicVolText.innerText = musicVolSlider.value });
+
+ambVolSlider.addEventListener('change', event => { ambienceVolText.innerText = ambVolSlider.value });
+
 mVolup.onclick = () => {
 	if (musicVolume < 100 ) {
 		menuTheme.volume = Math.min(parseFloat((menuTheme.volume + 0.1).toFixed(2)), 1);
@@ -476,22 +737,21 @@ mVolup.onclick = () => {
 		cyclopsBattle.volume = musicVolumes;
 		zeusBattle.volume = musicVolumes;
 		musicVolume += 10;
+		localStorage.setItem('musicVolume', musicVolume);
 		musicVoltext.innerText = musicVolume;
   }
 }
 mVoldown.onclick = () => {
-    if (musicVolume <= 100) {
+    if (musicVolume > 0) {
         menuTheme.volume = Math.max(parseFloat((menuTheme.volume - 0.1).toFixed(2)), 0);
 	    musicVolumes = Math.max(parseFloat((musicVolumes - 0.1).toFixed(2)), 0);
 		battleTheme.volume = musicVolumes;
 		battleTheme2.volume = musicVolumes;
 		cyclopsBattle.volume = musicVolumes;
 		zeusBattle.volume = musicVolumes;
-        musicVolume -= 10;
-        musicVoltext.innerText = musicVolume;
-    } else if (musicVolume <= 0) {
-        musicVolume = 0;
-        musicVoltext.innerText = musicVolume;
+		musicVolume -= 10;
+		musicVoltext.innerText = musicVolume;
+		localStorage.setItem('musicVolume', musicVolume);
     }
 }
 musicMute.onclick = () => {
@@ -502,153 +762,167 @@ musicMute.onclick = () => {
     zeusBattle.volume = 0;
     musicVolume = 0;
     musicVoltext.innerText = musicVolume;
+	localStorage.setItem('musicVolume', musicVolume);
 }
 
 aVolup.onclick = () => {
 	if (ambienceVolume < 100 ) {
 		ambienceVolumes = Math.min(parseFloat((ambienceVolumes + 0.1).toFixed(2)), 1);
 		underworldAm.volume = ambienceVolumes;
-                olympusAm.volume = ambienceVolumes;
+        olympusAm.volume = ambienceVolumes;
 		ambienceVolume += 10;
 		ambienceVoltext.innerText = ambienceVolume;
+		localStorage.setItem('ambienceVolume', ambienceVolume);
   }
 }
 aVoldown.onclick = () => {
-        if (ambienceVolume <= 100) {
-	        ambienceVolumes = Math.max(parseFloat((ambienceVolumes - 0.1).toFixed(2)), 0);
+    if (ambienceVolume > 0) {
+	    ambienceVolumes = Math.max(parseFloat((ambienceVolumes - 0.1).toFixed(2)), 0);
 		underworldAm.volume = ambienceVolumes;
 		olympusAm.volume = ambienceVolumes;
-	        ambienceVolume -= 10;
-	        ambienceVoltext.innerText = ambienceVolume;
-        } else if (ambienceVolume <= 0) {
-	        ambienceVolume = 0;
-	        ambienceVoltext.innerText = ambienceVolume;
-        }
+		ambienceVolume -= 10;
+		ambienceVoltext.innerText = ambienceVolume;
+		localStorage.setItem('ambienceVolume', ambienceVolume);
+    }
 }
 ambMute.onclick = () => {
 	underworldAm.volume = 0;
 	olympusAm.volume = 0;
-        ambienceVolume = 0;
-        ambienceVoltext.innerText = ambienceVolume;
+    ambienceVolume = 0;
+    ambienceVoltext.innerText = ambienceVolume;
+	localStorage.setItem('ambienceVolume', ambienceVolume);
 }
 
-expandSet.addEventListener('mouseover', event => { expand.style.scale = '1.2' });
-expandSet.addEventListener('mouseout', event => { if (!expanded) expand.style.scale = '1.0' });
+expandSet.onmouseover = () => { expand.style.scale = '1.2' }
+expandSet.onmouseout = () => { if (!expanded) expand.style.scale = '1.0' }
 
-expandSet.addEventListener('click', event => {
+expandSet.onclick = () => {
+	switch (expanded) {
+		case false: 
+			expanded = true;
+			localStorage.setItem('expandSet', expanded);
+			expansion()
+		break;
+		case true:
+			expanded = false;
+			localStorage.setItem('expandSet', expanded);
+			minimize()
+		break;
+	}
+}
 
+function minimize() {
 	var stat = document.querySelectorAll('.stat');
 	var images = document.querySelectorAll('.exi');
 	var defim = document.querySelectorAll('.def');
 	var itemInfo = document.querySelectorAll('.Item-info');
 	var controlButtons = document.querySelectorAll('.conbut');
+	
+	expand.style.color = 'white';
+	expand.style.scale = '1';
 
-	switch (expanded) {
-		case false: 
-			expanded = true;
-			expand.style.scale = '1.2';
+	gamebox.style.width = '840px';
+	settings.style.left = '14.2cm';
+	musicOption.style.width = '35px';
+	musicOption.style.height = '42px';
+	settingsB.style.width = '35px';
+	settingsB.style.height = '42px';
+	healthBarSet.style.fontSize = '17px';
+	musicSet.style.fontSize = '17px';
+	ambienceSet.style.fontSize = '17px';
+	expandSet.style.fontSize = '17px';
+	
+	stat.forEach(element => {
+		element.style.fontSize = '17px';
+	});
+	healthBar.style.height = '17px';
 
-			gamebox.style.width = '1000px';
-			settings.style.left = '18.5cm';
-			musicOption.style.width = '40px';
-			musicOption.style.height = '48px';
-			settingsB.style.width = '40px';
-			settingsB.style.height = '48px';
-			healthBarSet.style.fontSize = '20px';
-			musicSet.style.fontSize = '20px';
-			ambienceSet.style.fontSize = '20px';
-			expandSet.style.fontSize = '20px';
-			
-			stat.forEach(element => {
-				element.style.fontSize = '24px';
-			});
-			healthBar.style.height = '24px';
+	text.style.fontSize = '17px';
+	text2.style.fontSize = '17px';
+	enemyInfo.style.fontSize = '17px';
 
-			text.style.fontSize = '20px';
-			text2.style.fontSize = '20px';
-			enemyInfo.style.fontSize = '20px';
+	images.forEach(element => {
+	   element.style.height = '220px';
+	});
+	defim.forEach(element => {
+		element.style.width = '480px';
+	});
+	potion.style.width = '220px';
+	itemInfo.forEach(element => {
+		element.style.fontSize = '16px';
+	});
 
-			images.forEach(element => {
-				element.style.height = '245px';
-			});
-			defim.forEach(element => {
-				element.style.width = '535px';
-			});
-			potion.style.width = '245px';
-			itemInfo.forEach(element => {
-				element.style.fontSize = '18px';
-			});
+	underworld.style.width = '580px';
+	eHealthBar.style.height = '17px';
+	mountOlympus.style.width = '440px';
+	herculesxkratos.style.width = '445px';
+	herculesFight.style.width = '380px';
+	herculesKill.style.width = '435px';
 
-			shop.style.width = '495px';
-			underworld.style.width = '625px';
-			eHealthBar.style.height = '20px';
-			mountOlympus.style.width = '480px';
-			herculesxkratos.style.width = '470px';
-			herculesFight.style.width = '405px';
-			herculesKill.style.width = '460px';
+	controlButtons.forEach(element => {
+		element.style.width = '5cm';
+		element.style.height = '30px';
+		element.style.fontSize = '17px';
+	});
+}
 
-			controlButtons.forEach(element => {
-				element.style.width = '5.5cm';
-				element.style.height = '40px';
-				element.style.fontSize = '18px';
-			});
-		break;
-		case true:
-			expanded = false;
-			expand.style.color = 'white';
-			expand.style.scale = '1';
+function expansion() {
+	var stat = document.querySelectorAll('.stat');
+	var images = document.querySelectorAll('.exi');
+	var defim = document.querySelectorAll('.def');
+	var itemInfo = document.querySelectorAll('.Item-info');
+	var controlButtons = document.querySelectorAll('.conbut');
+	
+	expand.style.scale = '1.2';
 
-			gamebox.style.width = '840px';
-			settings.style.left = '14.2cm';
-			musicOption.style.width = '35px';
-			musicOption.style.height = '42px';
-			settingsB.style.width = '35px';
-			settingsB.style.height = '42px';
-			healthBarSet.style.fontSize = '17px';
-			musicSet.style.fontSize = '17px';
-			ambienceSet.style.fontSize = '17px';
-			expandSet.style.fontSize = '17px';
-			
-			stat.forEach(element => {
-				element.style.fontSize = '20px';
-			});
-			healthBar.style.height = '20px';
+	gamebox.style.width = '1000px';
+	settings.style.left = '18.5cm';
+	musicOption.style.width = '40px';
+	musicOption.style.height = '48px';
+	settingsB.style.width = '40px';
+	settingsB.style.height = '48px';
+	healthBarSet.style.fontSize = '20px';
+	musicSet.style.fontSize = '20px';
+	ambienceSet.style.fontSize = '20px';
+	expandSet.style.fontSize = '20px';
+	
+	stat.forEach(element => {
+		element.style.fontSize = '24px';
+	});
+	healthBar.style.height = '24px';
 
-			text.style.fontSize = '17px';
-			text2.style.fontSize = '17px';
-			enemyInfo.style.fontSize = '17px';
+	text.style.fontSize = '20px';
+	text2.style.fontSize = '20px';
+	enemyInfo.style.fontSize = '20px';
 
-			images.forEach(element => {
-			   element.style.height = '220px';
-			});
-			defim.forEach(element => {
-				element.style.width = '480px';
-			});
-			potion.style.width = '220px';
-			itemInfo.forEach(element => {
-				element.style.fontSize = '16px';
-			});
+	images.forEach(element => {
+		element.style.height = '245px';
+	});
+	defim.forEach(element => {
+		element.style.width = '535px';
+	});
+	potion.style.width = '245px';
+	itemInfo.forEach(element => {
+		element.style.fontSize = '18px';
+	});
 
-			underworld.style.width = '580px';
-			eHealthBar.style.height = '17px';
-			mountOlympus.style.width = '440px';
-			herculesxkratos.style.width = '445px';
-			herculesFight.style.width = '380px';
-			herculesKill.style.width = '435px';
+	shop.style.width = '495px';
+	underworld.style.width = '625px';
+	eHealthBar.style.height = '20px';
+	mountOlympus.style.width = '480px';
+	herculesxkratos.style.width = '470px';
+	herculesFight.style.width = '405px';
+	herculesKill.style.width = '460px';
 
-			controlButtons.forEach(element => {
-				element.style.width = '5cm';
-				element.style.height = '30px';
-				element.style.fontSize = '17px';
-			});
-		break;
-	}
-    
-});
+	controlButtons.forEach(element => {
+		element.style.height = '38px';
+		element.style.fontSize = '20px';
+	});
+}
 
-// Main menu buttons functions
+// Sparta buttons functions
 
-shopB.addEventListener('mouseover', event => {
+shopB.onmouseover = () => {
 	hoverSound.play();
 	gamebox.style.background = '#09090b';
 	kratosAtSparta.style.position = 'absolute';
@@ -657,8 +931,8 @@ shopB.addEventListener('mouseover', event => {
 	text.innerText = "You can go to the shop to get weapons with orbs to get stronger to defeat stronger enemies. \n 🏪";
 	shopB.style.background = '#09090b';
 	shopB.style.animation = 'tilt-n-move-shaking 0.5s';
-});
-shopB.addEventListener('mouseout', event => {
+}
+shopB.onmouseout = () => {
 	hoverSound.pause(); 
 	hoverSound.currentTime = 0;
 	gamebox.style.background = '#464646';
@@ -668,8 +942,8 @@ shopB.addEventListener('mouseout', event => {
 	text.innerText = "Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use the buttons below to go where you want.";
 	shopB.style.background = '#4b3f33';
 	shopB.style.animation = 'grow';
-});
-shopB.addEventListener('click', event => {
+}
+shopB.onclick = () => {
 	selection.play();
 	text.style.display = 'none';
 	text2.style.display = 'inline-block';
@@ -704,9 +978,9 @@ shopB.addEventListener('click', event => {
 	leaveShop.style.animationDuration = '2s';
 	leaveShop.style.animationTimingFunction = 'linear';
 	showHotbar()
-});
+}
 
-underworldB.addEventListener('mouseover', event => {
+underworldB.onmouseover = () => {
 	hoverSound.play();
 	gamebox.style.background = '#2f1c12';
 	kratosAtSparta.style.position = 'absolute';
@@ -715,8 +989,8 @@ underworldB.addEventListener('mouseover', event => {
 	text.innerText = "This is the underworld. Where you will see a bunch of strange creatures you will have to defeat to get stronger so you can defeat Zeus.";
 	underworldB.style.background = '#2f1c12';
 	underworldB.style.animation = 'tilt-n-move-shaking 0.5s';
-});
-underworldB.addEventListener('mouseout', event => {
+}
+underworldB.onmouseout = () => {
 	hoverSound.pause(); 
 	hoverSound.currentTime = 0;
 	gamebox.style.background = '#464646';
@@ -726,8 +1000,8 @@ underworldB.addEventListener('mouseout', event => {
 	text.innerText = "Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use the buttons below to go where you want.";
 	underworldB.style.background = '#4b3f33';
 	underworldB.style.animation = 'grow';
-});
-underworldB.addEventListener('click', event => {
+}
+underworldB.onclick = () => {
 	selection.play();
 	if (play == true) {
 	    menuTheme.pause();
@@ -742,6 +1016,7 @@ underworldB.addEventListener('click', event => {
 	    gamebox.style.background = "#3c3837"
 	}, 4);
 	mainDisappear();
+	stats.style.marginTop = '48px';
 	kratosUnderworld.style.display = 'block';
 	settingsB.style.background = '#3c3837';
 	text2.innerText = 'You have arrived in the underworld. You see some strange creatures. Choose which one you want to attack. Be sure to attack one that you are sure you can defeat.';
@@ -766,9 +1041,9 @@ underworldB.addEventListener('click', event => {
 	leaveUnderworld.style.display = 'block';
 	leaveUnderworld.style.animationDuration = '2s';
 	leaveUnderworld.style.animationTimingFunction = 'linear';
-});
+}
 
-olympusB.addEventListener('mouseover', event => {
+olympusB.onmouseover = () => {
 	hoverSound.play();
 	gamebox.style.background = 'rgba(102,47,18,255)';
 	kratosAtSparta.style.position = 'absolute';
@@ -777,8 +1052,8 @@ olympusB.addEventListener('mouseover', event => {
 	text.innerText = "This is Mount Olympus. Where you will fight the gods of olympus including Zeus when you are ready. It is suggested you only go here when you have defeated all the createres of the underworld. Otherwise, you will die.";
 	olympusB.style.background = 'rgba(102,47,18,255)';
 	olympusB.style.animation = 'tilt-n-move-shaking 0.5s';
-});
-olympusB.addEventListener('mouseout', event => {
+}
+olympusB.onmouseout = () => {
 	hoverSound.pause(); 
 	hoverSound.currentTime = 0;
 	gamebox.style.background = '#464646';
@@ -788,8 +1063,8 @@ olympusB.addEventListener('mouseout', event => {
 	text.innerText = "Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use the buttons below to go where you want.";
 	olympusB.style.background = '#4b3f33';
 	olympusB.style.animation = 'grow';
-});
-olympusB.addEventListener('click', event => {
+}
+olympusB.onclick = () => {
 	selection.play();
 	if (play == true) {
 		menuTheme.pause();
@@ -806,6 +1081,7 @@ olympusB.addEventListener('click', event => {
 	 gamebox.style.background = '#335168';
 	}, 4);
 	mainDisappear();
+	stats.style.marginTop = '48px';
 	kratosOlympus.style.display = 'block';
 	settingsB.style.background = '#335168';
 	herculesB.style.display = 'inline';
@@ -820,7 +1096,7 @@ olympusB.addEventListener('click', event => {
 	leaveOlympus.style.display = 'block';
 	leaveOlympus.style.animationDuration = '2s';
 	leaveOlympus.style.animationTimingFunction = 'block';
-});
+}
 
 function mainDisappear() {
 	musicOption.style.display = 'none';
@@ -837,7 +1113,7 @@ function mainDisappear() {
 
 // Shop functions
 
-sellWeaponB.addEventListener('mouseover', event => {
+sellWeaponB.onmouseover = () => {
 	hoverSound.play();
 	iSdis();
 	sellCon.style.display = 'inline';
@@ -864,8 +1140,8 @@ sellWeaponB.addEventListener('mouseover', event => {
 		break;
 	}
 	sellWeaponB.style.animation = 'vertical-shaking 0.5s';
-});
-sellWeaponB.addEventListener('mouseout', event => {
+}
+sellWeaponB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	iSap();
@@ -887,105 +1163,104 @@ sellWeaponB.addEventListener('mouseout', event => {
 	}
 	sellWeaponB.style.animation = 'grow';
 	sellCon.style.display = 'none';
-});
-
+}
 sellWeaponB.addEventListener('click', sellWeapon );
 
-potionB.addEventListener('mouseover', event => {
+potionB.onmouseover = () => {
 	hoverSound.play();
 	potionB.style.animation = 'tilt-shaking 0.5s';
 	iSdis();
 	potion.style.display = 'inline-block';
 	potionInfo.style.display = 'inline-block';
-});
-potionB.addEventListener('mouseout', event => {
+}
+potionB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	potionB.style.animation = 'grow';
 	iSap();
 	potion.style.display = 'none';
 	potionInfo.style.display = 'none';
-});
+}
 potionB.addEventListener('click', buyPotion );
 
-nemesisWhipB.addEventListener('mouseover', event => {
+nemesisWhipB.onmouseover = () => {
 	hoverSound.play();
 	nemesisWhipB.style.animation = 'tilt-shaking 0.5s';
 	iSdis();
 	nemesisWhip.style.display = 'inline-block';
 	whipInfo.style.display = 'inline-block';
-});
-nemesisWhipB.addEventListener('mouseout', event => {
+}
+nemesisWhipB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	nemesisWhipB.style.animation = 'grow';
 	iSap();
 	nemesisWhip.style.display = 'none';
 	whipInfo.style.display = 'none';
-});
+}
 nemesisWhipB.addEventListener('click', buyWhip);
 
-gauntletB.addEventListener('mouseover', event => {
+gauntletB.onmouseover = () => {
 	hoverSound.play();
 	gauntletB.style.animation = 'tilt-shaking 0.5s';
 	iSdis();
 	gauntletZeus.style.display = 'inline-block';
 	gauntletInfo.style.display = 'inline-block';
-});
-gauntletB.addEventListener('mouseout', event => {
+}
+gauntletB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	gauntletB.style.animation = 'grow';
 	iSap();
 	gauntletZeus.style.display = 'none';
 	gauntletInfo.style.display = 'none';
-});
+}
 gauntletB.addEventListener('click', buyGauntlet);
 
-clawsB.addEventListener('mouseover', event => {
+clawsB.onmouseover = () => {
 	hoverSound.play();
 	clawsB.style.animation = 'tilt-shaking 0.5s';
 	iSdis();
 	clawsHades.style.display = 'inline-block';
 	clawsInfo.style.display = 'inline-block';
 	clawsInfo.style.right = '2.8cm';
-});
-clawsB.addEventListener('mouseout', event => {
+}
+clawsB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	clawsB.style.animation = 'grow';
 	iSap();
 	clawsHades.style.display = 'none';
 	clawsInfo.style.display = 'none';
-});
+}
 clawsB.addEventListener('click', buyClaws );
 
-bladeOlympusB.addEventListener('mouseover', event => {
+bladeOlympusB.onmouseover = () => {
 	hoverSound.play();
 	bladeOlympusB.style.animation = 'tilt-shaking 0.5s';
 	iSdis();
 	bladeOlympus.style.display = 'inline-block';
 	bladeInfo.style.display = 'inline-block';
-});
-bladeOlympusB.addEventListener('mouseout', event => {
+}
+bladeOlympusB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	bladeOlympusB.style.animation = 'grow';
 	iSap();
 	bladeOlympus.style.display = 'none';
 	bladeInfo.style.display = 'none';
-});
+}
 bladeOlympusB.addEventListener('click', buyBlade );
 
-leaveShop.addEventListener('mouseover', event => {
+leaveShop.onmouseover = () => {
 	hoverSound.play();
 	gamebox.style.background = '#20130c';
 	leaveShop.style.animation = 'horizontal-shaking 0.5s';
 	inShop.style.position = 'absolute';
 	inShop.style.left = '40cm';
 	sparta.style.display = 'block';
-});
-leaveShop.addEventListener('mouseout', event => {
+}
+leaveShop.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	gamebox.style.background = '#09090b';
@@ -993,10 +1268,11 @@ leaveShop.addEventListener('mouseout', event => {
 	inShop.style.position = 'relative';
 	inShop.style.left = '0';
 	sparta.style.display = 'none';
-});
-leaveShop.addEventListener('click', event => {
+}
+leaveShop.onclick = () => {
 	returnSound.play();
 	musicOption.style.background = '#464646';
+	stats.style.marginTop = '0';
 	inShop.style.display = 'none';
 	sellWeaponB.style.display = 'none';
 	potionB.style.display = 'none';
@@ -1007,7 +1283,7 @@ leaveShop.addEventListener('click', event => {
 	leaveShop.style.display = 'none';
 	mainAppear();
 	hideHotbar();
-});
+}
 
 function iSdis() {
 	inShop.style.position = 'absolute';
@@ -1023,87 +1299,95 @@ function sellWeapon() {
 		hmmmm.play();
 		var soldWeapon;
 		switch (currentWeapon) {
-			case 0:
+			case 0:	    
 			    inventory.shift();
 				slot1.style.display = 'none';
 				var sold = setInterval(() => {
-				  count++;
-				  orbs++;
-				  orbsText.innerText = orbs;
-				  if (count == 17) {
-					count = 0;
-					clearInterval(sold);
-				  }
+				    count++;
+				    orbs++;
+				    orbsText.innerText = orbs;
+				    if (count == 17) {
+					    count = 0;
+					    clearInterval(sold);
+						localStorage.setItem('orbs', orbs);
+				    }
 				}, 155);
 				currentWeapon++;
+				soldWeapon = weapons[0].name;
 			break;
 			case 1:
-			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
+			    inventory = inventory.filter(weapon => weapon !== whip);
 				slot2.style.display = 'none';
 				whipClaimed = false;
 				var sold2 = setInterval(() => {
-				  count++;
-				  orbs++;
-				  orbsText.innerText = orbs;
-				  if (count == 28) {
-					count = 0;
-					clearInterval(sold2);
-				  }
+					count++;
+					orbs++;
+					orbsText.innerText = orbs;
+				    if (count == 28) {
+						count = 0;
+						clearInterval(sold2);
+						localStorage.setItem('orbs', orbs);
+				    }
 				}, 140);
 				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
-				soldWeapon = blade;
+				soldWeapon = whip;
 			break;
 			case 2:
-			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
+			    inventory = inventory.filter(weapon => weapon !== gauntlet);
 				slot3.style.display = 'none';
 				gauntletClaimed = false;
 				var sold3 = setInterval(() => {
-				  count++;
-				  orbs++;
-				  orbsText.innerText = orbs;
-				  if (count == 42) {
-					count = 0;
-					clearInterval(sold3);
-				  }
+				    count++;
+				    orbs++;
+				    orbsText.innerText = orbs;
+				    if (count == 42) {
+						count = 0;
+						clearInterval(sold3);
+						localStorage.setItem('orbs', orbs);
+				    }
 				}, 125);
 				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
-				soldWeapon = blade;
+				soldWeapon =  gauntlet;
 			break;
 			case 3:
-			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
+			    inventory = inventory.filter(weapon => weapon !== claws);
 				slot4.style.display = 'none';
 				var sold4 = setInterval(() => {
-				  clawsClaimed = false;
-				  count++;
-				  orbs++;
-				  orbsText.innerText = orbs;
-				  if (count == 70) {
-					count = 0;
-					clearInterval(sold4);
-				  }
+				    clawsClaimed = false;
+				    count++;
+				    orbs++;
+				    orbsText.innerText = orbs;
+				    if (count == 70) {
+						count = 0;
+						clearInterval(sold4);
+						localStorage.setItem('orbs', orbs);
+				    }
 				}, 110);
 				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
-				soldWeapon = blade;
+				soldWeapon = claws;
 			break;
 			case 4:
-			    inventory = inventory.filter(weapon => weapon !== weapons[currentWeapon].name);
+			    inventory = inventory.filter(weapon => weapon !== blade);
 				slot5.style.display = 'none';
 				bladeClaimed = false;
 				var sold5 = setInterval(() => {
-				  count++;
-				  orbs++;
-				  orbsText.innerText = orbs;
-				  if (count == 100) {
-					count = 0;
-					clearInterval(sold5);
-				  }
+				    count++;
+				    orbs++;
+				    orbsText.innerText = orbs;
+				    if (count == 100) {
+						count = 0;
+						clearInterval(sold5);
+						localStorage.setItem('orbs', orbs);
+				    }
 				}, 100);
 				currentWeapon = inventory.length > 2 ? currentWeapon++ : currentWeapon--;
 				soldWeapon = blade;
 			break;
 		}
-		text2.innerText = "You sold the " + soldWeapon + ".";
-		text2.innerText += "\n In your inventory you have: " + inventory.join(", ");
+		localStorage.setItem('inventory', inventory);
+		localStorage.setItem('currentWeapon', currentWeapon);
+		text2.innerText = `You sold the ${soldWeapon}.`;
+        text2.innerText += `\n In your inventory you have: ${inventory.join(", ")}`;
 		inShop.style.display = 'none';
 		mVillager.style.display = 'block';
 		boc.style.display = 'none';
@@ -1140,9 +1424,12 @@ function sellWeapon() {
 	}
 }
 
+
 function buyPotion() {
 	if (orbs >= 17 && count == 0) {
 		noice.play();
+		
+		// Number counting animation
 		var boughted = setInterval (() => {
 		    count++;
 		    orbs--;
@@ -1150,11 +1437,16 @@ function buyPotion() {
 		    if (count == 17) {
 			    count = 0;
 			    clearInterval(boughted);
+				localStorage.setItem('orbs', orbs);
 		    }
 		}, 170 );
+		
+		// Update potion slot
 		potionquantity++;
+		localStorage.setItem('potions', potionquantity);
 		pqText.innerText = potionquantity;
 		pslot.style.display = 'inline-block';
+		
 	} else if (orbs < 17) {
 		brokie.play();
 		text2.innerText = "You do not have enough orbs to buy a health potion.";
@@ -1169,17 +1461,20 @@ function buyWhip() {
 		whipClaimed = true;
 		achievement.play();
 		var bought = setInterval (() => {
-		    count++;
-		    orbs--;
-		    orbsText.innerText = orbs;
-		    if (count == 55) {
+			count++;
+			orbs--;
+			orbsText.innerText = orbs;
+			if (count == 55) {
 				count = 0;
 				clearInterval(bought);
-		    }
+				localStorage.setItem('orbs', orbs);
+			}
 		}, 100 );
 		currentWeapon = 1;
-		inventory.push(weapons[currentWeapon].name);
-		weaponGot();  
+		localStorage.setItem('currentWeapon', currentWeapon);
+		inventory.push(whip);
+		localStorage.setItem('inventory', JSON.stringify(inventory));
+		weaponGot();
 		whipClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.display = 'inline-block';
@@ -1188,8 +1483,8 @@ function buyWhip() {
 		slot4.style.border = '1.8px solid #5a3910';
 		slot5.style.border = '1.8px solid #5a3910';
 		setTimeout(() => {
-		    whipClaim.style.display = 'none';
-		    revert();
+			whipClaim.style.display = 'none';
+			revert();
 		}, 4400 );
 	} else {
 		if (!whipClaimed) {
@@ -1218,10 +1513,13 @@ function buyGauntlet() {
 		    if (count == 99) {
 				count = 0;
 				clearInterval(bought);
+				localStorage.setItem('orbs', orbs);
 		    }
 		}, 80 );
 		currentWeapon = 2;
-		inventory.push(weapons[currentWeapon].name);
+		localStorage.setItem('currentWeapon', currentWeapon);
+		inventory.push(gauntlet);
+		localStorage.setItem('inventory', JSON.stringify(inventory));
 		weaponGot();
 		gauntletClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
@@ -1261,10 +1559,13 @@ function buyClaws() {
 		    if (count == 155) {
 				count = 0;
 				clearInterval(bought);
+				localStorage.setItem('orbs', orbs);
 		    }
 		}, 55 );
 		currentWeapon = 3;
 		inventory.push(weapons[currentWeapon].name);
+		inventory.push(claws);
+		localStorage.setItem('inventory', JSON.stringify(inventory));
 		weaponGot();
 		clawsClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
@@ -1304,10 +1605,13 @@ function buyBlade() {
 		    if (count == 200) {
 				count = 0;
 				clearInterval(bought);
+				localStorage.setItem('orbs', orbs);
 		    }
 		}, 35 );
 		currentWeapon = 4;
-		inventory.push(weapons[currentWeapon].name);
+		localStorage.setItem('currentWeapon', currentWeapon);
+		inventory.push(blade);
+		localStorage.setItem('inventory', JSON.stringify(inventory));
 		weaponGot();
 		bladeClaim.style.display = 'block';
 		slot1.style.border = '1.8px solid #5a3910';
@@ -1337,7 +1641,7 @@ function buyBlade() {
 }
 
 function weaponGot() {
-	text2.innerText = "You now have the " + weapons[currentWeapon].name + ". \n" + " In your inventory you have: " + inventory.join(", ");
+	text2.innerText = "You now have the " + weapons[currentWeapon].name + ". \n" + " In your inventory you have: " + inventory;
 	text2.style.color = '#191970';
 	inShop.style.display = 'none';
 	sellWeaponB.style.display = 'none';
@@ -1350,11 +1654,11 @@ function weaponGot() {
 }
 
 function revert() {
-	text2.style.color = '#ffad15';
-	text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
-	inShop.style.display = 'block';
-	sellWeaponB.style.display = 'inline';
-	potionB.style.display = 'inline';
+    text2.style.color = '#ffad15';
+    text2.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
+    inShop.style.display = 'block';
+    sellWeaponB.style.display = 'inline';
+    potionB.style.display = 'inline';
 	nemesisWhipB.style.display = 'inline';
 	gauntletB.style.display = 'inline';
 	clawsB.style.display = 'inline';
@@ -1369,89 +1673,92 @@ function hideHotbar() { hotbar.style.display = 'none' }
 
 pslot.addEventListener('click', increaseHealth );
 
-slot1.addEventListener('mouseover', event => { if (currentWeapon != 0) { slot1.style.border = '3px solid #5a3910' }})
-
-slot1.addEventListener('mouseout', event => { if (currentWeapon != 0) {slot1.style.border = '1.8px solid #5a3910' }});
-slot1.addEventListener('click', event => {
+slot1.onmouseover = () => { if (currentWeapon != 0) slot1.style.border = '3px solid #5a3910' }
+slot1.onmouseout = () => { if (currentWeapon != 0) slot1.style.border = '1.8px solid #5a3910' }
+slot1.onclick = () => {
 	bocsound.play();
 	if (currentWeapon != 0) {
 		currentWeapon = 0;
+		localStorage.setItem('currentWeapon', currentWeapon);
 		slot1.style.border = '3px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
 		slot3.style.border = '1.8px solid #5a3910';
 		slot4.style.border = '1.8px solid #5a3910';
 		slot5.style.border = '1.8px solid #5a3910';
 	}
-});
+}
 
-slot2.addEventListener('mouseover', event => { if (currentWeapon != 1) { slot2.style.border = '3px solid #5a3910' }})
-slot2.addEventListener('mouseout', event => { if (currentWeapon != 1) { slot2.style.border = '1.8px solid #5a3910';}});
-slot2.addEventListener('click', event => {
+slot2.onmouseover = () => { if (currentWeapon != 1) slot2.style.border = '3px solid #5a3910' }
+slot2.onmouseout = () => { if (currentWeapon != 1) slot2.style.border = '1.8px solid #5a3910' }
+slot2.onclick = () => {
 	nwsound.play();
 	if (currentWeapon != 1) {
 		currentWeapon = 1;
+		localStorage.setItem('currentWeapon', currentWeapon);
 		slot2.style.border = '3px solid #5a3910';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot3.style.border = '1.8px solid #5a3910';
 		slot4.style.border = '1.8px solid #5a3910';
 		slot5.style.border = '1.8px solid #5a3910';
 	}
-});
+}
 
-slot3.addEventListener('mouseover', event => { if (currentWeapon != 2) { slot3.style.border = '3px solid #5a3910' }
-});
-slot3.addEventListener('mouseout', event => { if (currentWeapon != 2) { slot3.style.border = '1.8px solid #5a3910' }
-});
-slot3.addEventListener('click', event => {
+slot3.onmouseover = () => { if (currentWeapon != 2) slot3.style.border = '3px solid #5a3910' }
+slot3.onmouseout = () => { if (currentWeapon != 2) slot3.style.border = '1.8px solid #5a3910' }
+slot3.onclick = () => {
 	gozsound.play();
 	if (currentWeapon != 2) {
 		currentWeapon = 2;
+		localStorage.setItem('currentWeapon', currentWeapon);
 		slot3.style.border = '3px solid #5a3910';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
 		slot4.style.border = '1.8px solid #5a3910';
 		slot5.style.border = '1.8px solid #5a3910';
-  }
-});
+    }
+}
 
-slot4.addEventListener('mouseover', event => { if (currentWeapon != 3) { slot4.style.border = '3px solid #5a3910' }})
-slot4.addEventListener('mouseout', event => { if (currentWeapon != 3) { slot4.style.border = '1.8px solid #5a3910' }});
-slot4.addEventListener('click', event => {
+slot4.onmouseover = () => { if (currentWeapon != 3) slot4.style.border = '3px solid #5a3910' }
+slot4.onmouseout = () => { if (currentWeapon != 3) slot4.style.border = '1.8px solid #5a3910' }
+slot4.onclick = () => {
 	cohsound.play();
 	if (currentWeapon != 3) {
 		currentWeapon = 3;
+		localStorage.setItem('currentWeapon', currentWeapon);
 		slot4.style.border = '3px solid #5a3910';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
 		slot3.style.border = '1.8px solid #5a3910';
 		slot5.style.border = '1.8px solid #5a3910';
 	}
-});
+}
 
-slot5.addEventListener('mouseover', event => { if (currentWeapon != 4) { slot5.style.border = '3px solid #5a3910'}})
-slot2.addEventListener('mouseout', event => { if (currentWeapon != 4) { slot5.style.border = '1.8px solid #5a3910'}});
-slot5.addEventListener('click', event => {
+slot5.onmouseover = () => { if (currentWeapon != 4) slot5.style.border = '3px solid #5a3910' }
+slot2.onmouseout = () => { if (currentWeapon != 4) slot5.style.border = '1.8px solid #5a3910' }
+slot5.onclick = () => {
 	swordThud.play();
 	if (currentWeapon != 4) {
 		currentWeapon = 4;
-		slot4.style.border = '3px solid #5a3910';
+		localStorage.setItem('currentWeapon', currentWeapon);
+		slot5.style.border = '3px solid #5a3910';
 		slot1.style.border = '1.8px solid #5a3910';
 		slot2.style.border = '1.8px solid #5a3910';
 		slot3.style.border = '1.8px solid #5a3910';
-		slot5.style.border = '1.8px solid #5a3910';
-		
+		slot4.style.border = '1.8px solid #5a3910';
 	}
-});
+}
 
 function increaseHealth() {
     if (health <= 199) {
         drink.play();
         potionquantity--;
+        localStorage.setItem('potions', potionquantity);
         pqText.innerText = potionquantity;
 
         health += 14;
         if (health > 200) health = 200; // Cap health at 200
         
+        localStorage.setItem('health', health);
         healthText.innerText = health;
         healthFiller.style.width = `${health}%`;
 
@@ -1476,9 +1783,9 @@ function increaseHealth() {
         }
 
         // Hide potion slot if no potions are present
-		if (potionquantity === 0) {
-			pslot.style.display = 'none';
-		}
+        if (potionquantity === 0) {
+            pslot.style.display = 'none';
+        }
 
         if (health > 25) gamebox.style.boxShadow = 'none';
     }
@@ -1486,11 +1793,13 @@ function increaseHealth() {
 
 // Key events
 
-document.addEventListener('keydown', event => { if (event.key == 'f' && potionquantity >= 1) increaseHealth() });
+document.addEventListener('keydown', event => {
+	if (event.key == 'f' && potionquantity >= 1) increaseHealth()
+});
 
 // Underworld functions
 
-hopliteB.addEventListener('mouseover', event => {
+hopliteB.onmouseover = () => {
 	hoverSound.play();
 	kratosUnderworld.style.display = 'none';
 	text2.style.display = 'none';
@@ -1498,10 +1807,10 @@ hopliteB.addEventListener('mouseover', event => {
 	enemyInfo.innerText = "An enemy that appears to be a skeletal corpse adorned in standard Greek armor, and with two swords for weapons.";
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "9";
-	hoplite.style.display = 'inline-block';
+	hoplite.style.display = 'block';
 	hopliteB.style.animation = 'tilt-shaking 0.5s';
-});
-hopliteB.addEventListener('mouseout', event => {
+}
+hopliteB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	text2.style.display = 'inline-block';
@@ -1510,8 +1819,8 @@ hopliteB.addEventListener('mouseout', event => {
 	kratosUnderworld.style.display = 'block';
 	hoplite.style.display = 'none';
 	hopliteB.style.animation = 'grow';
-});
-hopliteB.addEventListener('click', event => {
+}
+hopliteB.onclick = () => {
 	setTimeout(() => {
 		battleTheme.play();
 	}, 1000 );
@@ -1526,24 +1835,24 @@ hopliteB.addEventListener('click', event => {
 		attackHoplite.style.animationTimingFunction = 'linear';
 		hopliteShapa();
     }, 800 )
-});
+}
 
-attackHoplite.addEventListener('mouseover', event => {
+attackHoplite.onmouseover = () => {
 	kratosUnderworld.style.display = 'none';
 	hopliteAttack.style.display = 'block';
 	attackHoplite.style.animation = 'tilt-n-move-shaking 0.8s';
-});
-attackHoplite.addEventListener('mouseout', event => {
+}
+attackHoplite.onmouseout = () => {
 	kratosUnderworld.style.display = 'block';
 	hopliteAttack.style.display = 'none';
 	attackHoplite.style.animation = 'grow';
-});
-attackHoplite.addEventListener('click', event => {
+}
+attackHoplite.onclick = () => {
 	attacksHoplite.play();
 	attack();
-});
+}
 
-bansheeB.addEventListener('mouseover', event => {
+bansheeB.onmouseover = () => {
 	bansheeSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -1551,10 +1860,10 @@ bansheeB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "17";
 	kratosUnderworld.style.display = 'none';
-	banshee.style.display = 'inline-block';
+	banshee.style.display = 'block';
 	bansheeB.style.animation = 'tilt-shaking 1.8s';
-});
-bansheeB.addEventListener('mouseout', event => {
+}
+bansheeB.onmouseout = () => {
 	bansheeSound.pause();
 	bansheeSound.currentTime = 0;
 	text2.style.display = 'inline-block';
@@ -1563,8 +1872,8 @@ bansheeB.addEventListener('mouseout', event => {
 	kratosUnderworld.style.display = 'block';
 	banshee.style.display = 'none';
 	bansheeB.style.animation = 'grow';
-});
-bansheeB.addEventListener('click', event => {
+}
+bansheeB.onclick = () => {
 	setTimeout(() => {
 	    battleTheme.play();
 	}, 1000 );
@@ -1579,24 +1888,24 @@ bansheeB.addEventListener('click', event => {
 		attackBanshee.style.animationTimingFunction = 'linear';
 		bansheeShapa();
 	}, 800 );
-});
+}
 
-attackBanshee.addEventListener('mouseover', event => {
+attackBanshee.onmouseover = () => {
 	kratosUnderworld.style.display = 'none';
 	bansheeAttack.style.display = 'block';
 	attackBanshee.style.animation = 'tilt-n-move-shaking 0.5s';
-});
-attackBanshee.addEventListener('mouseout', event => {
+}
+attackBanshee.onmouseout = () => {
 	kratosUnderworld.style.display = 'block';
 	bansheeAttack.style.display = 'none';
 	attackBanshee.style.animation = 'grow';
-});
-attackBanshee.addEventListener('click', event => {
+}
+attackBanshee.onclick = () => {
 	attacksBanshee.play();
 	attack();
-});
+}
 
-satyrB.addEventListener('mouseover', event => {
+satyrB.onmouseover = () => {
 	hoverSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -1604,10 +1913,10 @@ satyrB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "21";
 	kratosUnderworld.style.display = 'none';
-	satyr.style.display = 'inline-block';
+	satyr.style.display = 'block';
 	satyrB.style.animation = 'tilt-shaking 0.5s';
-});
-satyrB.addEventListener('mouseout', event => {
+}
+satyrB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	text2.style.display = 'inline-block';
@@ -1616,8 +1925,8 @@ satyrB.addEventListener('mouseout', event => {
 	kratosUnderworld.style.display = 'block';
 	satyr.style.display = 'none';
 	satyrB.style.animation = 'grow';
-});
-satyrB.addEventListener('click', event => {
+}
+satyrB.onclick = () => {
 	setTimeout(() => {
 	    battleTheme2.play();
 	}, 1000 );
@@ -1632,19 +1941,19 @@ satyrB.addEventListener('click', event => {
 		attackSatyr.style.animationTimingFunction = 'linear';
 	}, 800 );
 	satyrShapa();
-});
+}
 
-attackSatyr.addEventListener('mouseover', event => {
+attackSatyr.onmouseover = () => {
 	kratosUnderworld.style.display = 'none';
 	satyrAttack.style.display = 'block';
 	attackSatyr.style.animation = 'tilt-n-move-shaking 0.5s';
-});
-attackSatyr.addEventListener('mouseout', event => {
+}
+attackSatyr.onmouseout = () => {
 	kratosUnderworld.style.display = 'block';
 	satyrAttack.style.display = 'none';
 	attackSatyr.style.animation = 'grow';
-});
-attackSatyr.addEventListener('click', event => {
+}
+attackSatyr.onclick = () => {
 	clicks = 1;
 	switch (clicks) {
 	case 1:
@@ -1666,9 +1975,9 @@ attackSatyr.addEventListener('click', event => {
 	}
 	attacksSatyr.play();
 	attack();
-});
+}
 
-minotaurB.addEventListener('mouseover', event => {
+minotaurB.onmouseover = () => {
 	minotaurSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -1676,10 +1985,10 @@ minotaurB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "25";
 	kratosUnderworld.style.display = 'none';
-	minotaur.style.display = 'inline-block';
+	minotaur.style.display = 'block';
 	minotaurB.style.animation = 'tilt-shaking 1s';
-});
-minotaurB.addEventListener('mouseout', event => {
+}
+minotaurB.onmouseout = () => {
 	minotaurSound.pause();
 	minotaurSound.currentTime = 0;
 	text2.style.display = 'inline-block';
@@ -1688,8 +1997,8 @@ minotaurB.addEventListener('mouseout', event => {
 	kratosUnderworld.style.display = 'block';
 	minotaur.style.display = 'none';
 	minotaurB.style.animation = 'grow';
-});
-minotaurB.addEventListener('click', event => {
+}
+minotaurB.onclick = () => {
 	setTimeout(() => {
 	    battleTheme2.play();
 	}, 1000 );
@@ -1704,24 +2013,24 @@ minotaurB.addEventListener('click', event => {
 		attackMinotaur.style.animationTimingFunction = 'linear';
 	}, 800 );
 	minotaurShapa();
-});
+}
 
-attackMinotaur.addEventListener('mouseover', event => {
+attackMinotaur.onmouseover = () => {
 	kratosUnderworld.style.display = 'none';
 	minotaurAttack.style.display = 'block';
 	attackMinotaur.style.animation = 'tilt-n-move-shaking 0.8s';
-});
-attackMinotaur.addEventListener('mouseout', event => {
+}
+attackMinotaur.onmouseout = () => {
 	kratosUnderworld.style.display = 'block';
 	minotaurAttack.style.display = 'none';
 	attackMinotaur.style.animation = 'grow';
-});
-attackMinotaur.addEventListener('click', event => {
+}
+attackMinotaur.onclick = () => {
 	attacksMinotaur.play();
 	attack()
-});
+}
 
-medusaB.addEventListener('mouseover', event => {
+medusaB.onmouseover = () => {
 	hoverSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -1729,10 +2038,10 @@ medusaB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "33";
 	kratosUnderworld.style.display = 'none';
-	medusa.style.display = 'inline-block';;
+	medusa.style.display = 'block';
 	medusaB.style.animation = 'tilt-shaking 0.5s';
-});
-medusaB.addEventListener('mouseout', event => {
+}
+medusaB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	text2.style.display = 'inline-block';
@@ -1741,8 +2050,8 @@ medusaB.addEventListener('mouseout', event => {
 	kratosUnderworld.style.display = 'block';
 	medusa.style.display = 'none';
 	medusaB.style.animation = 'grow';
-});
-medusaB.addEventListener('click', event => {
+}
+medusaB.onclick = () => {
 	setTimeout(() => {
 	    battleTheme2.play();
 	}, 1000 );
@@ -1757,24 +2066,24 @@ medusaB.addEventListener('click', event => {
 		attackMedusa.style.animationTimingFunction = 'linear';
 	}, 800 );
 	medusaShapa();
-});
+}
 
-attackMedusa.addEventListener('mouseover', event => {
+attackMedusa.onmouseover = () => {
 	kratosUnderworld.style.display = 'none';
 	medusaAttack.style.display = 'block';
 	attackMedusa.style.animation = 'tilt-n-move-shaking 0.8s';
-});
-attackMedusa.addEventListener('mouseout', event => {
+}
+attackMedusa.onmouseout = () => {
 	kratosUnderworld.style.display = 'block';
 	medusaAttack.style.display = 'none';
 	attackMedusa.style.animation = 'grow';
-});
-attackMedusa.addEventListener('click', event => {
+}
+attackMedusa.onclick = () => {
 	attacksMedusa.play();
 	attack();
-});
+}
 
-cyclopsB.addEventListener('mouseover', event => {
+cyclopsB.onmouseover = () => {
 	cyclopsSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -1782,10 +2091,10 @@ cyclopsB.addEventListener('mouseover', event => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "45";
 	kratosUnderworld.style.display = 'none';
-	cyclops.style.display = 'inline-block';
+	cyclops.style.display = 'block';
 	cyclopsB.style.animation = 'tilt-shaking 1.6s';
-});
-cyclopsB.addEventListener('mouseout', event => {
+}
+cyclopsB.onmouseout= () => {
 	cyclopsSound.pause();
 	cyclopsSound.currentTime = 0;
 	text2.style.display = 'inline-block';
@@ -1794,8 +2103,8 @@ cyclopsB.addEventListener('mouseout', event => {
 	kratosUnderworld.style.display = 'block';
 	cyclops.style.display = 'none';
 	cyclopsB.style.animation = 'grow';
-});
-cyclopsB.addEventListener('click', event => {
+}
+cyclopsB.onclick = () => {
 	setTimeout(() => {
 	    cyclopsBattle.play();
 	}, 1000 );
@@ -1810,22 +2119,22 @@ cyclopsB.addEventListener('click', event => {
 		attackCyclops.style.animationTimingFunction = 'linear';
 	}, 800 );
 	cyclopsShapa();
-});
+}
 
-attackCyclops.addEventListener('mouseover', event => {
+attackCyclops.onmouseover = () => {
 	kratosUnderworld.style.display = 'none';
 	cyclopsAttack.style.display = 'block';
 	attackCyclops.style.animation = 'tilt-n-move-shaking 0.8s';
-});
-attackCyclops.addEventListener('mouseout', event => {
+}
+attackCyclops.onmouseout = () => {
 	kratosUnderworld.style.display = 'block';
 	cyclopsAttack.style.display = 'none';
 	attackCyclops.style.animation = 'grow';
-});
-attackCyclops.addEventListener('click', event => {
+}
+attackCyclops.onclick = () => {
 	attacksCyclops.play();
 	attack();
-});
+}
 
 function go() {
 	enemyStats.style.display = "inline-block";
@@ -1851,18 +2160,18 @@ function go() {
 
 // button functions continuation
 
-evadeB.addEventListener('mouseover', event => {
+evadeB.onmouseover = () => {
 	hoverSound.play();
 	evadeB.style.animation = 'vertical-shaking 0.8s';
-});
-evadeB.addEventListener('mouseout', event => {
+}
+evadeB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	evadeB.style.animation = 'grow';
-});
+}
 evadeB.addEventListener('click', evade );
 
-runB.addEventListener('mouseover', event => {
+runB.onmouseover = () => {
 	hoverSound.play();
 	kratosUnderworld.style.display = 'none';
 	kratosRunning.style.display = 'inline';
@@ -1873,18 +2182,19 @@ runB.addEventListener('mouseover', event => {
 	minotaurKill.style.display = 'none';
 	medusaKill.style.display = 'none';
 	cyclops.style.display = 'none';
-});
-runB.addEventListener('mouseout', event => {
+}
+runB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	gamebox.style.transform = 'rotate(0deg)';
 	kratosUnderworld.style.display = 'block';
 	kratosRunning.style.display = 'none';
 	runB.style.animation = 'grow';
-});
-runB.addEventListener('click', event => {
+}
+runB.onclick = () => {
 	stopMusic();
 	returnSound.play();
+	localStorage.setItem('health', health);
 	text2.innerText = "You ran from the creature, knowing that you cannot defeat it.... or you're just a pussio."
 	tct = setTimeout(() => {
 		text2.innerText = "You have arrived in the underworld. You see some strange creatures. Choose which one you want to attack. Be sure to attack one that you are sure you can defeat.";
@@ -1943,7 +2253,7 @@ runB.addEventListener('click', event => {
 	    attackCyclops.style.display = 'none';
 	    clearInterval(cyclat);
 	}
-});
+}
 
 // Underworld battle functions
 
@@ -1957,6 +2267,8 @@ function hopliteShapa() {
 		setTimeout (() => {
 			gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 			death();
 			clearInterval(hopat);
@@ -1965,6 +2277,8 @@ function hopliteShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 			defeatEnemy();
 			hopliteKill.style.display = 'block';
@@ -1975,9 +2289,11 @@ function hopliteShapa() {
 				exp++;
 				orbsText.innerText = orbs;
 				expText.innerText = exp;
-				if (count == 16) {
+				if (count == 20) {
 					count = 0;
 					clearInterval(hopdef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
 				}
 			}, 200);
 			clearInterval(hopat);
@@ -1998,6 +2314,8 @@ function bansheeShapa() {
 		setTimeout (() => {
 			gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health states
 		if (health <= 0) {
 			death();
 			clearInterval(banshat);
@@ -2006,6 +2324,8 @@ function bansheeShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health states
 		if (enemyHealth <= 0) {
 			defeatEnemy();
 			bansheeKill.style.display = 'block';
@@ -2015,10 +2335,12 @@ function bansheeShapa() {
 				exp++;
 				orbsText.innerText = orbs;
 				expText.innerText = exp;
-			  if (count == 32) {
-				count = 0;
-				clearInterval(bandef);
-			  }
+				if (count == 32) {
+					count = 0;
+					clearInterval(bandef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
+				}
 			}, 180);
 			clearInterval(banshat);
 		}
@@ -2035,6 +2357,8 @@ function satyrShapa() {
 		setTimeout (() => {
 			gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 			death();
 			clearInterval(satat);
@@ -2043,6 +2367,8 @@ function satyrShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 			defeatEnemy();
 			satyrKill.style.display = 'block';
@@ -2055,6 +2381,8 @@ function satyrShapa() {
 				if (count == 40) {
 					count = 0;
 					clearInterval(satdef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
 				}
 			}, 140);
 			clearInterval(satat);
@@ -2075,6 +2403,8 @@ function minotaurShapa() {
 		setTimeout (() => {
 			gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 			death();
 			clearInterval(minat);
@@ -2083,6 +2413,8 @@ function minotaurShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 			defeatEnemy();
 			minotaurKill.style.display = 'block';
@@ -2095,6 +2427,8 @@ function minotaurShapa() {
 				if (count == 48) {
 					count = 0;
 					clearInterval(mindef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
 				}
 			}, 140);
 			clearInterval(minat);
@@ -2111,6 +2445,8 @@ function medusaShapa() {
 		setTimeout (() => {
 			gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 			death();
 			clearInterval(medat);
@@ -2119,6 +2455,8 @@ function medusaShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 			defeatEnemy();
 			medusaKill.style.display = 'block';
@@ -2131,6 +2469,8 @@ function medusaShapa() {
 				if (count == 64) {
 					count = 0;
 					clearInterval(meddef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
 				}
 			}, 120);
 			clearInterval(medat);
@@ -2150,6 +2490,8 @@ function cyclopsShapa() {
 		setTimeout (() => {
 			gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 			death();
 			clearInterval(cyclat);
@@ -2158,6 +2500,8 @@ function cyclopsShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 			defeatEnemy();
 			cyclopsBattle.pause();
@@ -2172,6 +2516,8 @@ function cyclopsShapa() {
 				if (count == 88) {
 					count = 0;
 					clearInterval(cyclef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
 				}
 			}, 100);
 			clearInterval(cyclat);
@@ -2181,15 +2527,15 @@ function cyclopsShapa() {
 
 // Underworld battle functions complete
 
-leaveUnderworld.addEventListener('mouseover', event => {
+leaveUnderworld.onmouseover = () => {
 	hoverSound.play();
 	gamebox.style.background = '#20130c';
 	leaveUnderworld.style.animation = 'horizontal-shaking 0.5s';
 	kratosUnderworld.style.position = 'absolute';
 	kratosUnderworld.style.left = '40cm';
 	sparta.style.display = 'block';
-});
-leaveUnderworld.addEventListener('mouseout', event => {
+}
+leaveUnderworld.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	gamebox.style.background = '#3c3837';
@@ -2197,8 +2543,8 @@ leaveUnderworld.addEventListener('mouseout', event => {
 	kratosUnderworld.style.position = 'relative';
 	kratosUnderworld.style.left = '0';
 	sparta.style.display = 'none';
-});
-leaveUnderworld.addEventListener('click', event => {
+}
+leaveUnderworld.onclick = () => {
 	underworldAm.pause();
 	underworldAm.currentTime = 0;
 	returnSound.play();
@@ -2214,11 +2560,11 @@ leaveUnderworld.addEventListener('click', event => {
 	cyclopsB.style.display = 'none';
 	leaveUnderworld.style.display = 'none';
 	mainAppear();
-});
+}
 
 // Olympus functions
 
-hermesB.addEventListener('mouseover', event => {
+hermesB.onmouseover = () => {
 	hoverSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -2227,10 +2573,10 @@ hermesB.addEventListener('mouseover', event => {
 	enemyDamage.innerText = "57";
 	kratosOlympus.style.position = 'absolute';
 	kratosOlympus.style.left = '40cm';
-	hermes.style.display = 'inline-block';
+	hermes.style.display = 'block';
 	hermesB.style.animation = 'tilt-shaking 0.5s';
-});
-hermesB.addEventListener('mouseout', event => {
+}
+hermesB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	text2.style.display = 'block';
@@ -2240,8 +2586,8 @@ hermesB.addEventListener('mouseout', event => {
 	kratosOlympus.style.position = 'relative';
 	kratosOlympus.style.left = '0';
 	hermesB.style.animation = 'grow';
-});
-hermesB.addEventListener('click', event => {
+}
+hermesB.onclick = () => {
 	olympusAm.pause();
 	olympusAm.currentTime = 0;
 	gamebox.style.background = '#0f2738';
@@ -2252,25 +2598,25 @@ hermesB.addEventListener('click', event => {
 	fighting = 6;
 	eHealthBar.style.width = `${enemies[fighting].health}px`;
 	gaan();
-});
+}
 
-attackHermes.addEventListener('mouseover', event => {
+attackHermes.onmouseover = () => {
 	hermesxkratos.style.display = 'none';
 	hermesFight.style.display = 'block';
 	hermesFight.style.animation = 'tilt-n-move-shaking';
 	attackHermes.style.animationDuration = '0.8s';
-});
-attackHermes.addEventListener('mouseout', event => {
+}
+attackHermes.onmouseout = () => {
 	hermesxkratos.style.display = 'block';
 	hermesFight.style.display = 'none';
 	attackHermes.style.animation = 'grow';
-});
-attackHermes.addEventListener('click', event => {
+}
+attackHermes.onclick = () => {
 	attacks.play();
 	attack();
-});
+}
 
-herculesB.addEventListener('mouseover', event => {
+herculesB.onmouseover = () => {
 	hoverSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -2279,10 +2625,10 @@ herculesB.addEventListener('mouseover', event => {
 	enemyDamage.innerText = "69";
 	kratosOlympus.style.position = 'absolute';
 	kratosOlympus.style.left = '40cm';
-	hercules.style.display = 'inline-block';
+	hercules.style.display = 'block';
 	herculesB.style.animation = 'tilt-shaking 0.5s';
-});
-herculesB.addEventListener('mouseout', event => {
+}
+herculesB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	text2.style.display = 'block';
@@ -2292,8 +2638,8 @@ herculesB.addEventListener('mouseout', event => {
 	kratosOlympus.style.position = 'relative';
 	kratosOlympus.style.left = '0';
 	herculesB.style.animation = 'grow';
-});
-herculesB.addEventListener('click', event => {
+}
+herculesB.onclick = () => {
 	olympusAm.pause();
 	olympusAm.currentTime = 0;
 	gamebox.style.background = '#59636f';
@@ -2304,19 +2650,19 @@ herculesB.addEventListener('click', event => {
 	fighting = 7;
 	eHealthBar.style.width = `${enemies[fighting].health}px`;
 	gaan();
-});
+}
 
-attackHercules.addEventListener('mouseover', event => {
+attackHercules.onmouseover = () => {
 	herculesxkratos.style.display = 'none';
 	herculesFight.style.display = 'block';
 	herculesFight.style.animation = 'tilt-n-move-shaking 0.5s';
-});
-attackHercules.addEventListener('mouseout', event => {
+}
+attackHercules.onmouseout = () => {
 	herculesxkratos.style.display = 'block';
 	herculesFight.style.display = 'none';
 	attackHercules.style.animation = 'grow';
-});
-attackHercules.addEventListener('click', event => {
+}
+attackHercules.onclick = () => {
 	switch (clicks) {
 		case 1:
 			attacks.play();
@@ -2336,9 +2682,9 @@ attackHercules.addEventListener('click', event => {
 		 break;
 	}
 	attack();
-});
+}
 
-zeusB.addEventListener('mouseover', event => {
+zeusB.onmouseover = () => {
 	hoverSound.play();
 	text2.style.display = 'none';
 	enemyInfo.style.display = 'inline-block';
@@ -2347,10 +2693,10 @@ zeusB.addEventListener('mouseover', event => {
 	enemyDamage.innerText = "82";
 	kratosOlympus.style.position = 'absolute';
 	kratosOlympus.style.left = '40cm';
-	zeus.style.display = 'inline-block';
+	zeus.style.display = 'block';
 	zeusB.style.animation = 'tilt-shaking 0.5s';
-});
-zeusB.addEventListener('mouseout', event => {
+}
+zeusB.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	text2.style.display = 'block';
@@ -2360,8 +2706,8 @@ zeusB.addEventListener('mouseout', event => {
 	kratosOlympus.style.position = 'relative';
 	kratosOlympus.style.left = '0';
 	zeusB.style.animation = 'grow';
-});
-zeusB.addEventListener('click', event => {
+}
+zeusB.onclick = () => {
 	olympusAm.pause();
 	olympusAm.currentTime = 0;
 	gamebox.style.background = '#3f383e';
@@ -2372,24 +2718,24 @@ zeusB.addEventListener('click', event => {
 	fighting = 8;
 	eHealthBar.style.width = `${enemies[fighting].health}px`;
 	gaan();
-});
+}
 
-attackZeus.addEventListener('mouseover', event => {
+attackZeus.onmouseover = () => {
 	zeusxkratos.style.display = 'none';
 	zeusFight.style.display = 'block';
 	attackZeus.style.animation = 'tilt-n-move-shaking 0.8s';
-});
-attackZeus.addEventListener('mouseout', event => {
+}
+attackZeus.onmouseout = () => {
 	zeusxkratos.style.display = 'block';
 	zeusFight.style.display = 'none';
 	attackZeus.style.animation = 'grow';
-});
-attackZeus.addEventListener('click', event => {
+}
+attackZeus.onclick = () => {
 	attacksZeus.play();
 	attack();
-});
+}
 
-rungod.addEventListener('mouseover', event => {
+rungod.onmouseover = () => {
 	hoverSound.play();
 	switch (fighting) {
 	case 6:
@@ -2410,8 +2756,8 @@ rungod.addEventListener('mouseover', event => {
 	gamebox.style.background = '#335168';
 	kratosRunning.style.display = 'block';
 	rungod.style.animation = 'horizonal-shaking 0.8s';
-});
-rungod.addEventListener('mouseout', event => {
+}
+rungod.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	hermesxkratos.style.display = 'none';
@@ -2420,9 +2766,10 @@ rungod.addEventListener('mouseout', event => {
 	kratosOlympus.style.display = 'block';
 	kratosRunning.style.display = 'none';
 	rungod.style.animation = 'grow';
-});
-rungod.addEventListener('click', event => {
+}
+rungod.onclick = () => {
 	returnSound.play();
+	localStorage.setItem('health', health);
 	switch (fighting) {
 		case 6:
 			clearInterval(hermat);
@@ -2478,7 +2825,7 @@ rungod.addEventListener('click', event => {
 	leaveOlympus.style.display = 'block';
 	leaveOlympus.style.animationDuration = '2s';
 	leaveOlympus.style.animationTimingFunction = 'linear';
-});
+}
 
 // Olympus battle functions
 
@@ -2498,6 +2845,8 @@ function hermesShapa() {
 		setTimeout (() => {
 		    gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 		    death();
 		    setTimeout(() => {
@@ -2509,6 +2858,8 @@ function hermesShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 			defeatEnemy();
 			battleTheme2.pause();
@@ -2526,6 +2877,8 @@ function hermesShapa() {
 			    if (count == 112) {
 					count = 0;
 					clearInterval(hermef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
 			    }
 			}, 80);
 			clearInterval(hermat);
@@ -2547,6 +2900,8 @@ function herculesShapa() {
 		setTimeout (() => {
 		    gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 			death();
 			setTimeout(() => {
@@ -2558,6 +2913,8 @@ function herculesShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 		    defeatEnemy();
 		    battleTheme2.pause();
@@ -2575,6 +2932,8 @@ function herculesShapa() {
 				if (count == 136) {
 				    count = 0;
 				    clearInterval(hercef);
+					localStorage.setItem('orbs', orbs);
+					localStorage.setItem('exp', exp);
 				}
 		    }, 80);
 		    clearInterval(hercat);
@@ -2591,6 +2950,8 @@ function zeusShapa() {
 		setTimeout (() => {
 		    gamebox.style.animationPlayState = 'paused';
 		}, 1000 );
+		
+		// Handle health state
 		if (health <= 0) {
 			death();
 			clearInterval(zeuat);
@@ -2599,6 +2960,8 @@ function zeusShapa() {
 		} else if (health <= 50) {
 			healthFiller.style.background = '#ed7014'
 		}
+		
+		// Handle enemy health state
 		if (enemyHealth <= 0) {
 		    beatGame();
 		}
@@ -2708,6 +3071,7 @@ function lowHealth() {
 
 function defeatEnemy() {
 	stopMusic();
+	localStorage.setItem('health', health);
 	enemyHealth = 0;
 	eHealthFiller.style.width = `${enemyHealth}%`;
 	enemyHealthText.innerText = enemyHealth;
@@ -2788,15 +3152,15 @@ function gone() {
 
 // More functions
 
-leaveOlympus.addEventListener('mouseover', event => {
+leaveOlympus.onmouseover = () => {
 	hoverSound.play();
 	gamebox.style.background = '#20130c';
 	leaveOlympus.style.animation = 'horizontal-shaking 0.5s';
 	kratosOlympus.style.position = 'absolute';
 	kratosOlympus.style.left = '40cm';
 	sparta.style.display = 'block';
-});
-leaveOlympus.addEventListener('mouseout', event => {
+}
+leaveOlympus.onmouseout= () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	gamebox.style.background = '#335168';
@@ -2804,23 +3168,24 @@ leaveOlympus.addEventListener('mouseout', event => {
 	kratosOlympus.style.position = 'relative';
 	kratosOlympus.style.left = '0';
 	sparta.style.display = 'none';
-});
-leaveOlympus.addEventListener('click', event => {
+}
+leaveOlympus.onclick = () => {
 	olympusAm.pause();
 	olympusAm.currentTime = 0;
 	returnSound.play();
 	if (timed == false) {
 	    clearTimeout(tct2);
    }
+    stats.style.marginTop = '0';
 	kratosOlympus.style.display = 'none';
 	hermesB.style.display = 'none';
 	herculesB.style.display = 'none';
 	zeusB.style.display = 'none';
 	leaveOlympus.style.display = 'none';
 	mainAppear();
-});
+}
 
-reset.addEventListener('mouseover', event => {
+reset.onmouseover = () => {
 	hoverSound.play();
 	reset.style.animation = 'horizontal-shaking';
 	reset.style.animationDuration = '0.5s';
@@ -2858,18 +3223,19 @@ reset.addEventListener('mouseover', event => {
 			zeusFight.style.display = 'none';
 		break;
 	}
-});
-reset.addEventListener('mouseout', event => {
+}
+reset.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
 	reset.style.animation = 'no';
-});
+}
 reset.addEventListener('click', restart );
 
 function beatGame() {
 	zeusBattle.pause();
 	zeusBattle.currentTime = 0;
 	wonned.play();
+	localStorage.setItem('health', health);
 	text.innerText = "You defeated Zeus! You have finally completed this SHIT game! 🤩";
 	fightZeus.style.display = 'none';
 	evadeB.style.display = 'none';
@@ -2877,17 +3243,19 @@ function beatGame() {
 	hermesxkratos.style.display = 'none';
 	zeusKill.style.display = 'block';
 	var zeuef = setInterval(( )=> {
-	count += 2;
-	orbs += enemies[fighting].level - 8;
-	exp++;
-	orbsText.innerText = orbs;
-	expText.innerText = exp;
-	if (count == 160) {
-	    count = 0;
-	    clearInterval(zeuef);
-	}
+		count += 2;
+		orbs += enemies[fighting].level - 8;
+		exp++;
+		orbsText.innerText = orbs;
+		expText.innerText = exp;
+		if (count == 160) {
+			count = 0;
+			clearInterval(zeuef);
+			localStorage.setItem('orbs', orbs);
+			localStorage.setItem('exp', exp);
+		}
 	}, 80);
-	    clearInterval(zeuat);
+	clearInterval(zeuat);
 }
 
 function restart() {
@@ -2900,12 +3268,17 @@ function restart() {
 	setTimeout(() => {
 	    ahShit.play();
 	}, 1800 );
+	localStorage.removeItem('exp');
+	localStorage.removeItem('health');
+	localStorage.removeItem('orbs');
+	localStorage.removeItem('inventory');
+	localStorage.removeItem('currentWeapon');
 	exp = 0;
 	health = 100;
 	orbs = 0;
 	currentWeapon = 0;
 	potionquantity = 0;
-	inventory = ["blades of chaos"];
+	inventory = ["Blades of chaos"];
 	orbsText.innerText = orbs;
 	healthText.innerText = health;
 	healthBar.style.width = '100px';
@@ -2950,7 +3323,7 @@ function stopMusic() {
 	if (fighting <= 1) {
 		battleTheme.pause();
 		battleTheme.currentTime = 0;
-	} else if(fighting <= 4) {
+	} else if (fighting <= 4) {
 		battleTheme2.pause();
 		battleTheme.currentTime = 0;
 	} else if (fighting == 5) {
@@ -2976,13 +3349,9 @@ function ambienceStop() {
 }
 
 function mainAppear() {
-	if (play == true) {
-		menuTheme.play();
-	}
+	if (play == true) menuTheme.play()
+	setTimeout(() => { gamebox.style.background = '#464646' }, 5);
 	musicOption.style.display = 'inline';
-	setTimeout(() => {
-		gamebox.style.background = '#464646';
-	}, 5 );
 	settingsB.style.background = '#464646';
 	text2.style.display = 'none';
 	text.style.display = 'inline-block'
@@ -2998,4 +3367,5 @@ function mainAppear() {
 	olympusB.style.display = 'inline-block';
 	olympusB.style.animation = 'rotateY';
 	olympusB.style.animationDuration = '0.8s';
+	hideHotbar()
 }
