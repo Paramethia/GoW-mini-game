@@ -489,7 +489,7 @@ mVoldown.onclick = () => {
 		zeusBattle.volume = musicVolumes;
         musicVolume -= 10;
         musicVoltext.innerText = musicVolume;
-    } else if (volume <= 0) {
+    } else if (musicVolume <= 0) {
         musicVolume = 0;
         musicVoltext.innerText = musicVolume;
     }
@@ -508,28 +508,28 @@ aVolup.onclick = () => {
 	if (ambienceVolume < 100 ) {
 		ambienceVolumes = Math.min(parseFloat((ambienceVolumes + 0.1).toFixed(2)), 1);
 		underworldAm.volume = ambienceVolumes;
-        olympusAm.volume = ambienceVolumes;
+                olympusAm.volume = ambienceVolumes;
 		ambienceVolume += 10;
 		ambienceVoltext.innerText = ambienceVolume;
   }
 }
 aVoldown.onclick = () => {
-    if (musicVolume <= 100) {
-	    ambienceVolumes = Math.max(parseFloat((ambienceVolumes - 0.1).toFixed(2)), 0);
+        if (ambienceVolume <= 100) {
+	        ambienceVolumes = Math.max(parseFloat((ambienceVolumes - 0.1).toFixed(2)), 0);
 		underworldAm.volume = ambienceVolumes;
 		olympusAm.volume = ambienceVolumes;
-        ambienceVolume -= 10;
-        ambienceVoltext.innerText = ambienceVolume;
-    } else if (volume <= 0) {
-        ambienceVolume = 0;
-        ambienceVoltext.innerText = ambienceVolume;
-    }
+	        ambienceVolume -= 10;
+	        ambienceVoltext.innerText = ambienceVolume;
+        } else if (ambienceVolume <= 0) {
+	        ambienceVolume = 0;
+	        ambienceVoltext.innerText = ambienceVolume;
+        }
 }
 ambMute.onclick = () => {
 	underworldAm.volume = 0;
 	olympusAm.volume = 0;
-    ambienceVolume = 0;
-    ambienceVoltext.innerText = ambienceVolume;
+        ambienceVolume = 0;
+        ambienceVoltext.innerText = ambienceVolume;
 }
 
 expandSet.addEventListener('mouseover', event => { expand.style.scale = '1.2' });
