@@ -1808,7 +1808,7 @@ hopliteB.onmouseover = () => {
 	damageCon.style.display = "inline";
 	enemyDamage.innerText = "9";
 	hoplite.style.display = 'block';
-	hopliteB.style.animation = 'tilt-shaking 0.5s';
+	hopliteB.style.animation = 'tilt-shaking 1.2s';
 }
 hopliteB.onmouseout = () => {
 	hopliteSound.pause();
@@ -1914,7 +1914,7 @@ satyrB.onmouseover = () => {
 	enemyDamage.innerText = "21";
 	kratosUnderworld.style.display = 'none';
 	satyr.style.display = 'block';
-	satyrB.style.animation = 'tilt-shaking 0.5s';
+	satyrB.style.animation = 'tilt-shaking 1.4s';
 }
 satyrB.onmouseout = () => {
 	satyrSound.pause();
