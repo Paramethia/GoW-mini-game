@@ -699,24 +699,6 @@ body {
 	background-position: center;
 }
 
-/*
-#Weapon-identifier {
-	position: absolute;
-	background-color: rgba(45, 45, 50, 0.8);
-	color: grey;
-	font-family: Tahoma, sans-serif;
-	font-size: 14px;
-	padding: 5px 10px;
-	border-radius: 5px;
-	display: none;
-	white-space: nowrap;
-	transition: opacity 0.2s ease, transform 0.2s ease;
-	z-index: 2;
-	pointer-events: none;
-	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
-}
-*/
-
 /* Animations */
 
 @keyframes slide {
