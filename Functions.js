@@ -1384,10 +1384,10 @@ function sellWeapon() {
 				soldWeapon = blade;
 			break;
 		}
-		localStorage.setItem('inventory', inventory);
+		localStorage.setItem('inventory', JSON.stringify(inventory));
 		localStorage.setItem('currentWeapon', currentWeapon);
 		text2.innerText = `You sold the ${soldWeapon}.`;
-        text2.innerText += `\n In your inventory you have: ${inventory.join(", ")}`;
+                text2.innerText += `\n In your inventory you have: ${inventory.join(", ")}`;
 		inShop.style.display = 'none';
 		mVillager.style.display = 'block';
 		boc.style.display = 'none';
