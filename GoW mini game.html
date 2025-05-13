@@ -3,10 +3,10 @@
 <html lang="en">
 
  <head>
-        <meta charset="UTF-8">
-        <title> God of War mini game </title>
+    <meta charset="UTF-8">
+    <title> God of War mini game </title>
 	<meta name="og:description" content="Just a little God of War mini game I am making to improve my web and game dev skills as newbie.">
-        <meta property="og:image" content="https://res.cloudinary.com/dbdh6zbvt/image/upload/v1738013740/Nicee_xukyqj.jpg">
+    <meta property="og:image" content="https://res.cloudinary.com/dbdh6zbvt/image/upload/v1733133212/Opening_menu_image_ippsju.webp">
 	<meta name="author" content="Kyrin Kompi">
 	<link rel="icon" href="Imagery/GOW symbol .png">
 	<link rel="stylesheet" href="Stylation.css">
@@ -14,8 +14,11 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.css">
  </head>
  <body>
-    <span id="version"> <font color="red">Version:</font> Alpha 1.2 </span>
-    <center><img id="Title" src="Imagery/God of war title .png"></center>                                                    
+    <span id="version"> <font color="red">Version:</font> Alpha 1.3 </span>
+    <center><img id="Title" src="Imagery/God of war title .png"></center>
+
+    <div class="Noti"> Olympus is now unlocked <i class="fa-solid fa-lock-open fa-bounce"></i> </div>
+	
     <div class="Game">
 	
 	    <button id='music-option'>
@@ -74,10 +77,10 @@
             <span class="stat">Orbs: <strong><span id="Orbs-text" >0</span></strong></span>
         </div>
 		<center>
-            <div id="text">
+            <div id="Main-text">
                 Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use the buttons below to go where you want.
             </div>
-			<div id="text2">
+			<div id="Text">
 			     
 			</div>
 		    <div id="Enemy-info">
@@ -198,7 +201,7 @@
 		</center>
 
 		<div class="Main-menu">
-		    <button id="New-gameB" class="menubut">New game</button>
+			<button id="New-gameB" class="menubut">New game</button>
 		    <button id="Load-gameB" class="menubut">Load game</button>
 		    <button id="OptionsB" class="menubut">Options</button>
 		</div>
@@ -212,7 +215,7 @@
             <button id="Shop-button" class="conbut" >Shop</button>
 			
             <button id="Sell-weapon" class="conbut">Sell weapon</button>
-	    <button id="Buy-health" class="conbut">Health potion</button>
+			<button id="Buy-health" class="conbut">Health potion</button>
             <button id="Nemesis-whipB" class="conbut">Nemesis whip</button>
             <button id="GauntletB" class="conbut">Gauntlet of Zeus</button>
             <button id="Claws" class="conbut">Claws of Hades</button>
@@ -221,25 +224,25 @@
 			
 		 <!-- Underworld -->
 		 
-                        <button id="Underworld-button" class="conbut">Underworld</button>
+            <button id="Underworld-button" class="conbut">Underworld</button>
 			
 		 <!--  Battle Hoplite -->
 			<button id="HopliteB" class="conbut">Hoplite</button>
-		        <button id="Attack-Hoplite" class="conbut">Attack</button>
+		    <button id="Attack-Hoplite" class="conbut">Attack</button>
 		 <!-- Battle  Banshee -->
-			<button id="BansheeB" class="conbut">Banshee</button>
+			<button id="BansheeB" class="conbut">Banshee <i id="Ban-lock" class="fa-solid fa-lock"></i></button>
 			<button id="Attack-Banshee" class="conbut">Attack</button>
 		 <!-- Battle Satyr -->
-		    <button id="SatyrB" class="conbut">Satyr</button>
+		    <button id="SatyrB" class="conbut">Satyr <i id="Sat-lock" class="fa-solid fa-lock"></i></button>
 			<button id="Attack-Satyr" class="conbut">Attack</button>
 		 <!-- Battle  Minotaur -->
-			<button id="MinotaurB" class="conbut">Minotaur</button>
+			<button id="MinotaurB" class="conbut">Minotaur <i id="Min-lock" class="fa-solid fa-lock"></i></button>
 			<button id="Attack-Minotaur" class="conbut">Attack</button>
 		 <!-- Battle  Medusa-->
-			<button id="MedusaB" class="conbut">Medusa</button>
+			<button id="MedusaB" class="conbut">Medusa <i id="Med-lock" class="fa-solid fa-lock"></i></button>
 			<button id="Attack-Medusa" class="conbut">Attack</button>
 		 <!-- Battle  Cyclops -->
-			<button id="CyclopsB" class="conbut">Cyclops</button>
+			<button id="CyclopsB" class="conbut">Cyclops <i id="Cyc-lock" class="fa-solid fa-lock"></i></button>
 			<button id="Attack-Cyclops" class="conbut">Attack</button>
 			
 		 <!-- Other options  underworld-->
@@ -250,16 +253,16 @@
 			
 		 <!-- Mount Olympus -->
 		 
-                        <button id="Olympus-button" class="conbut">Mount Olympus</button>
+            <button id="Olympus-button" class="conbut">Mount Olympus <i id="Olym-lock" class="fa-solid fa-lock"></i></button>
 			
 		 <!-- Hermes battle -->
 			<button id="HermesB" class="conbut">Hermes</button>
 			<button id="Attack-Hermes" class="conbut">Attack</button>
 		 <!-- Hercules battle -->
-			<button id="HerculesB" class="conbut">Hercules</button>
+			<button id="HerculesB" class="conbut">Hercules <i id="Herc-lock" class="fa-solid fa-lock"></i></button>
 			<button id="Attack-Hercules" class="conbut">Attack</button>
 		 <!-- Zeus battle -->
-			<button id="ZeusB" class="conbut">Zeus</button>
+			<button id="ZeusB" class="conbut">Zeus <i id="Zeuz-lock" class="fa-solid fa-lock"></i></button>
 			<button id="Attack-Zeus" class="conbut">Attack</button>
 			
 		 <!-- Other options Olympus -->
@@ -276,6 +279,7 @@
 		<div class="Hotbar">
 			<center>
 				<span id="Maxed">You have reached max health</span>
+			    <div id="Weapon-identifier"></div>
 				<span id="Pslot">
 					<font color="#cc9229"><span>F</span></font>
 					<p id="potion-quantity">1</p>
@@ -288,6 +292,7 @@
 			</center>
 		</div>
     </div>
+	<h2 id="phone-warning"> The game is only designed for computer right now. Try it on a laptop or desktop. </h2>
     <script src="Functions.js"></script>
   </body>
   
