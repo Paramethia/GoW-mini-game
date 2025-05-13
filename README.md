@@ -6,7 +6,7 @@ _New inventory functions_
 
 - All slots now always appear
 - Key selection included for each slot [1, 2, 3, 4, 5]
-- Identifiers now show for each slot for each weapon when hovering on the slots
+- Identifiers now show for each slot when hovering on the slots or pressing the numbers 1 to 5 on your keyboard.
 - Slightly updated design with borders (probably not even noticeable)
 
 _Fixed bugs:_
