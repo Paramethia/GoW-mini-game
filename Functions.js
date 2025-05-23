@@ -626,14 +626,22 @@ yesB.onclick = () => {
 	pqText.innerText = potionquantity;
 	slot1.style.border = '3px ridge #5a3910';
 	pqText.style.display = 'none';
+	hopliteDefeated = false;
+	bansheeDefeated = false;
+	satyrDefeated = false;
+	minotaurDefeated = false;
+	medusaDefeated = false;
+	cyclopsDefeated = false;
+	hermesDefeated = false;
+	herculesDefeated = false;
 	slot1.style.backgroundImage = `url(${bocSrc})`;
-	slot2.style.backgroundImage = `url(${whipSrc})`;
+	slot2.style.backgroundImage = 'none';
 	slot2.style.border = '1.8px solid #5a3910';
-	slot3.style.backgroundImage = `url(${gauntletSrc})`;
+	slot3.style.backgroundImage = 'none';
 	slot3.style.border = '1.8px solid #5a3910';
-	slot4.style.backgroundImage = `url(${clawsSrc})`;
+	slot4.style.backgroundImage = 'none';
 	slot4.style.border = '1.8px solid #5a3910';
-	slot5.style.backgroundImage = `url(${bladeSrc})`;
+	slot5.style.backgroundImage = 'none';
 	slot5.style.border = '1.8px solid #5a3910';
 	warning.style.display = 'none';
 	goToSparta()
@@ -1880,7 +1888,6 @@ creatureButtons.forEach((creatureButton, index) => {
 	var attackFunctions = [ hopliteShapa, bansheeShapa, satyrShapa, minotaurShapa, medusaShapa, cyclopsShapa ];
 	var animationTimes = [ '1.2s', '1.8s', '1.4s', '1s', '0.5s', '1.6s' ]
 	var butts = [ hopliteB, bansheeB, satyrB, minotaurB, medusaB, cyclopsB ];
-    var defeats = [true, hopliteDefeated, bansheeDefeated, satyrDefeated, minotaurDefeated, medusaDefeated]
 	
 	creatureButton.onmouseover = () => {
 		creatureSounds[index].play();
@@ -1904,6 +1911,7 @@ creatureButtons.forEach((creatureButton, index) => {
 		creatureButton.style.animation = 'none';
 	}
 	creatureButton.onclick = () => {
+		var defeats = [true, hopliteDefeated, bansheeDefeated, satyrDefeated, minotaurDefeated, medusaDefeated];
 		if (defeats[index]) {
 			setTimeout(( ) => {
 				if (index <= 4) { 
