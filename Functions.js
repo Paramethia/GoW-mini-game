@@ -2433,7 +2433,6 @@ enemiesButtons.forEach((enemyButton, index) => {
 	var attackButtons = [ attackHermes, attackHercules, attackZeus ];
 	var attackIntervals = [ hermesShapa, herculesShapa, zeusShapa ];
 	var intervalTimes = [ 4200, 3000, 14200 ];
-	var defeats = [cyclopsDefeated, hermesDefeated, herculesDefeated]
 	
 	enemyButton.onmouseover = () => {
 		hoverSound.play();
@@ -2459,6 +2458,7 @@ enemiesButtons.forEach((enemyButton, index) => {
 		enemyButton.style.animation = 'grow';
 	}
 	enemyButton.onclick = () => {
+		var defeats = [cyclopsDefeated, hermesDefeated, herculesDefeated];
 		if (defeats[index]) {
 			olympusAm.pause();
 			olympusAm.currentTime = 0;
@@ -2600,7 +2600,7 @@ rungod.onclick = () => {
 			clearInterval(hermat);
 			battleTheme2.pause();
 			battleTheme2.currentTime = 0;
-			text.innerText = "You escaped Hermes, knowing you cannot defeat him.\n Get more health or a better weapon to be able to defeat him.";
+			if (!hermesDefeated) hermesDefeated text.innerText = "You escaped Hermes, knowing you cannot defeat him.\n Get more health or a better weapon to be able to defeat him.";
 			hermesxkratos.style.display = 'none';
 			hermesKill.style.display = 'none';
 			attackHermes.style.display = 'none';
@@ -2609,7 +2609,7 @@ rungod.onclick = () => {
 			clearInterval(hercat);
 			battleTheme2.pause();
 			battleTheme2.currentTime = 0;
-			text.innerText = "You escaped Hercules, knowing you cannot defeat him with all that incredible strength. \n Get more health or a better weapon to be able to defeat him.";
+			if (!herculesDefeated) text.innerText = "You escaped Hercules, knowing you cannot defeat him with all that incredible strength. \n Get more health or a better weapon to be able to defeat him.";
 			herculesxkratos.style.display = 'none';
 			herculesKill.style.display = 'none';
 			attackHercules.style.display = 'none';
@@ -2637,9 +2637,9 @@ rungod.onclick = () => {
 	evadeB.style.display = 'none';
 	var olympusButtons = [ hermesB, herculesB, zeusB, leaveOlympus ];
 	olympusButtons.forEach(button => {
-		olympusButton.style.display = 'inline';
-		olympusButton.style.animationDuration = '2s';
-		olympusButton.style.animationTimingFunction = 'linear';
+		button.style.display = 'inline';
+		button.style.animationDuration = '2s';
+		button.style.animationTimingFunction = 'linear';
 	});
 }
 
@@ -2675,6 +2675,7 @@ function hermesShapa() {
 			}
 			battleTheme2.pause();
 			battleTheme2.currentTime = 0;
+			rungod.innerText = "Return";
 			setTimeout(() => {
 			    hermesxkratos.style.display = 'none';
 			}, 1);
@@ -2717,12 +2718,13 @@ function herculesShapa() {
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
-		    defeatEnemy();
+		       defeatEnemy();
 			herculesDefeated = true;
 			if (!savedHercDef) {
 				localStorage.setItem('herculesDefeated', true);
 				zeusLocki.style.display = 'none';
 			}
+			rungod.innerText = "Return";
 		    battleTheme2.pause();
 		    battleTheme2.currentTime = 0;
 		    setTimeout(() => {
@@ -2762,7 +2764,8 @@ function zeusShapa() {
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
-		    beatGame();
+		    	beatGame();
+			rungod.innerText = "Return";
 		}
 	}, 2800);
 }
