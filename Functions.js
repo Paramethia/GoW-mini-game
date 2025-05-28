@@ -2332,7 +2332,7 @@ leaveUnderworld.onclick = () => {
 	underworldAm.pause();
 	underworldAm.currentTime = 0;
 	returnSound.play();
-	if (!timed clearTimeout(tct);
+	if (!timed) clearTimeout(tct);
 	[ kratoksUnderworld, hopliteB, bansheeB, satyrB, minotaurB, medusaB, cyclopsB, leaveUnderworld ].forEach(button => button.style.display = 'none');
 	mainAppear();
 }
@@ -2719,12 +2719,24 @@ function getEnemyAttackValue(level) {
 	return hit > 0 ? hit : 0;
 }
 
+let butle = false;
+
 function evade() {
-	evadeSound.play();
-	if (fighting >= 6 ) {
-		text.innerText = "You evade the attack from " + enemies[fighting].name + ".";
-	} else {
-		text.innerText = "You evade the attack from the " + enemies[fighting].name;
+	if (!butle) {
+		butle = true;
+		evadeSound.play();
+		var attackIntervals = [ hopat, banshat, satat, minat, medat, cyclat, hercat, hermat, zeuat ];
+		var attackFunctions = [ hopliteShapa, bansheeShapa, satyrShapa, minotaurShapa, medusaShapa, cyclopsShapa, hermesShapa, herculesShapa, zuesShapa ];
+		clearInterval(attackIntervals[fighting]);
+		setTimeout(() => {
+			attackFunctions[fighting]();
+			butle = false;
+		}, 700 );
+		if (fighting >= 6 ) {
+			text.innerText = "You evade the attack from " + enemies[fighting].name + ".";
+		} else {
+			text.innerText = "You evade the attack from the " + enemies[fighting].name;
+		}
 	}
 }
 
