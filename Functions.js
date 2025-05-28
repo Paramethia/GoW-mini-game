@@ -79,7 +79,7 @@ let cohSound = new Audio('Audio/Claws of Hades sound .mp3');
 let ncSound = new Audio('Audio/Nemean cestus sound .mp3');
 let brokie = new Audio('Audio/YOURE BROKE! .mp3');
 let battleTheme = new Audio('Audio/GoW CoO battle theme .mp3');
-let battleTheme2 = new Audio('Audio/GoW CoO battle theme 2.mp3');
+let battleTheme2 = new Audio('Audio/Gow CoO battle theme 2.mp3');
 let cyclopsBattle = new Audio('Audio/Cyclops battle theme .mp3');
 let zeusBattle = new Audio('Audio/Battle theme Zeus .mp3');
 let underworldAm = new Audio('Audio/Underworld ambience .mp3');
@@ -156,7 +156,7 @@ let inventory = ["Blades of chaos"];
 const savedInventory = JSON.parse(localStorage.getItem('inventory'));
     if (savedInventory) inventory = savedInventory;
 	
-let weapons = [
+const weapons = [
     { name: "Blades of chaos", damage: 17 },
     { name: "Nemesis Whip", damage: 28},
     { name: "Gauntlet of Zeus", damage: 44 },
@@ -170,6 +170,7 @@ const blade = weapons[4].name;
 
 // Other declarations
 
+const savedGame = savedExp || savedHealth || savedOrbs;
 let inMainMenu = true;
 let play = false;
 let clicks = 0;
@@ -191,41 +192,13 @@ let expanded = savedExpandSet === 'true'
 let count = 0;
 let potionquantity = 0;
 const savedPotions = Number(localStorage.getItem('potions'));
-    if (savedPotions) potionquantity = savedPotions
+    if (savedPotions > 0) potionquantity = savedPotions
 let bocClaimed = inventory.includes('Blades of chaos');
 let whipClaimed =  inventory.includes(whip);
 let gauntletClaimed = inventory.includes(gauntlet);
 let clawsClaimed =  inventory.includes(claws);
 let bladeClaimed =  inventory.includes(blade);
 let timed = false;
-
-// Saved game checker
-
-let savedGame = false;
-
-if (savedExp || savedHealth || savedOrbs) { 
-    savedGame = true; 
-	console.log("Saved game found");
-} else { 
-    console.log("No saved game found");
-}
-
-// Saved volumes setting
-
-function setVolumes() {
-	if (savedMusicVol) {
-		menuTheme.volume = musicVolumes;
-		battleTheme.volume = musicVolumes;
-		battleTheme2.volume = musicVolumes;
-		cyclopsBattle.volume = musicVolumes;
-		zeusBattle.volume = musicVolumes;
-	} else if (savedAmbienceVol) {
-		underworldAm.volume = ambienceVolumes;
-		olympusAm.volume = ambienceVolumes;
-	}
-}
-
-setVolumes();
 
 // Enemies 
 
@@ -285,6 +258,8 @@ let enemies = [
 		damage: 82
     }
 ];
+
+// Defeats check declarations
 
 const savedHopDef = localStorage.getItem("hopliteDefeated")
 let hopliteDefeated = savedHopDef === "true"
@@ -399,49 +374,6 @@ const slot5 = document.getElementById('Slot5');
 	if (currentWeapon === 4) slot5.style.border = '3px ridge #5a3910'
 const identifier = document.getElementById('Weapon-identifier');
 
-// Screen and window size check
-
-const screenWidth = screen.width;
-const screenHeight = screen.height;
-
-console.log("Screen dimentions", screenWidth, screenHeight);
-
-let windowWidth = window.innerWidth;
-let windowHeight = window.innerHeight;
-
-console.log("Window dimentions:", windowWidth, windowHeight);
-
-const phoneWarning = document.getElementById("phone-warning");
-
-function checkScreenSize() {
-	if (screenWidth <= 455 || windowWidth <= 455) {
-		gamebox.style.display = "none";
-		phoneWarning.style.display = "block";
-	}
-}
-
-checkScreenSize();
-
-window.addEventListener("resize", checkScreenSize());
-
-// Saved healthBar settings 
-
-if (savedHealthbarSet && hBarOn) { 
-    turnOnHealthbar();
-	healthFiller.style.width = `${health}%`;
-	if (health > 100) {
-		healthBar.style.width = `${health}px`;
-		healthFiller.style.background = '#299617'; // Healthy green
-	} else if (health > 50) {
-		healthBar.style.width = '100px';
-		healthFiller.style.background = '#32cd33'; // Default green
-	} else if (health > 25) {
-		healthFiller.style.background = '#ed7014'; // Warning orange
-	} else if (health > 0) {
-		healthFiller.style.background  = '#900604' // Danger red
-	}
-}
-
 // Button declarations
 
 let settingsB = document.getElementById('settings');
@@ -516,11 +448,7 @@ const hercLocki = document.getElementById('Herc-lock');
 const zeusLocki = document.getElementById('Zeus-lock');
     if (herculesDefeated) zeusLocki.style.display = 'none';
 
-// Set expansion saved setting
-
-if (expanded) expansion()
-
-// Interval & timeout unction declarations
+// Interval & timeout functions declarations
 
 let hopat;
 let banshat;
@@ -533,6 +461,64 @@ let tct2;
 let hermat;
 let hercat;
 let zeuat;
+
+// Screen and window size check
+
+const screenWidth = screen.width;
+const screenHeight = screen.height;
+
+console.log("Screen dimentions", screenWidth, screenHeight);
+
+let windowWidth = window.innerWidth;
+let windowHeight = window.innerHeight;
+
+console.log("Window dimentions:", windowWidth, windowHeight);
+
+const phoneWarning = document.getElementById("phone-warning");
+
+if (screenWidth <= 455 || windowWidth <= 455) {
+	gamebox.style.display = "none";
+	phoneWarning.style.display = "block";
+}
+
+// Saved game check
+
+if (savedGame) { 
+	console.log("Saved game found");
+} else { 
+    console.log("No saved game found");
+}
+
+// Saved settings
+
+//              -  Saved healthBar setting
+
+if (savedHealthbarSet && hBarOn) { 
+    turnOnHealthbar();
+	healthFiller.style.width = `${health}%`;
+	healthBarUpdate();
+}
+
+//               - Saved volumes settings
+
+function setVolumes() {
+	if (savedMusicVol || savedAmbienceVol) {
+		menuTheme.volume = musicVolumes;
+		battleTheme.volume = musicVolumes;
+		battleTheme2.volume = musicVolumes;
+		cyclopsBattle.volume = musicVolumes;
+		zeusBattle.volume = musicVolumes;
+	} else if (savedAmbienceVol) {
+		underworldAm.volume = ambienceVolumes;
+		olympusAm.volume = ambienceVolumes;
+	}
+}
+
+setVolumes();
+
+//               - Saved expantion setting
+
+if (expanded) expansion()
 
 //                                                                                                       Initialize buttons
 
@@ -598,19 +584,7 @@ yesB.onmouseout = () => {
 }
 yesB.onclick = () => { 
     selection.play();
-	localStorage.removeItem('exp');
-	localStorage.removeItem('health');
-	localStorage.removeItem('orbs');
-	localStorage.removeItem('inventory');
-	localStorage.removeItem('currentWeapon');
-	localStorage.removeItem('hopliteDefeated');
-	localStorage.removeItem('bansheeDefeated');
-	localStorage.removeItem('satyrDefeated');
-	localStorage.removeItem('minotaurDefeated');
-	localStorage.removeItem('medusaDefeated');
-	localStorage.removeItem('cyclopsDefeated');
-	localStorage.removeItem('hermesDefeated');
-	localStorage.removeItem('herculesDefeated');
+	[ 'exp', 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hermesDefeated', 'herculesDefeated' ].forEach(save => localStorage.removeItem(save));
 	exp = 0;
 	health = 100;
 	orbs = 0;
@@ -626,14 +600,6 @@ yesB.onclick = () => {
 	pqText.innerText = potionquantity;
 	slot1.style.border = '3px ridge #5a3910';
 	pqText.style.display = 'none';
-	hopliteDefeated = false;
-	bansheeDefeated = false;
-	satyrDefeated = false;
-	minotaurDefeated = false;
-	medusaDefeated = false;
-	cyclopsDefeated = false;
-	hermesDefeated = false;
-	herculesDefeated = false;
 	slot1.style.backgroundImage = `url(${bocSrc})`;
 	slot2.style.backgroundImage = 'none';
 	slot2.style.border = '1.8px solid #5a3910';
@@ -1461,32 +1427,14 @@ function sellWeapon() {
 		localStorage.setItem('currentWeapon', currentWeapon);
 		text.innerText = `You sold the ${soldWeapon}.`;
         text.innerText += `\n In your inventory you have: ${inventory.join(", ")}`;
-		inShop.style.display = 'none';
+		[ inShop, boc, nemesisWhip, gauntletZeus, clawsHades, bladeOlympus, sellWeaponB, potionB, nemesisWhipB, gauntletB, clawsB, bladeOlympusB, leaveShop].forEach(button => button.style.display = 'none');
 		mVillager.style.display = 'block';
-		boc.style.display = 'none';
-		nemesisWhip.style.display = 'none';
-		gauntletZeus.style.display = 'none';
-		clawsHades.style.display = 'none';
-		bladeOlympus.style.display = 'none';
-		sellWeaponB.style.display = 'none';
-		potionB.style.display = 'none';
-		nemesisWhipB.style.display = 'none';
-		gauntletB.style.display = 'none';
-		clawsB.style.display = 'none';
-		bladeOlympusB.style.display = 'none';
-		leaveShop.style.display = 'none';
 		setTimeout(() => {
 			mVillager.style.display = 'none';
 			text.style.color = '#ffad15';
 			text.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 			inShop.style.display = 'block';
-			sellWeaponB.style.display = 'inline';
-			potionB.style.display = 'inline';
-			nemesisWhipB.style.display = 'inline';
-			gauntletB.style.display = 'inline';
-			clawsB.style.display = 'inline';
-			bladeOlympusB.style.display = 'inline';
-			leaveShop.style.display = 'inline';
+			[ sellWeaponB, potionB, nemesisWhipB, gauntletB, clawsB, bladeOlympusB, leaveShop ].forEach(button => button.style.display =  'inline');
 		}, 2200 );
 		} else {
 			bruh.play();
@@ -1606,18 +1554,18 @@ function buyGauntlet() {
 		    revert();
 		}, 4400 );
 	} else {
-	if (!gauntletClaimed) {
-	    brokie.play();
-	    text.innerText = "You do not have enough orbs to buy the Gauntlet of Zeus. You are a brokie! Go fight enemies to earn more orbs.";
-	    text.style.color = '#bb0a1e';
-	} else {
-	    bruh.play();
-	    text.innerText = "You already have that weapon, you twat!";
-	    text.style.color = '#bb0a1e';
-	}
-	setTimeout(() => {
-	    revert();
-	}, 3000 );
+		if (!gauntletClaimed) {
+			brokie.play();
+			text.innerText = "You do not have enough orbs to buy the Gauntlet of Zeus. You are a brokie! Go fight enemies to earn more orbs.";
+			text.style.color = '#bb0a1e';
+		} else {
+			bruh.play();
+			text.innerText = "You already have that weapon, you twat!";
+			text.style.color = '#bb0a1e';
+		}
+		setTimeout(() => {
+			revert();
+		}, 3000 );
 	}
 }
 
@@ -1716,27 +1664,14 @@ function buyBlade() {
 function weaponGot() {
 	text.innerText = "You now have the " + weapons[currentWeapon].name + ". \n" + " In your inventory you have: " + inventory;
 	text.style.color = '#191970';
-	inShop.style.display = 'none';
-	sellWeaponB.style.display = 'none';
-	potionB.style.display = 'none';
-	nemesisWhipB.style.display = 'none';
-	gauntletB.style.display = 'none';
-	clawsB.style.display = 'none';
-	bladeOlympusB.style.display = 'none';
-	leaveShop.style.display = 'none';
+	[ inShop,  sellWeaponB, potionB, nemesisWhipB, gauntletB, clawsB, bladeOlympusB, leaveShop ].forEach(button => button.style.display = 'none');
 }
 
 function revert() {
     text.style.color = '#ffad15';
     text.innerText = "You enter the shop. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
     inShop.style.display = 'block';
-    sellWeaponB.style.display = 'inline';
-    potionB.style.display = 'inline';
-	nemesisWhipB.style.display = 'inline';
-	gauntletB.style.display = 'inline';
-	clawsB.style.display = 'inline';
-	bladeOlympusB.style.display = 'inline';
-	leaveShop.style.display = 'inline';
+    [sellWeaponB, potionB, nemesisWhipB, gauntletB, clawsB, bladeOlympusB, leaveShop ].forEach(button => button.style.display = 'inline');
 }
 
 // Inventory functions 
@@ -1754,12 +1689,14 @@ pslot.onmouseout = () => { identifier.style.display = 'none' }
 pslot.addEventListener('click', increaseHealth );
 
 const slots = [slot1, slot2, slot3, slot4, slot5];
-const weaponsClaimed = [bocClaimed, whipClaimed, gauntletClaimed, clawsClaimed, bladeClaimed]; // Adjust based on how you track weapons
-const sounds = [bocSound, nwSound, gozSound, cohSound, swordThud];
-const identifiers = [weapons[0].name, whip, gauntlet, claws, blade]
-const lefts = ['8.3cm', '10.1cm', '11.5cm', '13.2cm', '14.8cm']
+
 
 slots.forEach((slot, index) => {
+	const weaponsClaimed = [bocClaimed, whipClaimed, gauntletClaimed, clawsClaimed, bladeClaimed];
+	const sounds = [bocSound, nwSound, gozSound, cohSound, swordThud];
+	const identifiers = [weapons[0].name, whip, gauntlet, claws, blade];
+	const lefts = ['8.3cm', '10.1cm', '11.5cm', '13.2cm', '14.8cm'];
+	
     slot.onmouseover = () => {
         if (currentWeapon !== index) slot.style.border = '3px ridge #5a3910';
 		if (weaponsClaimed[index]) identifier.style.display = 'inline';
@@ -1790,6 +1727,7 @@ slots.forEach((slot, index) => {
     };
 });
 
+// Heal function
 
 function increaseHealth() {
     if (health <= 199) {
@@ -1805,31 +1743,34 @@ function increaseHealth() {
         healthText.innerText = health;
         healthFiller.style.width = `${health}%`;
 
-        // Adjust health bar and filler styles based on health
-        if (health > 100) {
-            healthBar.style.width = `${health}px`;
-            healthFiller.style.background = '#299617'; // Healthy green
-		} else if (health > 50) {
-			healthBar.style.width = '100px';
-			healthFiller.style.background = '#32cd33'; // Default green
-		} else if (health > 25) {
-            healthFiller.style.background = '#ed7014'; // Warning orange
-		}
-
-        // Handle max health reached
-        if (health === 200) {
-            healthBar.style.width = '200px';
-            maxed.style.display = 'inline';
-            setTimeout(() => {
-                maxed.style.display = 'none';
-            }, 2000);
-        }
-
+        healthBarUpdate();
+		
         // Hide potion slot if no potions are present
         if (potionquantity === 0) pqText.style.display = 'none';
 
         if (health > 25) gamebox.style.boxShadow = 'none';
     }
+}
+
+function healthBarUpdate() {
+	if (health === 200) {
+		healthBar.style.width = '200px';
+		healthFiller.style.background = '#299617';
+		maxed.style.display = 'inline';
+		setTimeout(() => {
+			maxed.style.display = 'none';
+		}, 2000);
+	} else if (health > 100) {
+		healthBar.style.width = `${health}px`;
+		healthFiller.style.background = '#299617'; // Healthy green
+	} else if (health > 50) {
+		healthBar.style.width = '100px';
+		healthFiller.style.background = '#32cd33'; // Default green
+	} else if (health > 25) {
+		healthFiller.style.background = '#ed7014'; // Warning orange
+	} else {
+		healthFiller.style.background = '#900604';
+	}
 }
 
 // Key events
@@ -2073,10 +2014,7 @@ runB.onmouseover = () => {
 	kratosUnderworld.style.display = 'none';
 	kratosRunning.style.display = 'inline';
 	runB.style.animation = 'horizontal-shaking 0.5s';
-	var killpics = [ hopliteKill, bansheeKill, satyrKill, minotaurKill, medusaKill, cyclopsKill ];
-	    killpics.forEach( killpic => {
-		killpic.style.display = 'none';
-	});
+	[ hopliteKill, bansheeKill, satyrKill, minotaurKill, medusaKill, cyclopsKill ].forEach( killpic => killpic.style.display = 'none' )
 }
 runB.onmouseout = () => {
 	hoverSound.pause();
@@ -2101,8 +2039,7 @@ runB.onclick = () => {
 	if (enemyHealth <= 0) eHealthFiller.style.width = '100%';
 	evadeB.style.display = 'none';
 	runB.style.display = 'none';
-	var underworldButtons = [ hopliteB, bansheeB, satyrB, minotaurB, medusaB, cyclopsB, leaveUnderworld ];
-	underworldButtons.forEach(button => {
+	[ hopliteB, bansheeB, satyrB, minotaurB, medusaB, cyclopsB, leaveUnderworld ].forEach(button => {
 		button.style.display = 'inline';
 		button.style.animationDuration = '2s';
 		button.style.animationTimingFunction = 'linear';
@@ -2128,7 +2065,7 @@ function hopliteShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
@@ -2172,7 +2109,7 @@ function bansheeShapa() {
 		}, 1000 );
 		
 		// Handle health states
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health states
 		if (enemyHealth <= 0) {
@@ -2213,7 +2150,7 @@ function satyrShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
@@ -2257,7 +2194,7 @@ function minotaurShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
@@ -2297,7 +2234,7 @@ function medusaShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
@@ -2340,21 +2277,21 @@ function cyclopsShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
 			defeatEnemy();
-			if (!savedCycDef) notify()
 			cyclopsDefeated = true;
 			if (!savedCycDef) { 
+				notify()
 			    localStorage.setItem('cyclopsDefeated', true);
 				olymLocki.style.display = 'none';
 			}
 			cyclopsBattle.pause();
 			cyclopsBattle.currentTime = 0;
 			cyclopsKill.style.display = 'block';
-			var cyclef = setInterval(( )=> {
+			var cycdef = setInterval(( )=> {
 				count += 2;
 				orbs += enemies[fighting].level - 8;
 				exp++;
@@ -2362,7 +2299,7 @@ function cyclopsShapa() {
 				expText.innerText = exp;
 				if (count == 88) {
 					count = 0;
-					clearInterval(cyclef);
+					clearInterval(cycdef);
 					localStorage.setItem('orbs', orbs);
 					localStorage.setItem('exp', exp);
 				}
@@ -2395,17 +2332,8 @@ leaveUnderworld.onclick = () => {
 	underworldAm.pause();
 	underworldAm.currentTime = 0;
 	returnSound.play();
-	if (timed == false) {
-	 clearTimeout(tct);
-	}
-	kratosUnderworld.style.display = 'none';
-	hopliteB.style.display = 'none';
-	bansheeB.style.display = 'none';
-	satyrB.style.display = 'none';
-	minotaurB.style.display = 'none';
-	medusaB.style.display = 'none';
-	cyclopsB.style.display = 'none';
-	leaveUnderworld.style.display = 'none';
+	if (!timed clearTimeout(tct);
+	[ kratoksUnderworld, hopliteB, bansheeB, satyrB, minotaurB, medusaB, cyclopsB, leaveUnderworld ].forEach(button => button.style.display = 'none');
 	mainAppear();
 }
 
@@ -2584,11 +2512,8 @@ rungod.onmouseover = () => {
 rungod.onmouseout = () => {
 	hoverSound.pause();
 	hoverSound.currentTime = 0;
-	hermesxkratos.style.display = 'none';
-	herculesxkratos.style.display = 'none';
-	zeusxkratos.style.display = 'none';
+	[ hermesxkratos, herculesxkratos, zeusxkratos, kratosRunning ].forEach(button => button.style.display = 'none');
 	kratosOlympus.style.display = 'block';
-	kratosRunning.style.display = 'none';
 	rungod.style.animation = 'grow';
 }
 rungod.onclick = () => {
@@ -2600,7 +2525,7 @@ rungod.onclick = () => {
 			clearInterval(hermat);
 			battleTheme2.pause();
 			battleTheme2.currentTime = 0;
-			if (!hermesDefeated) hermesDefeated text.innerText = "You escaped Hermes, knowing you cannot defeat him.\n Get more health or a better weapon to be able to defeat him.";
+			if (!hermesDefeated) text.innerText = "You escaped Hermes, knowing you cannot defeat him. \n Get more health or a better weapon to be able to defeat him.";
 			hermesxkratos.style.display = 'none';
 			hermesKill.style.display = 'none';
 			attackHermes.style.display = 'none';
@@ -2609,7 +2534,7 @@ rungod.onclick = () => {
 			clearInterval(hercat);
 			battleTheme2.pause();
 			battleTheme2.currentTime = 0;
-			if (!herculesDefeated) text.innerText = "You escaped Hercules, knowing you cannot defeat him with all that incredible strength. \n Get more health or a better weapon to be able to defeat him.";
+			if (!herculesDefeated) text.innerText = "You escaped Hercules, knowing you cannot defeat him with all that immense strength. \n Get more health or a better weapon to be able to defeat him.";
 			herculesxkratos.style.display = 'none';
 			herculesKill.style.display = 'none';
 			attackHercules.style.display = 'none';
@@ -2635,8 +2560,7 @@ rungod.onclick = () => {
 	if (enemyHealth === 0) eHealthFiller.style.width = '100%';
 	rungod.style.display = 'none';
 	evadeB.style.display = 'none';
-	var olympusButtons = [ hermesB, herculesB, zeusB, leaveOlympus ];
-	olympusButtons.forEach(button => {
+	[ hermesB, herculesB, zeusB, leaveOlympus ].forEach(button => {
 		button.style.display = 'inline';
 		button.style.animationDuration = '2s';
 		button.style.animationTimingFunction = 'linear';
@@ -2663,7 +2587,7 @@ function hermesShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
@@ -2673,9 +2597,9 @@ function hermesShapa() {
 			    localStorage.setItem('hermesDefeated', true);
 				hercLocki.style.display = 'none';
 			}
+			rungod.innerText = "Return";
 			battleTheme2.pause();
 			battleTheme2.currentTime = 0;
-			rungod.innerText = "Return";
 			setTimeout(() => {
 			    hermesxkratos.style.display = 'none';
 			}, 1);
@@ -2714,11 +2638,11 @@ function herculesShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
-		       defeatEnemy();
+		    defeatEnemy();
 			herculesDefeated = true;
 			if (!savedHercDef) {
 				localStorage.setItem('herculesDefeated', true);
@@ -2760,11 +2684,11 @@ function zeusShapa() {
 		}, 1000 );
 		
 		// Handle health state
-		updateHealthbar();
+		healthCheck();
 		
 		// Handle enemy health state
 		if (enemyHealth <= 0) {
-		    	beatGame();
+		    beatGame();
 			rungod.innerText = "Return";
 		}
 	}, 2800);
@@ -2795,16 +2719,28 @@ function getEnemyAttackValue(level) {
 	return hit > 0 ? hit : 0;
 }
 
+let butle = false;
+
 function evade() {
-	evadeSound.play();
-	if (fighting >= 6 ) {
-	    text.innerText = "You evade the attack from " + enemies[fighting].name + ".";
-	} else {
-	    text.innerText = "You evade the attack from the " + enemies[fighting].name;
+	if (!butle) {
+		butle = true;
+		evadeSound.play();
+		var attackIntervals = [ hopat, banshat, satat, minat, medat, cyclat, hercat, hermat, zeuat ];
+		var attackFunctions = [ hopliteShapa, bansheeShapa, satyrShapa, minotaurShapa, medusaShapa, cyclopsShapa, hermesShapa, herculesShapa, zuesShapa ];
+		clearInterval(attackIntervals[fighting];
+		setTimeout(() => {
+			attackFunctions[fighting]();
+			butle = false;
+		}, 700 );
+		if (fighting >= 6 ) {
+			text.innerText = "You evade the attack from " + enemies[fighting].name + ".";
+		} else {
+			text.innerText = "You evade the attack from the " + enemies[fighting].name;
+		}
 	}
 }
 
-function updateHealthbar() {
+function healthCheck() {
 	if (health <= 0) {
 		death();
 		clearInterval(zeuat);
@@ -3005,19 +2941,7 @@ function restart() {
 	setTimeout(() => {
 	    ahShit.play();
 	}, 1800 );
-	localStorage.removeItem('exp');
-	localStorage.removeItem('health');
-	localStorage.removeItem('orbs');
-	localStorage.removeItem('inventory');
-	localStorage.removeItem('currentWeapon');
-	localStorage.removeItem('hopliteDefeated');
-	localStorage.removeItem('bansheeDefeated');
-	localStorage.removeItem('satyrDefeated');
-	localStorage.removeItem('minotaurDefeated');
-	localStorage.removeItem('medusaDefeated');
-	localStorage.removeItem('cyclopsDefeated');
-	localStorage.removeItem('hermesDefeated');
-	localStorage.removeItem('herculesDefeated');
+	[ 'exp', 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hermesDefeated', 'herculesDefeated' ].forEach(save => localStorage.removeItem(save));
 	exp = 0;
 	health = 100;
 	orbs = 0;
@@ -3052,8 +2976,7 @@ function restart() {
 	}
 	kratosAtSparta.style.display = 'inline-block';
 	reset.style.display = 'none';
-	var spartaButtons = [ shopB, underworldB, olympusB ];
-	spartaButtons.forEach(button => {
+	[ shopB, underworldB, olympusB ].forEach(button => {
 		button.style.display = 'inline';
 		button.style.animation = 'rotateX';
 		button.style.animationDuration = '0.8s';
@@ -3061,8 +2984,7 @@ function restart() {
 }
 
 function stopMusic() {
-	var battleThemes = [battleTheme, battleTheme2, cyclopsBattle, zeusBattle];
-	battleThemes.forEach(theme => {
+	[battleTheme, battleTheme2, cyclopsBattle, zeusBattle].forEach(theme => {
 		if (theme && typeof theme.pause === 'function') {
 			theme.pause();
 			theme.currentTime = 0;
@@ -3091,8 +3013,7 @@ function mainAppear() {
 	mainText.innerText = defaultText;
 	stats.style.marginTop = '0';
 	kratosAtSparta.style.display = 'block';
-	var spartaButtons = [ shopB, underworldB, olympusB ];
-	spartaButtons.forEach(button => {
+	[ shopB, underworldB, olympusB ].forEach(button => {
 		button.style.display = 'inline';
 		button.style.animation = 'rotateX';
 		button.style.animationDuration = '0.8s';
