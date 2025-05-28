@@ -11,7 +11,13 @@ _New inventory functions_
 
 _Fixed bugs:_
 
-- Fixed health bar update from attack functions
+- Fixed audio settings not saving after reload
+- Fixed health bar not updating properly after reloading/restarting
+- Fixed some enemies being locked again after reloading
+- Fixed potion quantity being -14 somehow after reloading
+- Fixed attacking functions in Olympus
+- Fixed buttons not showing after defeating enemies in Olympus
+- Fixed health bar updating
 - Fixed run button hover bug for cyclops battle
 - Fixed stop music function after battle
 - Fixed background color change bug for shop, Underworld, and Olympus
@@ -19,7 +25,7 @@ _Fixed bugs:_
 _New text function:_
 
 - When you return to the game, it will have a different text in the Sparta menu
-- Texts are now more consistent
+- Texts are now more consistent (also sort of a bug fix)
 
 _Eased Hermes attack function:_
 
