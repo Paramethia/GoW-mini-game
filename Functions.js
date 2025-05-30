@@ -2333,7 +2333,7 @@ leaveUnderworld.onclick = () => {
 	underworldAm.currentTime = 0;
 	returnSound.play();
 	if (!timed) clearTimeout(tct);
-	[ kratoksUnderworld, hopliteB, bansheeB, satyrB, minotaurB, medusaB, cyclopsB, leaveUnderworld ].forEach(button => button.style.display = 'none');
+	[ kratosUnderworld, hopliteB, bansheeB, satyrB, minotaurB, medusaB, cyclopsB, leaveUnderworld ].forEach(button => button.style.display = 'none');
 	mainAppear();
 }
 
