@@ -745,7 +745,7 @@ function turnOffHealthbar() {
 }
 
 musicSet.onmouseover = () => { musicSet.style.background = '#412021' }
-musicSet.onmousout = () => { if (!musicSetOn) musicSet.style.background = '#614051' }
+musicSet.onmouseout = () => { if (!musicSetOn) musicSet.style.background = '#614051' }
 
 musicSet.onclick = () => {
 	switch (musicSetOn) {
@@ -3020,3 +3020,4 @@ function mainAppear() {
 	});
 	hideHotbar()
 }
+
