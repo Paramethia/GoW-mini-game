@@ -1,6 +1,6 @@
 # God of War mini game
 
-<center> **_Alpha v1.3 & a half_** </center>
+**_Alpha v1.3 & a half_**
 
 **Small change:**
 
