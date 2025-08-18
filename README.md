@@ -1,7 +1,6 @@
 # God of War mini game
 
-**_Alpha v1.3 & a half_**
-
+<center>**_Alpha v1.3 & a half_**</center>
 
 **Small change:**
 
@@ -48,6 +47,5 @@ A whole newly designed attack function for Kratos and every enemy. The way it wa
 - Controls for Kratos added to settings
 
 **Development improvement**
-
 
 Refactored and improved the code. It's slightly less now (almost 300 lines less) and more organized.
