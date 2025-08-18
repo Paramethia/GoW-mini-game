@@ -1,8 +1,9 @@
 # God of War mini game
 
-**Alpha v1.3 & a half**
+**_Alpha v1.3 & a half_**
 
-*Small changes:*
+
+**Small change:**
 
 - You now have to click to start the game ('Cause you have to interact with the document to trigger audio)
 - Main menu settings now actually work
@@ -16,27 +17,27 @@
 - You can no longer run from your enemy. Once you start a battle, you must end it.
 - You now do not have to restart after finshing the game.
 
-*Bug removals:*
+**Bug removals:**
 
 - You can no longer heal in the main menu.
 - All glitchy hover effects fixed.
 - Fixed weapon selling function to only sell when you have your current weapon in your inventory.
 - Made sure now that if you reload the page, after you died (without pressing the restart button), you still start from the beginning.
 
-*Optimization*
+**Optimization**
 
-- Things are now more optimized thanks to DOM manipulation that was added.
+Things are now more optimized thanks to DOM manipulation that was added.
 
-*Notification update*
+**Notification update**
 
 You will now get notified of every enemy you unlock
 
-*Battle areas*
+**Battle areas**
 
 Before, there was no exact battle area containers for the Underworld and Olympus. 
 Now there is. To keep things more organized and to make things easier for future updates.
 
-*New attack function*
+**New attack function**
 
 A whole newly designed attack function for Kratos and every enemy. The way it was meant to be.
 
@@ -46,7 +47,7 @@ A whole newly designed attack function for Kratos and every enemy. The way it wa
 - Enemy follows kratos once he gets close to them.
 - Controls for Kratos added to settings
 
-*Development improvement:*
+**Development improvement**
 
 
 Refactored and improved the code. It's slightly less now (almost 300 lines less) and more organized.
