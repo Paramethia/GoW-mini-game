@@ -1,6 +1,6 @@
 # God of War mini game
 
-**_Alpha v1.3 & a half_**
+<h4><b><i>Alpha v1.3 & a half</i>i></b></h4>
 
 **Small changes:**
 
@@ -13,19 +13,19 @@
 - New Banshee, Medusa and Cyclops image
 - Changed a few enemies' health and damage. Also removed their levels
 - Removed Kratos' exp. It was stupid to keep it there
-- You can no longer run from your enemy. Once you start a battle, you must end it.
-- You now do not have to restart after finshing the game.
+- You can no longer run from your enemy. Once you start a battle, you must end it
+- You now do not have to restart after finshing the game
 
 **Bug removals:**
 
-- You can no longer heal in the main menu when pressing f.
-- All glitchy hover effects fixed.
-- Fixed weapon selling function to only sell when you have your current weapon in your inventory.
-- Made sure that if you reload the page, after you died (without pressing the restart button), you still start from the beginning.
+- You can no longer heal in the main menu when pressing f
+- All glitchy hover effects fixed
+- Fixed weapon selling function to only sell when you have your current weapon in your inventory
+- Made sure that if you reload the page, after you died (without pressing the restart button), you still start from the beginning
 
 **Optimization**
 
-Things are now more optimized thanks to DOM manipulation that was added.
+Things are now more optimized thanks to DOM manipulation that was added
 
 **Notification update**
 
@@ -40,10 +40,10 @@ Now there is. To keep things more organized and to make things easier for future
 
 A whole newly designed attack function for Kratos and every enemy. The way it was meant to be.
 
-- You can now move Kratos (as an image for now) in battle and the canvas re-draws the image according to your position and what you are doing. 
-	Same with the enemies but it's limited for them due to lack of resources for them.
-- Kratos and enemies get a red highlight and a little hop as an attack indicator.
-- Enemy follows kratos once he gets close to them.
+- You can now move Kratos (as an image for now) in battle and the canvas re-draws the image according to your position and what you are doing
+	Same with the enemies but it's limited for them due to lack of resources for them
+- Kratos and enemies get a red highlight and a little hop as an attack indicator
+- Enemy follows kratos once he gets close to them
 - Controls for Kratos added to settings
 
 **Development improvement**
