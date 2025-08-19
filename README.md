@@ -18,10 +18,10 @@
 
 **Bug removals:**
 
-- You can no longer heal in the main menu.
+- You can no longer heal in the main menu when pressing f.
 - All glitchy hover effects fixed.
 - Fixed weapon selling function to only sell when you have your current weapon in your inventory.
-- Made sure now that if you reload the page, after you died (without pressing the restart button), you still start from the beginning.
+- Made sure that if you reload the page, after you died (without pressing the restart button), you still start from the beginning.
 
 **Optimization**
 
