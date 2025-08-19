@@ -1,6 +1,6 @@
 # God of War mini game
 
-<h4><b><i>Alpha v1.3 & a half</i>i></b></h4>
+<h4 align='center'><b><i>Alpha v1.3 & a half</i></b></h4>
 
 **Small changes:**
 
