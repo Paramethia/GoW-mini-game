@@ -804,8 +804,9 @@ canvas {
 
 @keyframes opacity { 50% { opacity: 0 } }
 
-@keyframes rotateX { 100% { transform: rotateX(360deg) }}
+@keyframes rotateX { 100% { transform: rotateX(360deg) } }
 
 @keyframes rotateY { 100% { transform: rotateY(360deg) } }
+
 
 @keyframes rotateZ { 100% { transform: rotateZ(360deg) }}
