@@ -1127,7 +1127,7 @@ const shopInit = () => {
 				<img id="Mvillager" src="Imagery/Minecraft villager.png">
 				<img  id="B-o-c" src="Imagery/Blades of chaos.png">
 				<img  id="Potion" src="Imagery/Health potion.png">
-				<img  id="Nemesis-whip" src="Imagery/Nemesis Whip.png">
+				<img  id="Nemesis-whip" src="Imagery/Nemesis whip.png">
 				<img  id="Whip-claim" src="Imagery/Kratos with Nemesis whip.png">
 				<img  id="Gauntlet-of-Zeus" src="Imagery/Gauntlet of Zeus.png">
 				<img  id="Gauntlet-claim" src="Imagery/Kratos with Gauntlet of Zeus.png">
@@ -2629,7 +2629,6 @@ function victory(skh) {
 	}
 	document.querySelector('.Efiller').style.width = `${enemies[fighting].health}%`;
 	document.getElementById('Enemy-health').innerText = 0;
-	// document.querySelector('.Enemy-stats').style.display = 'none';
 	if (fighting < 7) { 
 		defeatSound.play() 
 	} else { 
@@ -2732,4 +2731,5 @@ function stopAmbience() {
 		olympusAm.pause();
 		olympusAm.currentTime = 0;
 	}
+
 }
