@@ -2,7 +2,7 @@
 
 **_Alpha v1.3 & a half_**
 
-**Small change:**
+**Small changes:**
 
 - You now have to click to start the game ('Cause you have to interact with the document to trigger audio)
 - Main menu settings now actually work
