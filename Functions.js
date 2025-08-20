@@ -165,14 +165,14 @@ const enemies = [
         name: "Cyclops", health: 180, damage: 44, speed: 1.25,  
 		aC:2000, aR: 107, x: 542, y: 0, w: 125, h: 187, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
-		defeated: localStorage.getItem("cyclopsDefeated") === "true", 
+		defeated: localStorage.getItem("cyclopsDefeated") === "true",
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
         name: "Hermes", health: 210, damage: 40, speed: 5.4,  
 		aC: 1580, aR: 70, x: 599, y: 0, w: 55, h: 99, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
-		defeated: localStorage.getItem("hermesDefeated") === "true", 
+		defeated: localStorage.getItem("hermesDefeated") === "true",
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
@@ -2116,13 +2116,11 @@ function battle() {
 		
 		// Horizontal movement
 		if (keys["ArrowLeft"] || keys["a"] || keys["A"]) {
-			kratos.velX = -speed;
+			if (fighting > 5 && !enemy.defeated) { lineComplete ? kratos.velX = -speed : kratos.velX = 0 } else { kratos.velX = -speed }
 			kratos.facing = "left";
-			lineComplete = true;
 		} else if (keys["ArrowRight"] || keys["d"] || keys["D"]) {
-			kratos.velX = speed;
+			if (fighting > 5 && !enemy.defeated) { lineComplete ? kratos.velX = speed : kratos.velX = 0 } else { kratos.velX = speed }
 			kratos.facing = "right";
-			lineComplete = true;
 		} else {
 			kratos.velX = 0;
 		}
@@ -2333,10 +2331,13 @@ function battle() {
 		let img;
 		if (enemy.attacking) {
 			img = enemy.facing === "right" ? enemyAttackR : enemyAttackL;
+			if (fighting ===8) enemy.w = 99;
 		} else if (enemy.velX !== 0 && fighting > 5) {
 			img = enemy.facing === "right" ? enemyRunsR : enemyRunsL;
+			if (fighting ===8) enemy.w = 78;
 		} else {
 			img = enemy.facing === "right" ? enemyRight : enemyLeft;
+			if (fighting ===8) enemy.w = 78;
 		}
 
 		drawCharacter(img, enemy.x, enemy.y, enemy.w, enemy.h, Date.now() < enemy.hitUntil);
