@@ -877,7 +877,7 @@ const hotBarInit = () => {
 		}
 		
 	function increaseHealth() {
-		if (kratos.health <= 199 && !inMainMenu) {
+		if (kratos.health < 200 && potions && !inMainMenu) {
 			drink.play();
 			potions--;
 			console.log(potions);
@@ -904,7 +904,7 @@ const hotBarInit = () => {
 	const lefts = ['9.9cm', '11.7cm', '13.2cm', '14.5cm', '16.5cm'];
 	
 	document.addEventListener('keydown', event => {
-		if (event.key === 'f' && potions > 0) increaseHealth()
+		if (event.key === 'f') increaseHealth()
 			
 		var keyIndex = parseInt(event.key) - 1; // Convert key to index (1 -> 0, 2 -> 1, etc.)
 
@@ -2727,3 +2727,4 @@ function stopAmbience() {
 		olympusAm.currentTime = 0;
 	}
 }
+
