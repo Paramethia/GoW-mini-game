@@ -114,7 +114,7 @@ const blade = weapons[4].name;
 
 // Other declarations
 
-const savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
+let savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
 let play = false;
 let set = false;
 let hBarOn = localStorage.getItem('healthBarOn') === 'true';
@@ -183,7 +183,7 @@ const enemies = [
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Zeus", health: 320, damage: 67, speed: 2.7,  
+        name: "Zeus", health: 320, damage: 71, speed: 2.7,  
 		aC: 3000, aR: 111, x: 666, y: 0, w: 77, h: 114, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("zeusDefeated") === "true", 
@@ -274,6 +274,8 @@ const mainMenuInit = () => {
 		</div>
 	`;
 	
+	savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
+	
 	const musicOption = document.getElementById('m-music-option');
 	const musicNote = document.getElementById('music-note');
 	const newGameB = document.getElementById('New-gameB');
@@ -344,6 +346,7 @@ const mainMenuInit = () => {
 	}
 	yesB.onclick = () => { 
 		selection.play();
+		[hoplite, banshee, satyr, minotaur, medusa, cyclops, hermes, hercules, zeus].forEach((enemy) => enemy.defeated = false );
 		['health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated' ].forEach(save => localStorage.removeItem(save));
 		kratos.health = 100;
 		kratos.orbs = 0;
@@ -441,13 +444,15 @@ h1.onclick = () => {
 // global functions
 
 function toMainMenu() {
-	selection.play();
-	title.style.display = 'block';
-	mainMenuInit();
-	inMainMenu = true;
-	set = false;
-	document.removeEventListener('keydown', mHandler);
-	document.removeEventListener('keydown', escapeHandler);
+	if (!inBattle) {
+		selection.play();
+		title.style.display = 'block';
+		mainMenuInit();
+		inMainMenu = true;
+		set = false;
+		document.removeEventListener('keydown', mHandler);
+		document.removeEventListener('keydown', escapeHandler);
+	}
 }
 
 function healthBarUpdate(healthBar, healthFiller) {
@@ -609,7 +614,6 @@ const settingsInit = () => {
 			enemyHealthText.style.display = 'none';
 			eHealthBar.style.display = 'inline-block';
 			eHealthBar.style.width = `${enemies[fighting].health}px`;
-			eHealthFiller.style.display = 'block';
 		}
 	}
 
@@ -620,7 +624,6 @@ const settingsInit = () => {
 		if (eHealthBar) { 
 			enemyHealthText.style.display = 'inline';
 			eHealthBar.style.display = 'none';
-			eHealthFiller.style.display = 'inline';
 		}
 	}
 	
@@ -874,7 +877,7 @@ const hotBarInit = () => {
 		}
 		
 	function increaseHealth() {
-		if (kratos.health <= 199) {
+		if (kratos.health <= 199 && !inMainMenu) {
 			drink.play();
 			potions--;
 			console.log(potions);
@@ -901,7 +904,7 @@ const hotBarInit = () => {
 	const lefts = ['9.9cm', '11.7cm', '13.2cm', '14.5cm', '16.5cm'];
 	
 	document.addEventListener('keydown', event => {
-		if (event.key === 'f' && potions) increaseHealth()
+		if (event.key === 'f' && potions > 0) increaseHealth()
 			
 		var keyIndex = parseInt(event.key) - 1; // Convert key to index (1 -> 0, 2 -> 1, etc.)
 
@@ -1475,7 +1478,6 @@ const shopInit = () => {
 			localStorage.setItem('inventory', JSON.stringify(inventory));
 			localStorage.setItem('currentWeapon', currentWeapon);
 			text.innerText = `You sold the ${soldWeapon}.`;
-			text.innerText += `\n In your inventory you have: ${inventory.join(", ")}`;
 			[ inShop, boc, nemesisWhip, gauntletZeus, clawsHades, bladeOlympus, sellWeaponB, potionB, nemesisWhipB, gauntletB, clawsB, bladeOlympusB, leaveShop].forEach(button => button.style.display = 'none');
 			mVillager.style.display = 'block';
 			setTimeout(() => {
@@ -1518,7 +1520,7 @@ const shopInit = () => {
 				document.getElementById('potion-quantity').innerText = potions
 			}
 			
-		} else if (orbs < 17) {
+		} else if (kratos.orbs < 17) {
 			brokie.play();
 			text.innerText = "You do not have enough orbs to buy a health potion.";
 			setTimeout(() => {
@@ -1873,8 +1875,8 @@ const enemyStatsE = () => {
 function notify() {
 	notification.style.animation = 'notify 0.7s linear forwards';
 	notification.style.display = 'inline-block';
-	document.getElementById('noti-text').innerText = fighting <= 7 && fighting !== 5 ? `${enemies[fighting + 1].name} battle now unlocked` :  "Olympus is now unlocked";
-	setTimeout(() => { notification.style.animation = 'hide 0.7s linear forwards' }, 4000 )
+	document.getElementById('noti-text').innerText = fighting !== 5 ? `${enemies[fighting + 1].name} battle now unlocked` :  "Olympus is now unlocked";
+	setTimeout(() => { notification.style.animation = 'hide 0.7s linear forwards' }, 4000 );
 }
 
 function restartInit() {
@@ -2010,7 +2012,6 @@ function battle() {
 
 	const kratosAirAttackRight = new Image();
 	kratosAirAttackRight.src = "Imagery/Kratos flying kick right.png";
-
 
 	const enemyLeft = new Image();
 	enemyLeft.src = `Imagery/${enemy.name} facing left.png`;
@@ -2629,8 +2630,10 @@ function victory(skh) {
 	}
 	document.querySelector('.Efiller').style.width = `${enemies[fighting].health}%`;
 	document.getElementById('Enemy-health').innerText = 0;
-	if (fighting < 7) { 
-		defeatSound.play() 
+	// document.querySelector('.Enemy-stats').style.display = 'none';
+	if (fighting < 8) { 
+		defeatSound.play();
+		if (!enemies[fighting + 1].deated) notify();
 	} else { 
 		wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this SHIT game! 🤩";
@@ -2647,25 +2650,14 @@ function victory(skh) {
 			localStorage.setItem('orbs', kratos.orbs);
 		}
 	}, durations[fighting]);
-	if (!enemies[fighting].defeated) notify();
 	setTimeout (() => {
-		switch (fighting) {
-			case 0: 
-				orbSound.play();
-			break;
-			case 1:
-				orbsSound.play();
-			break;
-			case 2: 
-				orbsSound.play();
-			break;
-			case 7:
-				orbsSound3.play();
-			break;
-			default:
-				orbsSound2.play();
-			break;
-		}
+		const soundMap = {
+			0: orbSound,
+			1: orbsSound,
+			2: orbsSound,
+			8: orbsSound3,
+		};
+		(soundMap[fighting] || orbsSound2).play();
 	}, 1400 );
 	[ document.getElementById("Return-Underworld"), document.getElementById("Return-Olympus") ].forEach((button) => { if (button) button.style.display = 'block' });
 	document.getElementById('Text').innerText = 'You have defeated the enemy. You have now earned some orbs from the defeated enemy.';
@@ -2706,13 +2698,15 @@ function restart() {
 	currentWeapon = 0;
 	potions = 0;
 	inventory = ["Blades of chaos"];
-	[hoplite.defeated, banshee.defeated, satyr.defeated, minotaur.defeated, medusa.defeated, cyclops.defeated, hermes.defeated, hercules.defeated, zeus.defeated].forEach((defeat) => defeat = false );
+	[hoplite, banshee, satyr, minotaur, medusa, cyclops, hermes, hercules, zeus].forEach((enemy) => enemy.defeated = false );
 	[ 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated'].forEach(save => localStorage.removeItem(save));
 	spartaInit();
 	inBattle = false;
 	document.getElementById('potion-quantity').style.display = 'none';
 	document.getElementById('Main-text').innerText = "Welcome back. It seems that you died last time. Don't do that again. \n  (❁´◡`❁)";
 }
+
+// Audio functions
 
 function stopMusic() {
 	[battleTheme, battleTheme2, cyclopsBattle, zeusBattle].forEach(theme => {
@@ -2731,5 +2725,4 @@ function stopAmbience() {
 		olympusAm.pause();
 		olympusAm.currentTime = 0;
 	}
-
 }
