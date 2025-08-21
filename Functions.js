@@ -127,63 +127,63 @@ let inBattle = false;
 
 const enemies = [
 	{
-		name: "Hoplite", health: 75, damage: 12, speed: 2,  
+		name: "Hoplite", health: 75, damage: 9, speed: 2,  
 		aC: 2000, aR: 52, x: 540, y: 0, w: 57, h: 98, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("hopliteDefeated") === "true", 
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
 	},
     {
-		name: "Banshee", health: 100, damage: 17, speed: 1.8,  
+		name: "Banshee", health: 100, damage: 14, speed: 1.8,  
 		aC: 1900, aR: 48, x: 520, y: 0, w: 54, h: 97, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("bansheeDefeated") === "true", 
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Satyr", health: 120, damage: 24, speed: 2.5,  
+        name: "Satyr", health: 120, damage: 21, speed: 2.5,  
 		aC: 2200, aR: 44, x: 580, y: 0, w: 72, h: 112, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("satyrDefeated") === "true", 
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Minotaur", health: 145, damage: 35, speed: 1.58,  
+        name: "Minotaur", health: 145, damage: 30, speed: 1.58,  
 		aC: 2082, aR: 64, x: 500, y: 0, w: 115, h: 159, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("minotaurDefeated") === "true", 
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Medusa", health: 158, damage: 30, speed: 2.3,  
+        name: "Medusa", health: 158, damage: 25, speed: 2.3,  
 		aC:1955, aR: 76, x: 550, y: 0, w: 77, h: 132, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("medusaDefeated") === "true", 
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Cyclops", health: 180, damage: 44, speed: 1.25,  
+        name: "Cyclops", health: 180, damage: 42, speed: 1.25,  
 		aC:2000, aR: 107, x: 542, y: 0, w: 125, h: 187, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("cyclopsDefeated") === "true",
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Hermes", health: 210, damage: 40, speed: 5.4,  
+        name: "Hermes", health: 210, damage: 34, speed: 5.4,  
 		aC: 1580, aR: 70, x: 599, y: 0, w: 55, h: 99, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("hermesDefeated") === "true",
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Hercules", health: 255, damage: 63, speed: 2.38,  
+        name: "Hercules", health: 255, damage: 57, speed: 2.38,  
 		aC: 2700, aR: 64, x: 540, y: 0, w: 82, h: 125, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("herculesDefeated") === "true", 
 		lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
     },
     {
-        name: "Zeus", health: 320, damage: 71, speed: 2.7,  
+        name: "Zeus", health: 320, damage: 65, speed: 2.7,  
 		aC: 3000, aR: 111, x: 666, y: 0, w: 77, h: 114, 
 		velX: 0, velY: 0, onGround: true, attacking: false, 
 		defeated: localStorage.getItem("zeusDefeated") === "true", 
@@ -514,11 +514,7 @@ function escapeHandler (event) {
 	}
 }
 
-function fHandler (event) {
-	if (event.key === 'f') {
-		
-	}
-}
+let hotbarKeys;
 
 /* Sparta */
 
@@ -877,10 +873,9 @@ const hotBarInit = () => {
 		}
 		
 	function increaseHealth() {
-		if (kratos.health < 200 && potions && !inMainMenu) {
+		if (kratos.health <= 199 && potions && !inMainMenu) {
 			drink.play();
 			potions--;
-			console.log(potions);
 			localStorage.setItem('potions', potions);
 			if (potions > 1) { 
 				pqText.innerText = potions
@@ -903,8 +898,12 @@ const hotBarInit = () => {
 	const identifiers = [weapons[0].name, whip, gauntlet, claws, blade];
 	const lefts = ['9.9cm', '11.7cm', '13.2cm', '14.5cm', '16.5cm'];
 	
-	document.addEventListener('keydown', event => {
-		if (event.key === 'f') increaseHealth()
+	if (hotbarKeys) document.removeEventListener('keydown', hotbarKeys);
+	
+	hotbarKeys = function (event) {
+		if (event.repeat) return;
+		
+		if (event.key.toLowerCase() === 'f') increaseHealth()
 			
 		var keyIndex = parseInt(event.key) - 1; // Convert key to index (1 -> 0, 2 -> 1, etc.)
 
@@ -936,7 +935,9 @@ const hotBarInit = () => {
 				}
 			}
 		}
-	})
+	}
+	
+	document.addEventListener('keydown', hotbarKeys);
 	
 	pslot.onmouseover = () => {
 		identifier.style.display = 'inline';
@@ -1143,8 +1144,8 @@ const shopInit = () => {
 					<i><span id="Sell-text"> </span></i>
 				</div>
 				<div class="Potion-info">
-					<i class="Item-info" id="italics"> <font color="#299617"> +10 health </font></i> <br>
-					<i class="Item-info" id="italics"><font color="#8c4004"> Price: </font> 17 orbs </i>
+					<i class="Item-info" id="italics"> <font color="#299617"> +14 health </font></i> <br>
+					<i class="Item-info" id="italics"><font color="#8c4004"> Price: </font> 11 orbs </i>
 				 </div>
 				<div class="Whip-info">
 					<i class="Item-info" id="italics"><font color="#8c4004"> Price: </font> 55  orbs </i> <br>
@@ -1496,7 +1497,7 @@ const shopInit = () => {
 	}}
 
 	function buyPotion() {
-		if (kratos.orbs >= 17 && count == 0) {
+		if (kratos.orbs >= 12 && count == 0) {
 			noice.play();
 			
 			// Number counting animation
@@ -1504,12 +1505,12 @@ const shopInit = () => {
 				count++;
 				kratos.orbs--;
 				document.getElementById('Orbs-text').innerText = kratos.orbs;
-				if (count == 17) {
+				if (count == 11) {
 					count = 0;
 					clearInterval(boughted);
 					localStorage.setItem('orbs', kratos.orbs);
 				}
-			}, 170 );
+			}, 90);
 			
 			// Update potion slot
 			potions++;
@@ -2639,7 +2640,7 @@ function victory(skh) {
 		wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this SHIT game! 🤩";
 	}
-	const rewards = [19, 27, 35, 42, 51, 59, 76, 89];
+	const rewards = [35, 59, 80, 100, 125, 150, 170, 189];
 	const durations = [100, 89, 82, 75, 67, 58, 50, 44]
 	var enemDefR = setInterval(( )=> {
 		count++;
@@ -2727,4 +2728,3 @@ function stopAmbience() {
 		olympusAm.currentTime = 0;
 	}
 }
-
