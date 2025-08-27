@@ -205,7 +205,7 @@ const zeus = enemies[8];
 const screenWidth = screen.width;
 const screenHeight = screen.height;
 
-console.log("Screen dimentions", screenWidth, screenHeight);
+console.log("Screen dimentions:", screenWidth, screenHeight);
 
 const windowWidth = window.innerWidth;
 const windowHeight = window.innerHeight;
@@ -215,6 +215,7 @@ console.log("Window dimentions:", windowWidth, windowHeight);
 const phoneWarning = document.getElementById("phone-warning");
 
 if (screenWidth <= 455 || windowWidth <= 455) {
+	title.style.display = "none";
 	game.style.display = "none";
 	phoneWarning.style.display = "block";
 }
@@ -481,6 +482,8 @@ function keyupHandler(event) { keys[event.key] = false }
 
 function mHandler (event) {
 	if (event.key === 'm') {
+		if (event.repeat) return;
+		
 		switch(play) {
 			case false:
 				menuTheme.play();
@@ -499,6 +502,8 @@ function mHandler (event) {
 
 function escapeHandler (event) {
 	if (event.key === 'Escape') {
+		if (event.repeat) return;
+		
 		switch(set) {
 			case false:
 				document.getElementById('settings').style.background = 'grey';
