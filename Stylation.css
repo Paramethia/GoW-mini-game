@@ -5,12 +5,12 @@ body {
 	margin: 0;
 	padding: 12px;
 	background-color: black;
-	cursor: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735988665/Default_hand_hh4p1f.png"), auto;
+	cursor: url("Imagery/Hand_default.png"), auto;
 }
 
 :root {
-	--pressing: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989342/Hand_pressing_qi6ops.png");
-	--hover: url("https://res.cloudinary.com/dbdh6zbvt/image/upload/v1735989343/Hand_hover_prhklh.png");
+	--pressing: url("Imagery/Hand_pressing.png");
+	--hover: url("Imagery/Hand_hover.png");
 	--main-menu-img: url("Imagery/Opening menu image.png");
 	--boc-cur: url("Imagery/boc-cursor.png");
 }
@@ -710,6 +710,7 @@ canvas {
 #phone-warning { 
 	display: none;
 	margin-top: 4cm;
+	width: 80%;
 	text-align: center;
 	font-family: Montserrat;
 	color: #630b05; 
@@ -804,9 +805,8 @@ canvas {
 
 @keyframes opacity { 50% { opacity: 0 } }
 
-@keyframes rotateX { 100% { transform: rotateX(360deg) } }
+@keyframes rotateX { 100% { transform: rotateX(360deg) }}
 
 @keyframes rotateY { 100% { transform: rotateY(360deg) } }
-
 
 @keyframes rotateZ { 100% { transform: rotateZ(360deg) }}
