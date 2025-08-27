@@ -22,6 +22,7 @@
 - You can no longer heal in the main menu when pressing f.
 - All glitchy hover effects fixed.
 - Fixed weapon selling function to only sell when you have your current weapon in your inventory.
+- Fixed ambience still playing while in Underworld/Olympus when pressing 'Return to main menu" button.
 - Made sure that if you reload the page, after you died (without pressing the restart button), you still start from the beginning.
 
 **Optimization**
