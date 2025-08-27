@@ -23,7 +23,7 @@ const hmmmm = new Audio('Audio/Hmm hmm Mc villager.mp3');
 const noice = new Audio('Audio/Noice.mp3');
 const bruh = new Audio('Audio/Bruh.mp3');
 const bocSound = new Audio('Audio/Blades of chaos sound.mp3');
-const gozSound = new Audio('Audio/Gauntlet of Zeus sound.mp3')
+const gozSound = new Audio('Audio/Gauntlet of Zeus sound.mp3');
 const nwSound = new Audio('Audio/Nemesis whip sound.mp3');
 const cohSound = new Audio('Audio/Claws of Hades sound.mp3');
 const ncSound = new Audio('Audio/Nemean cestus sound.mp3');
@@ -48,7 +48,7 @@ const minotaurSound = new Audio('Audio/Minotaur sound.mp3');
 const minotaurAttacks = new Audio('Audio/Minotaur attacks.mp3');
 const minotaurAttacks2 = new Audio('Audio/Minotaur attacks 2.mp3');
 const attacksMinotaur = new Audio('Audio/Kratos attacks Minotaur.mp3');
-const medusaSound = "";
+//const medusaSound = new Audio(''); No sound for her just yet
 const medusaAttacks = new Audio('Audio/Medusa attacks Kratos.mp3');
 const attacksMedusa = new Audio('Audio/Kratos attacks Medusa.mp3');
 const olympusAm = new Audio('Audio/Olympus ambience.mp3');
@@ -453,6 +453,7 @@ function toMainMenu() {
 		set = false;
 		document.removeEventListener('keydown', mHandler);
 		document.removeEventListener('keydown', escapeHandler);
+		stopAmbience();
 	}
 }
 
@@ -2637,7 +2638,6 @@ function victory(skh) {
 	}
 	document.querySelector('.Efiller').style.width = `${enemies[fighting].health}%`;
 	document.getElementById('Enemy-health').innerText = 0;
-	// document.querySelector('.Enemy-stats').style.display = 'none';
 	if (fighting < 8) { 
 		defeatSound.play();
 		if (!enemies[fighting + 1].deated) notify();
