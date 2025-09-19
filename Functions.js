@@ -2000,10 +2000,10 @@ function battle() {
 	const kratosWalkRight = new Image();
 	kratosWalkRight.src = "Imagery/Kratos walkin right.png";
 	
-	const kratosJumpLeft = new Image();
-	kratosJumpLeft.src = "Imagery/Kratos jumping left.png";
-	const kratosJumpRight= new Image();
-	kratosJumpRight.src = "Imagery/Kratos jumping right.png";
+	const kratosFallsLeft = new Image();
+	kratosFallsLeft.src = "Imagery/Kratos lands left.png";
+	const kratosFallsRight= new Image();
+	kratosFallsRight.src = "Imagery/Kratos lands right.png";
 	const kratosJumpsLeft = new Image(); 
 	kratosJumpsLeft.src = "Imagery/Kratos jumps left.png";
 	const kratosJumpsRight = new Image(); 
@@ -2015,11 +2015,10 @@ function battle() {
 	kratosAttackRight.src = "Imagery/Kratos attacks right.png";
 	
 	const kratosAirAttackLeft = new Image();
-	kratosAirAttackLeft.src = "Imagery/Kratos flying kick left.png";
-
+	kratosAirAttackLeft.src = "Imagery/Kratos aerial attack left.png";
 	const kratosAirAttackRight = new Image();
-	kratosAirAttackRight.src = "Imagery/Kratos flying kick right.png";
-
+	kratosAirAttackRight.src = "Imagery/Kratos aerial attack right.png";
+	
 	const enemyLeft = new Image();
 	enemyLeft.src = `Imagery/${enemy.name} facing left.png`;
 	const enemyRight = new Image();
@@ -2303,11 +2302,15 @@ function battle() {
 			// In the air
 			if (kratos.attacking) {
 				img = kratos.facing === "right" ? kratosAirAttackRight : kratosAirAttackLeft;
-				kratos.w = 120;
-			} else {
-				// Normal jump
+				kratos.w = 100;
+			} else if (kratos.velY < 0) {
+				// Jumping
 				img = kratos.facing === "right" ? kratosJumpsRight : kratosJumpsLeft;
-				kratos.w = 75;
+				kratos.w = 112;
+			} else {
+				// Falling
+				img = kratos.facing === "right" ? kratosFallsRight : kratosFallsLeft;
+				kratos.w = 112;
 			}
 		} else if (kratos.velX > 0) {
 			img = kratosWalkRight;
@@ -2316,7 +2319,7 @@ function battle() {
 			img = kratosWalkLeft;
 			kratos.w = 65;
 		} else {
-			// Standing / Ground attack
+			// On the ground
 			if (enemy.health !== 0) { 
 				if (kratos.x < enemy.x) {
 					img = kratos.attacking ? kratosAttackRight : kratosStandRight;
@@ -2733,3 +2736,4 @@ function stopAmbience() {
 		olympusAm.currentTime = 0;
 	}
 }
+
