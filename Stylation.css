@@ -67,7 +67,7 @@ body {
 	padding: 12px;
 }
 
-.Main-menu, .Sparta { cursor: var(--hover), pointer; }
+.Main-menu, .Sparta, .Shop, .Underworld, .Underworld-battle, .Olympus, .Olympus-battle { cursor: var(--hover), pointer }
 
 .Mm-buttons {
 	max-width: 240px;

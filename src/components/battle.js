@@ -30,8 +30,10 @@ export function battle(g) {
 
 	// ===== Load images =====
 	
-	const kratosStand = new Image();
-	kratosStand.src = "Imagery/Kratos standing.png";
+	const kratosStandL = new Image();
+	kratosStandL.src = "Imagery/Kratos standing left.png";
+	const kratosStandR = new Image();
+	kratosStandR.src = "Imagery/Kratos standing right.png";
 
 	const kratosFightingStanceL = new Image();
 	kratosFightingStanceL.src = "Imagery/Kratos fighting stance left (Blades of chaos).png";
@@ -367,7 +369,7 @@ export function battle(g) {
 					g.kratos.w = 99;
 				}
 			} else { 
-				img = kratosStand;
+				img = g.kratos.facing === "right" ? kratosStandR : kratosStandL;
 				g.kratos.w = 69;
 			}
 		}
