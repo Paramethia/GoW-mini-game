@@ -1,0 +1,811 @@
+html { overflow-x: hidden }
+
+body {
+	height: 97vh;
+	margin: 0;
+	padding: 12px;
+	background-color: black;
+	cursor: url("Imagery/Hand_default.png"), auto;
+}
+
+:root {
+	--pressing: url("Imagery/Hand_pressing.png");
+	--hover: url("Imagery/Hand_hover.png");
+	--main-menu-img: url("Imagery/Opening menu image.png");
+	--boc-cur: url("Imagery/boc-cursor.png");
+}
+
+#version {
+	position: absolute;
+	top: 17px;
+	left: 12px;
+	color: white;
+}
+
+.Noti { 
+    display: none;
+	width: 300px;
+	background-color: #630b05;
+	padding: 8px;
+	color: #9f6c08;
+	text-align: center;
+	font-size: 17px;
+	font-weight: 800;
+	border: 4px double #9e5c08;
+	border-radius: 7px;
+	position: absolute;
+	top: 9cm;
+	right: -11cm;
+	z-index: 2;
+}
+.Noti i { margin-left: 7px }
+
+#Title { 
+	margin-top: 55px;
+	margin-bottom: 25px;
+}
+
+.Game { font-family: GodOfWar }
+
+.Game h1 {
+	width: 50%;
+	margin: 2cm auto;
+	border: 4px inset #aa4111;
+	padding: 4cm;
+	text-align: center;
+	color: #852c25; 
+}
+.Game h1:hover { cursor: var(--hover), pointer }
+
+/* Main menu styling */
+
+.Main-menu {
+	width: 880px;
+	height: 520px;
+	border-radius: 12px;
+	background-image: var(--main-menu-img);
+	padding: 12px;
+}
+
+.Main-menu, .Sparta { cursor: var(--hover), pointer; }
+
+.Mm-buttons {
+	max-width: 240px;
+	margin-top: 100px;
+	margin-bottom: 180px;
+	margin-left: 50px;
+}
+
+#m-music-option, #music-option, #settings {
+	height: 48px;
+	width: 42px;
+	border-radius: 20px;
+	border: 2px solid #1a1210;
+	margin-bottom: 25px;
+	background-color: #464646;
+}
+
+#m-music-option { background-color: #463428 }
+#m-music-option:hover { background-color: #7a715e }
+
+#m-music-option, #music-option:hover, #settings:hover {
+	cursor: var(--pressing), pointer;
+	border: 2px solid #332822;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+#porp {
+	display: none;
+	font-family: Arial;
+	font-size: 14px;
+	color: white;
+}
+
+.Mid {
+	position: relative;
+	width: 666px;
+}
+
+	/* Options styling */
+
+.Options {
+	display: none;
+	width: 380px;
+	max-height: 400px;
+	background: linear-gradient(rgba(204, 146, 41, 0.8), rgba(70, 52, 40, 0.8), rgba(26, 8, 3, 0.8), rgba(73, 39, 7, 0.8));
+	border-radius: 15px;
+	padding: 14px;
+	z-index: 2;
+	position: relative;
+	left:11cm;
+	font-size: 17px;
+}
+.Options button {
+	width: 55px;
+	height: 32px;
+	float: right;
+	background-color: #9e5c08;
+	border: 2px solid #1a0803;
+    border-radius: 5px;
+	font-weight: 800;
+}
+.Options button:hover {
+	cursor: var(--pressing), pointer;
+	transition: 0.2s;
+	background-color: #cc9229;
+}
+.Options h3 {
+	background: #482708;
+	width: 75%;
+	margin-top: 28px;
+	padding: 8px;
+	border-radius: 5px;
+	color: white;
+	font-weight: 100;
+}
+.Options p {
+	color: lightgray;
+}
+
+.Options #first {
+	margin-top: 50px;
+}
+
+.Options input {
+	-webkit-appearance: none;
+	appearance: none;
+    width: 150px;
+	height: 20px;
+	margin-top: 15px;
+    cursor: var(--pressing), pointer;
+    outline: none;
+    border-radius: 16px;
+}
+
+.Options input::-webkit-slider-runnable-track {
+	height: 20px;
+	background: #8a6636;
+	border-radius: 16px;
+}
+
+.Options input::-moz-range-track {
+	height: 17px;
+	border-radius: 16px;
+}
+
+.Options input::-moz-range-thumb {
+	height: 17px;
+	width: 17px;
+	margin-top: 1px;
+	background-color: #463428;
+	border-radius: 50%;
+}
+
+.Options input::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 17px;
+	width: 17px;
+	margin-top: 1px;
+	background-color: #cc9229;
+	border-radius: 50%;
+	border: 2px solid #463428;
+}
+
+#music-volume, #ambience-volume { color: #cc9229 }
+
+/* Game styling */
+
+.Sparta, .Shop, .Underworld, .Olympus, .Underworld-battle, .Olympus-battle {
+	width: 1000px;
+	position: relative;
+	border-radius: 12px;
+	margin-top: 2.4cm;
+	padding: 12px;
+	background-color: #464646;
+}
+
+.Shop, .Underworld, .Olympus {
+	margin-top: 1.2cm
+}
+
+.Shop { background-color: #09090b }
+.Underworld, .Underworld-battle { background: #3c3837 }
+.Olympus, .Olympus-battle { background: #19282c }
+
+.Underworld-battle, .Olympus-battle { margin-top: 40px }
+
+	/* Settings styling */
+
+.Settings {
+	display: none;
+	background: linear-gradient(#0d0d0d, grey, #614051);
+	border: 2px solid #614051;
+	border-radius: 8px;
+	z-index: 4;
+	width: 280px;
+	max-height: 740px;
+	margin-top: 12px;
+	padding: 8px;
+	position: absolute;
+	top: 52px;
+	right: 0.8cm;
+	font-size: 17px;
+	color: lightgrey;
+}
+
+.Settings p {
+	text-align: center;
+}
+
+#Hbar-set, #Music-set, #Ambience-set, #Controls-set {
+	background: #614051;
+	padding: 8px;
+	border-radius: 4px;
+	font-size: 20px;
+}
+
+#Hbar-set:hover, #Music-set:hover, #Ambience-set:hover, #Controls-set:hover {
+	cursor: var(--pressing), pointer;
+	background: #412021;
+}
+#Controls-set:hover {
+	background: #504050;
+}
+
+#settings {
+	float: right;
+}
+
+.Music-con, .Ambience-con {
+	display: none;
+	margin-top: 15px;   /* #c6bebb */                       
+	padding: 12px;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.Settings #music-vol, .Settings #amb-vol { display: none }
+
+#music-mutei, #music-lvi, #music-hvi,
+#amb-mutei, #amb-lvi, #music-hvi {
+	color: lightgrey;
+}
+
+#music-mutei:hover, #music-lvi:hover, #music-hvi:hover,
+#amb-mutei:hover, #amb-lvi:hover, #amb-hvi:hover {
+	cursor: var(--pressing), pointer;
+	color: #2e271d;
+}
+
+#other-music-volume, #other-ambience-volume { color: #2e271d }
+
+.Controls-con { display: none }
+.controls {
+	margin: 7px 0;
+	padding: 7px;
+	color: lightgrey;
+}
+.controls span { 
+	display: inline-block;
+	width: 60px;
+	margin-right: 18px;
+	border: 2px inset white;
+	border-radius: 4px;
+	padding: 5px;
+	text-align: center;
+}
+
+#Return-tmm {
+    padding: 8px;
+    border-radius: 4px;
+    background: grey;
+    font-size: 20px;
+    font-family: GodOfWar;
+    color: #0d0d0d;
+    width: 100%;
+}
+#Return-tmm:hover {
+    cursor: var(--pressing), pointer;
+    transition: .3s linear;
+    background: #0d0d0d;
+    color: grey;
+}
+
+.Warning {
+	display: none;
+	background: #463428;
+	width: 55%;
+	padding: 8px;
+	margin: 172px auto;
+}
+.Warning p {
+	color: white;
+}
+.Warning button {
+	height: 30px;
+	width: 2.5cm;
+	background-color: #9e5c08;
+    border: none;
+    padding-bottom: 2px;
+    margin-bottom: 17px;
+	margin-right: 8px;
+	border-radius: 10px;
+    color: #0a0a23;
+	font-size: 17px;
+	font-family: GodOfWar;
+}
+.Warning button:hover {
+	cursor: var(--pressing), pointer;
+	transition: all 0.3s ease 0s;
+	background-color:#cc9229;
+}
+
+/* Containers and text styling */
+
+.Stats {
+	display: flex; 
+	justify-content: space-evenly;
+	margin-bottom: 12px;
+	max-width: 600px;
+	border-radius: 11px;
+	background-color: #333;
+    padding: 8px;
+    color:  #c78d2c;
+	text-align: center;
+}
+
+.Underworld .Stats, .Underworld-battle .Stats, .Olympus .Stats, .Olympus-battle .Stats { margin-top: 1.5cm  }
+
+#Exp-text, #Health, #Orbs-text {
+	color: #d3d3d3;
+}
+
+.Enemy-stats {
+	position: absolute;
+	top: 5.5cm;
+	right: 7.8cm;
+	z-index: 2;
+	border-radius: 12px;
+	width: 400px;
+	padding: 8px;
+	text-align: center;
+	color: #7c6611;
+	background-color: #2e1a13;
+	animation: slide;
+	animation-iteration-count: 1;
+	animation-duration: 0.8s;
+	animation-timing-function: linear;
+}
+
+.stat {
+	padding-right: 12px;
+	font-size: 24px;
+}
+
+.Health-bar, .Ehealth-bar {
+	display: none;
+	height: 20px;
+	width: 100px;
+	border: 2px solid black;
+	border-radius: 8px;
+	transform: translateY(5px);
+	margin-right: 8px;
+	overflow: hidden;
+}
+
+.filler, .Efiller {
+	width: 100%;
+	height: 100%;
+	background: #32cd33;
+}
+
+.Efiller {
+	background: #7c6611;
+}
+
+#Main-text, #Text {
+	font-size: 20px;
+	color: white; /* #ffad15 */
+	padding: 10px;
+	margin-bottom: 15px;
+}
+
+#Text {
+	width: 700px;
+	color: #ffad15;
+}
+
+#Enemy-info {
+	display: none;
+	width: 700px;
+	margin: 11px 0;
+	padding: 5px;
+	border-radius: 8px;
+	border: 3px outset #501003;
+	text-align: center;
+	font-size: 20px;
+	color: #1d0807;
+	background-color: #97897c;
+	animation: slide .8s linear;
+}
+
+.Enemy-damage {
+	display: none;
+	padding: 8px;
+	position: absolute;
+	top: 2.8cm;
+	right: 1.8cm;
+	z-index: 2;
+	border-radius: 5px;
+	background-color: lightslategrey;
+	font-weight: 800;
+}
+
+canvas {
+	width: 100%;
+	height: 480px;
+}
+
+/* Image styling */
+
+#Kratos-at-Sparta, #In-shop, #Kratos-in-Underworld, #Kratos-at-Olympus {
+	height: 240px;
+	width: 500px;
+	border: 4px inset #464646;
+	margin-bottom: 28px;
+}
+
+#Shop, #Mvillager, #B-o-c, #Potion, 
+#Nemesis-whip, #Whip-claim, #Gauntlet-of-Zeus, 
+#Gauntlet-claim, #Claws-of-Hades, #Claws-claim, 
+#Blade-of-Olympus, #Blade-claim, #Underworld, 
+#Hoplite, #Banshee,  #Satyr, #Minotaur,#Medusa, 
+#Cyclops, #Mount-Olympus, #Hermes, #Hercules,
+#Zeus, #Kratos-running, #You-dead, #Sparta {
+	display: none;
+	height: 240px;
+	width: 500px;
+	border: 4px inset grey;
+	margin-bottom: 28px;
+    animation: opacity;
+}
+
+#Sparta { border: 4px inset #20130c }
+
+#Shop { 
+	width: 440px; 
+	margin-bottom: 27px; 
+}
+
+#Shop, #In-shop { border: 4px inset #09090b }
+
+#Mvillager, #Potion, #B-o-c, #Nemesis-whip, #Whip-claim, 
+#Gauntlet-of-Zeus, #Gauntlet-claim, #Claws-of-Hades, #Claws-claim,
+#Blade-of-Olympus, #Blade-claim, #Hoplite, #Banshee,  #Satyr, 
+#Minotaur, #Medusa, #Cyclops, #Hermes, #Hercules, #Zeus, 
+#You-dead { 
+	border: none;
+	margin-top: 5px;
+}
+#Potion, #B-oc, #Nemesis-whip, #Gauntlet-of-Zeus, #Claws-of-Hades, #Blade-of-Olympus {
+	margin-top: 8px 
+}
+#You-dead { margin-top: 0 }
+
+#Mvillager { width: 200px }
+#Potion { width: 240px }
+#Gauntlet-of-Zeus { width: 247px }
+#Gauntlet-claim { width: 160px }
+#Claws-claim { width: 349px }
+#Blade-claim { width: 460px }
+#Blade-of-Olympus { width: 385px }
+
+#Underworld {
+	width: 600px;
+	border: 4px inset #2f1c12;
+}
+
+#Kratos-in-Underworld { border: 4px outset #3c3837 }
+#Hoplite { width: 440px }
+#Banshee { width: 175px }
+#Satyr { width: 198px }
+#Medusa { width: 240px }
+
+#Mount-Olympus {
+	width: 400px;
+	border: 4px inset #16160e;
+}
+
+#Kratos-at-Olympus { 
+	width: 335px;
+	border: 4px inset #19282c;
+}
+#Hermes, #Hercules { width: 208px }
+
+#Zeus { width: 165px }
+
+#You-dead { 
+	height: 370px;
+	width: 1000px;
+	position: absolute;
+	bottom: 2.4cm;
+	opacity: 0.5;
+}
+
+/* Item info styling */
+
+.Sell-price, .Potion-info, .Whip-info, .Gauntlet-info, .Claws-info, .BladeO-info {
+    display: none;
+	max-width: 200px;
+	max-height: 80px;
+	padding: 8px;
+	position: absolute;
+	bottom: 2cm;
+	right: 2.8cm;
+	z-index: 2;
+	border-radius: 5px;
+	background-color: #363636;
+	color: lightgrey;
+	text-align: center;
+	font-weight: 800;
+	line-height: 17px;
+}
+
+.Gauntlet-info {
+	bottom: 2.8cm;
+	right: 2cm;
+}
+.BladeO-info { 
+    bottom: 4cm; 
+	right: 2cm; 
+}
+
+/* Buttons styling */
+
+.Mm-buttons button, .Sparta center button, .Shop center button, 
+.Underworld center button, .Underworld-battle center button, 
+.Olympus center button, .Olympus-battle center button {
+	background-color: #4b3f33; /* #9e5c08; */
+    border: none;
+    padding-bottom: 2px;
+    margin-bottom: 17px;
+	margin-right: 8px;
+	height: 35px;
+	width: 5.2cm;
+	border-radius: 10px;
+    color: #0a0a23;
+	font-size: 20px;
+	font-family: GodOfWar;
+}
+.Underworld-battle center button, .Olympus center button { margin-right: 0 }
+
+.Mm-buttons button {
+	height: 35px; 
+	background: #7a715e;
+	font-weight: 700;
+	font-size: 24px;
+}
+
+.Buttons { 
+    display: none;
+	width: 650px;
+    text-align: center;
+	margin: 0 auto;
+}
+.Buttons { display: block; margin-bottom: 15px }
+.Sparta center i { margin-left: 5px }
+
+.Mm-buttons button:hover, .Sparta center button:hover, .Shop center button:hover,
+.Underworld center button:hover, .Underworld-battle center button:hover, 
+.Olympus center button:hover, .Olympus-battle center button:hover {
+	cursor: var(--pressing), pointer;
+	transition: all 0.3s ease 0s;
+	background-color: darkgrey; /* #a23a15; */
+	color: #630b05;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.Mm-buttons button:hover { scale: 1.2 }
+
+#Load-gameB { filter: brightness(70%) }
+
+#Shop-button, #Underworld-button, #Olympus-button { animation: rotateX 0.8s }
+
+#Leave-shop, #Sell-weapon, #PotionB, 
+#Nemesis-whipB, #GauntletB, #Claws, 
+#Blade-of-OlympusB, #Leave-Underworld,
+#Return-Underworld, #HopliteB, #BansheeB, 
+#SatyrB, #MedusaB, #MinotaurB, #CyclopsB, 
+#HermesB, #HerculesB, #ZeusB, #Return-Olympus, 
+#Return-Olympus, #Leave-Olympus, #Reset {
+	animation: grow;
+	animation-delay: 0s;
+	animation-timing-function: linear;
+	animation-duration: 2s;
+}
+
+#Return-Underworld, #Return-Olympus, #Reset { display: none }
+
+#Leave-shop, #Leave-Underworld, #Leave-Olympus { margin: 0 auto }
+
+#Blade-of-OlympusB, #Leave-Underworld, #Leave-Olympus { width: 5.2cm }
+
+/* Hotbar styling */
+
+.Hotbar {
+	position: relative;
+	margin-top: 24px;
+	margin-bottom: 12px;
+}
+
+#Pslot, #Slot1, #Slot2, #Slot3, #Slot4, #Slot5 {
+	display: inline-block;
+	margin: 0 auto;
+	width: 55px;
+	height: 45px;
+	background-color: rgba(90, 57, 16, 0.5);
+	border: 1px solid #5a3910;
+	background-size: cover;
+}
+
+#Slot1 { border: 4px ridge #5a3910 }
+
+#Pslot:hover, #Slot1:hover, #Slot2:hover, #Slot3:hover, #Slot4:hover, #Slot5:hover {
+	cursor: var(--pressing), pointer;
+}
+
+#Pslot {
+	margin-right: 50px;
+	font-weight: 700;
+	color: white;
+	position: relative;
+}
+#Pslot:hover { border: 3px ridge #5a3910 }
+
+#Pslot span { 
+   float: left; 
+   margin-top: 2px;
+   margin-left: 4px;
+}
+#potion-quantity {
+	display: none;
+	position: absolute;
+	bottom: -14px;
+	right: 2px;
+}
+
+#Slot1 { background-image: url('./Imagery/boc.png') }
+
+#Slot2 {
+	background-position: center;
+}
+
+#Slot3:hover {
+	transition: all 0.3s ease 0s;
+	background-position: center;
+}
+
+#Slot5:hover {
+	transition: all 0.3s ease 0s;
+	background-position: center;
+}
+
+#Weapon-identifier {
+	display: none;
+	position: absolute;
+	background-color: rgba(45, 45, 50, 0.8);
+	color: grey;
+	font-family: Tahoma, sans-serif;
+	font-size: 14px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	white-space: nowrap;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	z-index: 2;
+	pointer-events: none;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#phone-warning { 
+	display: none;
+	margin-top: 4cm;
+	width: 80%;
+	text-align: center;
+	font-family: Montserrat;
+	color: #630b05; 
+}
+
+/* Animations */
+
+@keyframes notify {
+    from {
+	    right: -8cm;
+		opacity: 0;
+	} to {	
+		right: 11px;
+		opacity: 1;
+	}
+}
+@keyframes hide {
+	from {
+		right: 11px;
+		opacity: 1;
+	} to {
+		right: -8cm;
+		opacity: 0;
+	}
+}
+
+@keyframes appear { from { opacity: 0.1 } to { opacity: 1 } }
+@keyframes disappear { from { opacity: 1 } to { opacity: 0.1 } }
+
+@keyframes slide {
+	from {
+		margin-left: 80%;
+	 } to {
+		margin-left: 0%;
+	}
+}
+
+@keyframes slide-from-left {
+	from {
+		right: 20cm;
+	} to {
+		right: 0;
+	}
+}
+
+@keyframes slide-from-right {
+	from {
+		left: 20cm;
+	} to {
+		left: 0;
+	}
+}
+
+@keyframes grow {
+	20% { transform: scale(0.2, 0.2) }
+	40% { transform: scale(0.4, 0.4) }
+	60% { transform: scale(0.6, 0.6) }
+	80% { transform: scale(0.8, 0.8) }
+}
+
+@keyframes tilt-shaking {
+	0% { transform: rotate(0deg); }
+	25% { transform: rotate(5deg); }
+	50% { transform: rotate(0eg); }
+	75% { transform: rotate(-5deg); }
+	100% { transform: rotate(0deg); }
+}
+
+@keyframes vertical-shaking {
+	0% { transform: translateY(0) }
+	25% { transform: translateY(5px) }
+	50% { transform: translateY(-5px) }
+	75% { transform: translateY(5px) }
+	100% { transform: translateY(0) }
+}
+
+@keyframes horizontal-shaking {
+	0% { transform: translateX(0) }
+	25% { transform: translateX(5px) }
+	50% { transform: translateX(-5px) }
+	75% { transform: translateX(5px) }
+	100% { transform: translateX(0) }
+}
+
+@keyframes tilt-n-move-shaking {
+	0% { transform: translate(0, 0) rotate(0deg); }
+	25% { transform: translate(5px, 5px) rotate(5deg); }
+	50% { transform: translate(0, 0) rotate(0eg); }
+	75% { transform: translate(-5px, 5px) rotate(-5deg); }
+	100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes opacity { 50% { opacity: 0 } }
+
+@keyframes rotateX { 100% { transform: rotateX(360deg) }}
+
+@keyframes rotateY { 100% { transform: rotateY(360deg) } }
+
+@keyframes rotateZ { 100% { transform: rotateZ(360deg) }}
