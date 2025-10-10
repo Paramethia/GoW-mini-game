@@ -313,8 +313,8 @@ export function settingsInit(g) {
 			mainMenu(g);
 			g.inMainMenu = true;
 			g.set = false;
-			document.removeEventListener('keydown', mHandler);
-			document.removeEventListener('keydown', escHandler);
+			document.removeEventListener('keydown', g.mKey);
+			document.removeEventListener('keydown', g.escKey);
 		}
 	}
 }

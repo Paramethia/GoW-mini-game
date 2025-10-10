@@ -164,7 +164,7 @@ export function battle(g) {
 			g.kratos.velX = 0;
 		}
 		
-		// Only block overlap if not dodging and if the enemy is defeated
+		// Only block overlap if not dodging and if the enemy is not defeated
 		if (!g.kratos.dodging && !defeated) {
 			preventOverlap();
 		}

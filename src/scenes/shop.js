@@ -283,7 +283,7 @@ export function shop(g){
 	function sellWeapon() {
 		const sellingWeapon = g.weapons[g.currentWeapon].name;
 		if (g.inventory.length > 1 && g.inventory.includes(sellingWeapon)) {
-			hmmmm.play();
+			g.audos.hmmmm.play();
 			var soldWeapon;
 			switch (g.currentWeapon) {
 				case 0:	    

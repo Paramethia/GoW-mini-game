@@ -356,7 +356,7 @@ body {
 
 .Underworld .Stats, .Underworld-battle .Stats, .Olympus .Stats, .Olympus-battle .Stats { margin-top: 1.5cm  }
 
-#Exp-text, #Health, #Orbs-text {
+#Health, #Orbs-text {
 	color: #d3d3d3;
 }
 
@@ -461,7 +461,7 @@ canvas {
 #Blade-of-Olympus, #Blade-claim, #Underworld, 
 #Hoplite, #Banshee,  #Satyr, #Minotaur,#Medusa, 
 #Cyclops, #Mount-Olympus, #Hermes, #Hercules,
-#Zeus, #Kratos-running, #You-dead, #Sparta {
+#Zeus, #Kratos-running, #Sparta {
 	display: none;
 	height: 240px;
 	width: 500px;
@@ -482,15 +482,13 @@ canvas {
 #Mvillager, #Potion, #B-o-c, #Nemesis-whip, #Whip-claim, 
 #Gauntlet-of-Zeus, #Gauntlet-claim, #Claws-of-Hades, #Claws-claim,
 #Blade-of-Olympus, #Blade-claim, #Hoplite, #Banshee,  #Satyr, 
-#Minotaur, #Medusa, #Cyclops, #Hermes, #Hercules, #Zeus, 
-#You-dead { 
+#Minotaur, #Medusa, #Cyclops, #Hermes, #Hercules, #Zeus { 
 	border: none;
 	margin-top: 5px;
 }
 #Potion, #B-oc, #Nemesis-whip, #Gauntlet-of-Zeus, #Claws-of-Hades, #Blade-of-Olympus {
 	margin-top: 8px 
 }
-#You-dead { margin-top: 0 }
 
 #Mvillager { width: 200px }
 #Potion { width: 240px }
@@ -525,6 +523,7 @@ canvas {
 #Zeus { width: 165px }
 
 #You-dead { 
+	display: none;
 	height: 370px;
 	width: 1000px;
 	position: absolute;

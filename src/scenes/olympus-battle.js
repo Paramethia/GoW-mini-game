@@ -52,7 +52,7 @@ export function olympusBattle(g) {
 		olympus(g);
 		document.removeEventListener("keydown", g.keydownHandler);
 		document.removeEventListener("keyup", g.keyupHandler);
-		resetThem(eH, eW);
+		g.resetThem(g.eH, g.eW);
 		g.inBattle = false;
 	}
 	
