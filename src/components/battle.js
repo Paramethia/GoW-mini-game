@@ -36,9 +36,9 @@ export function battle(g) {
 	kratosStandR.src = "Imagery/Kratos standing right.png";
 
 	const kratosFightingStanceL = new Image();
-	kratosFightingStanceL.src = "Imagery/Kratos fighting stance left (Blades of chaos).png";
+	kratosFightingStanceL.src = "Imagery/Kratos fighting stance left.png";
 	const kratosFightingStanceR = new Image();
-	kratosFightingStanceR.src = "Imagery/Kratos fighting stance right (Blades of chaos).png";
+	kratosFightingStanceR.src = "Imagery/Kratos fighting stance right.png";
 
 	const kratosWalkLeft = new Image();
 	kratosWalkLeft.src = "Imagery/Kratos walkin left.png";
