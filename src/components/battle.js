@@ -554,8 +554,8 @@ function victory(g) {
 		g.audios.wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this SHIT game! 🤩";
 	}
-	const rewards = [24, 40, 57, 76, 100, 120, 144, 167];
-	const durations = [100, 89, 82, 75, 67, 58, 50, 44]
+	const rewards = [24, 40, 57, 76, 100, 120, 144, 167, 189];
+	const durations = [100, 89, 82, 75, 67, 58, 50, 44, 40];
 	var enemDefR = setInterval(( )=> {
 		count++;
 		g.kratos.orbs += 1;
