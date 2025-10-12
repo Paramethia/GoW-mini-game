@@ -478,7 +478,6 @@ function victory(g) {
 	}
 	document.querySelector('.Efiller').style.width = `${g.enemies[g.currentEnemy].health}%`;
 	document.getElementById('Enemy-health').innerText = 0;
-	// document.querySelector('.Enemy-stats').style.display = 'none';
 	if (g.currentEnemy < 8) { 
 		g.audios.defeatSound.play();
 		if (!g.enemies[g.currentEnemy + 1].deated) g.notify();
@@ -486,8 +485,8 @@ function victory(g) {
 		g.audios.wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this SHIT game! 🤩";
 	}
-	const rewards = [35, 59, 80, 100, 125, 150, 170, 189];
-	const durations = [100, 89, 82, 75, 67, 58, 50, 44]
+	const rewards = [35, 59, 80, 100, 125, 150, 170, 189, 200];
+	const durations = [100, 89, 82, 75, 67, 58, 50, 44, 40];
 	var enemDefR = setInterval(( )=> {
 		count++;
 		g.kratos.orbs += 1;
