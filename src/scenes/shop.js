@@ -164,7 +164,6 @@ export function shop(g){
 
 	function leaveShop() {
 		g.audios.returnSound.play();
-		if (g.play === true) g.audios.menuTheme.play()
 		sparta(g);
 	}
 
