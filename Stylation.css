@@ -1,0 +1,1124 @@
+html { overflow-x: hidden }
+
+body {
+	height: 97vh;
+	margin: 0;
+	padding: 12px;
+	background-color: black;
+	cursor: url("Imagery/Hand_default.png"), auto;
+}
+
+:root {
+	--pressing: url("Imagery/Hand_pressing.png");
+	--hover: url("Imagery/Hand_hover.png");
+	--main-menu-img: url("Imagery/Opening menu image.png");
+	--sparta-img: url("Imagery/Sparta.png");
+	--shop-img: url("Imagery/In shop.png");
+	--underworld-img: url("Imagery/In underworld.png");
+	--olympus-img: url("Imagery/Olympus background.png");
+	--boc-cur: url("Imagery/boc-cursor.png");
+}
+
+#version {
+	position: absolute;
+	top: 17px;
+	left: 12px;
+	color: white;
+}
+
+.Noti { 
+    display: none;
+	width: 300px;
+	background-color: #630b05;
+	padding: 8px;
+	color: #9f6c08;
+	text-align: center;
+	font-size: 17px;
+	font-weight: 800;
+	border: 4px double #9e5c08;
+	border-radius: 7px;
+	position: absolute;
+	top: 9cm;
+	right: -11cm;
+	z-index: 2;
+}
+.Noti i { margin-left: 7px }
+
+#Title { 
+	margin-top: 55px;
+	margin-bottom: 25px;
+}
+
+.Game { 
+	display: flex;
+	width: 100%;
+	height: 70%;
+	align-items: center;
+	font-family: GodOfWar;
+}
+
+.Game h1 {
+	width: 50%;
+	margin: 0 auto;
+	border: 4px inset #aa4111;
+	padding: 4cm;
+	text-align: center;
+	color: #852c25; 
+}
+.Game h1:hover { cursor: var(--hover), pointer }
+
+/* --- Main menu styling --- */
+
+.Main-menu {
+	width: 880px;
+	height: 520px;
+	border-radius: 12px;
+	background-image: var(--main-menu-img);
+	padding: 12px;
+}
+
+.Main-menu, .Sparta, .Underworld, .Underworld-battle, .Olympus, .Olympus-battle { cursor: var(--hover), pointer }
+
+.Mm-buttons {
+	max-width: 240px;
+	margin-top: 100px;
+	margin-bottom: 180px;
+	margin-left: 50px;
+}
+
+#m-music, #music, #settings {
+	height: 48px;
+	width: 42px;
+	border-radius: 20px;
+	border: 2px solid #1a1210;
+	margin-bottom: 25px;
+}
+
+#m-music { background-color: #463428 }
+#m-music:hover { background-color: #7a715e }
+
+#m-music, #music:hover, #settings:hover {
+	cursor: var(--pressing), pointer;
+	border: 2px solid #332822;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+#porp {
+	display: none;
+	font-family: Arial;
+	font-size: 14px;
+	color: white;
+}
+
+.Mid {
+	position: relative;
+	width: 85%;
+	min-height: 400px;
+}
+
+#Load-gameB { filter: brightness(70%) }
+
+	/* Options styling */
+
+.Options {
+	display: none;
+	width: 380px;
+	max-height: 400px;
+	background: linear-gradient(rgba(204, 146, 41, 0.8), rgba(70, 52, 40, 0.8), rgba(26, 8, 3, 0.8), rgba(73, 39, 7, 0.8));
+	border-radius: 15px;
+	padding: 14px;
+	z-index: 2;
+	position: relative;
+	left:11cm;
+	font-size: 17px;
+}
+.Options button {
+	width: 55px;
+	height: 32px;
+	float: right;
+	background-color: #9e5c08;
+	border: 2px solid #1a0803;
+    border-radius: 5px;
+	font-weight: 800;
+}
+.Options button:hover {
+	cursor: var(--pressing), pointer;
+	transition: 0.2s;
+	background-color: #cc9229;
+}
+.Options h3 {
+	background: #482708;
+	width: 75%;
+	margin-top: 28px;
+	padding: 8px;
+	border-radius: 5px;
+	color: white;
+	font-weight: 100;
+}
+.Options p {
+	color: lightgray;
+}
+
+.Options #first {
+	margin-top: 50px;
+}
+
+.Options input {
+	-webkit-appearance: none;
+	appearance: none;
+    width: 150px;
+	height: 20px;
+	margin-top: 15px;
+    cursor: var(--pressing), pointer;
+    outline: none;
+    border-radius: 16px;
+}
+
+.Options input::-webkit-slider-runnable-track {
+	height: 20px;
+	background: #8a6636;
+	border-radius: 16px;
+}
+
+.Options input::-moz-range-track {
+	height: 17px;
+	border-radius: 16px;
+}
+
+.Options input::-moz-range-thumb {
+	height: 17px;
+	width: 17px;
+	margin-top: 1px;
+	background-color: #463428;
+	border-radius: 50%;
+}
+
+.Options input::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 17px;
+	width: 17px;
+	margin-top: 1px;
+	background-color: #cc9229;
+	border-radius: 50%;
+	border: 2px solid #463428;
+}
+
+#music-volume, #ambience-volume { color: #cc9229 }
+
+/* --- Game styling --- */
+
+#Kratos { position: absolute }
+
+.Sparta, .Shop, .Underworld, .Olympus, .Underworld-battle, .Olympus-battle {
+	width: 1000px;
+	position: relative;
+	border-radius: 12px;
+	/* margin-top: 2.4cm; */
+	padding: 12px;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+	/* Settings styling */
+
+.Togs { position: relative }
+
+#music, #settings {
+	border: 1px solid #704028;
+	background-color: #380808;
+	color: #704028;
+	z-index: 5;
+}
+#music:hover, #settings:hover { border: 1px solid #a88868; }
+
+#settings {
+	float: right;
+}
+
+#music-t, #settings-t {
+	display: none;
+	font-size: 14px;
+	color: #d8c8a8;
+}
+
+#settings-t {
+	position: absolute;
+	top: 17px;
+	right: 52px;
+}
+
+.Settings {
+	display: none;
+	width: 100%;
+	height: 100%;
+	z-index: 4;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	border-radius: 8px;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(5px);
+	font-size: 17px;
+	color: #a88868;
+}
+
+.Settings .con {
+	width: 280px;
+	max-height: 740px;
+	border: 3px solid #614051;
+	border-radius: 8px;
+	padding: 8px;
+	background: linear-gradient(rgba(56, 8, 8, 0.8), rgba(112, 64, 40, 0.8), rgba(90, 8, 8, 0.8));
+}
+
+.Settings p {
+	text-align: center;
+}
+
+#Hbar-set, #Music-set, #Ambience-set, #Controls-set {
+	background: #5a2828;
+	padding: 8px;
+	border-radius: 4px;
+	font-size: 20px;
+	color: #a88868;
+}
+
+#Hbar-set:hover, #Music-set:hover, #Ambience-set:hover, #Controls-set:hover {
+	cursor: var(--pressing), pointer;
+	background: #490808;
+	transition: 0.25s ease;
+}
+
+.Music-con, .Ambience-con {
+	display: none;
+	margin-top: 15px;   /* #c6bebb */                       
+	padding: 12px;
+	justify-content: space-evenly;
+	align-items: center;
+}
+
+.Settings #music-vol, .Settings #amb-vol { display: none }
+
+#music-mutei, #music-lvi, #music-hvi,
+#amb-mutei, #amb-lvi, #music-hvi {
+	color: #a88868;
+}
+
+#music-mutei:hover, #music-lvi:hover, #music-hvi:hover,
+#amb-mutei:hover, #amb-lvi:hover, #amb-hvi:hover {
+	cursor: var(--pressing), pointer;
+	color: #2e271d;
+}
+#music-vol, #amb-vol { color: #d8c8a8 }
+#other-music-volume, #other-ambience-volume { 
+	font-size: 14px; 
+	color: #f8f8e0;
+}
+
+.Controls-con { 
+	display: none;
+	max-height: 230px;
+	margin-bottom: 8px;
+	overflow: auto;
+}
+.Controls-con::-webkit-scrollbar {
+	width: 7px;
+	height: 95%;
+}
+.Controls-con::-webkit-scrollbar-track {
+	border-radius: 4px;
+	background-color: rgba(216, 200, 168, 0.3);
+}
+.Controls-con::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: rgba(216, 200, 168, 0.5);
+}
+
+.controls {
+	margin: 7px 0;
+	padding: 7px;
+	color: #d8c8a8;
+}
+.controls span { 
+	display: inline-block;
+	width: 60px;
+	margin-right: 18px;
+	border: 2px inset #d8c8a8;
+	border-radius: 4px;
+	padding: 5px;
+	text-align: center;
+}
+
+#Return-tmm {
+    padding: 8px;
+    border-radius: 4px;
+    background: #704028;
+    font-size: 20px;
+    font-family: GodOfWar;
+    color: #0d0d0d;
+    width: 100%;
+}
+#Return-tmm:hover {
+    cursor: var(--pressing), pointer;
+    transition: .3s linear;
+    background: #0d0d0d;
+    color: #a88868;
+}
+
+.Warning {
+	display: none;
+	background: #463428;
+	width: 55%;
+	padding: 8px;
+	margin: 172px auto;
+}
+.Warning p {
+	color: white;
+}
+.Warning button {
+	height: 30px;
+	width: 2.5cm;
+	background-color: #9e5c08;
+    border: none;
+    padding-bottom: 2px;
+    margin-bottom: 17px;
+	margin-right: 8px;
+	border-radius: 10px;
+    color: #0a0a23;
+	font-size: 17px;
+	font-family: GodOfWar;
+}
+.Warning button:hover {
+	cursor: var(--pressing), pointer;
+	transition: all 0.3s ease 0s;
+	background-color:#cc9229;
+}
+
+/* --- Sparta styling --- */
+
+.Sparta { background-image: var(--sparta-img) }
+
+.Sparta .Mid { height: 440px }
+
+.Sparta #Kratos {
+	bottom: 0;
+	right: 42%;
+}
+
+.Sparta .Places { 
+    position: absolute;
+    top: 4.7cm;
+    right: 2cm;
+    max-width: 240px;
+	margin-top: 80px;
+	margin-left: 50px;
+}
+
+.Sparta .Places button {
+    height: 45px;
+	width: 5.8cm;
+    background-color: #0a0a23;
+    border: none;
+    border-radius: 10px;
+    padding: 8px;
+    margin-bottom: 20px;
+    color: #cfac84; /* #4b3f33 */
+	font-size: 19px;
+	font-family: GodOfWar;
+    animation: rotateX linear .8s;
+}
+.Sparta .Places button:hover { cursor: var(--pressing, pointer) }
+
+/* #Shop-button:hover { background-color: #232d34 } /* #09090b */
+/* #Underworld-button:hover {background-color: #25201c } /* #564c39 */
+/* #Olympus-button:hover { background-color: #5e4915 } /* #3e5980 */
+
+/* --- Shop styling --- */
+
+.Shop { background-image: var(--shop-img) }
+
+.Shop .Mid { height: 550px }
+
+.Shop .Mid img { 
+	position: absolute;
+	cursor: var(--hover), pointer;
+	animation: appear 1.2s linear;
+	transition: 0.4s ease;
+}
+
+.Shop .Mid #Kratos {
+	display: none;
+	height: 280px;
+	width: 184px;
+	animation: none;
+}
+
+.Shop .Mid button {
+	position: absolute;
+	top: 4cm;
+	left: 5.8cm;
+	background-color: #9e5c08;
+    border: none;
+    padding-bottom: 2px;
+	height: 35px;
+	width: 4.5cm;
+	border-radius: 10px;
+    color: #0a0a23;
+	font-size: 20px;
+	font-family: GodOfWar;
+	animation: grow 2s linear;
+}
+.Shop .Mid button:hover {
+	cursor: var(--pressing), pointer;
+	transition: all 0.4s ease 0s;
+	background-color: #564328;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+	/* Weapon positioning */
+
+#Potion {
+	bottom: 5.5cm;
+	right: 1.2cm;
+	height: 58px;
+	width: 52;
+	margin: 0;
+}
+
+#Nemesis-whip {
+	bottom: 1.4cm;
+	right: 2cm;
+	height: 95px;
+	width: 222px;
+	margin: 0;
+	transform: rotateX(417deg)
+}
+#Nemesis-whip:hover {
+	transform: rotateX(360deg) rotateZ(30deg);
+	bottom: 2.4cm;
+	transition: 0.4s ease;
+}
+
+#Gauntlet-of-Zeus {
+	bottom: 1.5cm;
+	left: 0.5cm;
+	width: 97px;
+	height: 170px;
+	margin: 0;
+	transform: rotateZ(435deg) rotateY(300deg);
+}
+#Gauntlet-of-Zeus:hover {
+	transform: rotateY(360deg) rotateZ(400deg);
+	transition: 0.4s ease;
+}
+
+#Claws-of-Hades { 
+	top: 4.8cm;
+	left: -1.2cm;
+	height: 75px;
+	width: 170px ;
+	margin: 0;
+	transform: rotateX(400deg) rotateZ(375deg)
+}
+#Claws-of-Hades:hover {
+	transform: rotateX(360deg) rotateZ(360deg);
+	transition: 0.4s ease;
+}
+
+#Blade-of-Olympus {
+	height: 55px;
+	width: 195px;
+	bottom: 4.7cm;
+	right: 10.2cm;
+	margin: 0;
+	transform: rotateX(412deg) rotateZ(345deg)
+}
+#Blade-of-Olympus:hover {
+	transform: rotateX(360deg) rotateZ(360deg);
+	bottom: 4.5cm;
+	transition: 0.4s ease;
+}
+
+	/* Weapon or item info stying */
+
+.Dialogue, .Potion-info, .Whip-info, .Gauntlet-info, .Claws-info, .Blade-info {
+    display: none;
+	max-width: 220px;
+	max-height: 80px;
+	padding: 8px;
+	position: absolute;
+	border-radius: 5px;
+	background-color: rgba(54, 54, 54, 0.8);
+	color: lightgrey;
+	text-align: center;
+	line-height: 17px;
+	font-weight: 700;
+}
+.Dialogue {
+	top: 3.5cm;
+	right: 2.5cm;
+	animation: appear 0.8s linear;
+}
+.Potion-info {
+	bottom: 5.5cm;
+	right: 2.8cm;
+}
+.Whip-info { 
+	bottom: 4.2cm;
+	right: 7.2cm;
+}
+.Gauntlet-info { 
+	bottom: 3.2cm;
+	left: 4cm;
+}
+.Claws-info { 
+	top: 3.4cm;
+	left: 0;
+}
+.Blade-info { 
+	bottom: 6.2cm; 
+	left: 7.5cm;
+}
+
+/* --- Underworld styling --- */
+
+.Underworld { background-image: var(--underworld-img) }
+
+.Underworld .Stats { z-index: 0 }
+
+.Underworld center { margin-top: 2cm }
+
+.Underworld center #Text { height: auto }
+
+.Underworld .Enemy-desc { 
+	position: relative;
+	max-width: 580px;
+	transform: translateY(1cm);
+	border: 5px outset rgb(24, 23, 18); /* #7e5b17 */
+	background-color: rgb(80, 16, 3, 0.2); /* rgba(126, 91, 23, 0.2) */
+	z-index: 1;
+} 
+
+.Underworld .Enemy-desc img { 
+	margin: 11px auto;
+	max-height: 280px;
+}
+
+.Underworld .Enemy-desc button { 
+	display: block;
+	background-color: #9e5c08;
+    border: none;
+    padding-bottom: 2px;
+	margin-bottom: 5px;
+	height: 35px;
+	width: 4.5cm;
+	border-radius: 10px;
+    color: #0a0a23;
+	font-size: 20px;
+	font-family: GodOfWar;
+	animation: grow linear 2s;
+}
+.Underworld .Enemy-desc button:hover {
+	cursor: var(--pressing), pointer;
+	transition: all 0.4s ease 0s;
+	background-color: #7c3a06;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+#prev, #next { 
+	position: absolute;
+	bottom: 45%;
+	width: 140px;
+	border: 1px solid rgb(126, 91, 23);
+	border-top: none;
+	background-color: rgba(80, 16, 3, 0.4);
+	font-size: 22px;
+	color: rgb(126, 91, 23);
+	cursor: var(--pressing), pointer;
+}
+#prev:hover, #next:Hover { 
+	background-color: rgba(80, 16, 3, 0.7)
+}
+
+#prev {
+	left: -1.5cm;
+	transform: rotate(-90deg);
+}
+
+#next {
+	right: -1.5cm;
+	transform: rotate(90deg);
+}
+
+.Underworld .Hotbar { margin-top: 0 }
+
+	/* Battle area styling */
+
+.Underworld-battle { background-image: url("Imagery/Underworld battle area.png") }
+
+/* --- Olympus styling --- */
+
+.Olympus { background-image: var(--olympus-img) }
+
+.Olympus .Stats { z-index: 0 }
+
+.Olympus center { margin-top: 2cm }
+
+.Olympus center #Text { 
+	height: auto;
+	background-color: #262717;
+}
+
+.Olympus .Enemy-desc { 
+	position: relative;
+	max-width: 580px;
+	transform: translateY(1.2cm);
+	border: 5px outset rgb(80, 16, 3);
+	background-color: rgb(80, 16, 3, 0.2);
+	z-index: 1;
+} 
+
+.Olympus .Enemy-desc img { 
+	margin: 11px auto;
+	max-height: 280px;
+}
+
+.Olympus .Enemy-desc button { 
+	display: block;
+	background-color: #bf8008;
+    border: 1px solid #0a0a23;
+    padding-bottom: 2px;
+	margin-bottom: 5px;
+	height: 35px;
+	width: 4.5cm;
+	border-radius: 10px;
+    color: #0a0a23;
+	font-size: 20px;
+	font-family: GodOfWar;
+	animation: grow linear 2s;
+}
+.Olympus .Enemy-desc button:hover {
+	cursor: var(--pressing), pointer;
+	transition: all 0.4s ease 0s;
+	background-color: #adaaa5;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+.Olympus .Hotbar { margin-top: 0 }
+
+/* Battle area styling */
+
+.Olympus-battle { background-image: url("Imagery/Olympus battle area.png") }
+
+	/* Enemy info styling */
+
+#Enemy-info {
+	width: 90%;
+	margin: 11px 0;
+	padding: 5px;
+	border-radius: 8px;
+	border-top: 3px ridge #501003;
+	border-bottom: 3px ridge #501003;
+	background-color: rgba(80, 16, 3, 0.4);
+	text-align: center;
+	font-size: 20px;
+	color: lightgray; /* #9f7c27 */
+	animation: slide .8s linear;
+}
+
+.Enemy-damage {
+	padding: 8px;
+	position: absolute;
+	top: 3.5cm;
+	right: 1.5cm;
+	z-index: 2;
+	border-radius: 5px;
+	background-color: #501003;
+	font-weight: 800;
+}
+
+.Enemy-damage span { color: #9c9a95 }
+
+/* --- Stats styling --- */
+
+.Stats {
+	position: absolute;
+	top: 5.7cm;
+	max-width: 600px;
+}
+
+.Stats .Stats-blade { position: relative }
+
+.Stats .Stats-blade img {
+	height: 75px;
+	width: 285px;
+}
+
+#Health-text {
+	position: absolute;
+	top: 30px;
+	right: 80px;
+	opacity: 0.9;
+	color:  #c78d2c;
+}
+#Health { color: #d3d3d3; }
+
+#Orbs-text {
+	display: flex;
+	align-items: center;
+	position: absolute;
+	top: 48px;
+	left: 0;
+	font-size: 14px;
+}
+#Orbs-text img {
+	height: 17px;
+	width: 17px;
+}
+#Orbs {
+	color: #e3000c;
+}
+
+.Health-bar {
+	display: none;
+	position: absolute;
+	top: 34px;
+	left: 32%;
+	height: 10px;
+	width: 75px;
+	border-radius: 17px;
+	box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 1px 2px rgba(255,255,255,0.3);
+	background-color: rgba(104, 8, 8, 0.5);
+	overflow: hidden;
+	opacity: 0.7;
+	transition: width 0.5s ease-in-out;
+}
+
+/* --- Enemy stats styling --- */
+
+.Enemy-stats {
+	position: absolute;
+	top: 6.2cm;
+	right: 7.8cm;
+	z-index: 2;
+	border-radius: 12px;
+	width: 400px;
+	padding: 8px;
+	text-align: center;
+	color: #7c6611;
+	font-size: 21px;
+	background-color: #2e1a13;
+	animation: slide 0.8s linear;
+}
+
+.Ehealth-bar {
+	display: inline-block;
+	height: 20px;
+	width: 100px;
+	border: 2px solid black;
+	border-radius: 8px;
+	transform: translateY(5px);
+	margin-right: 8px;
+	overflow: hidden;
+}
+
+.filler, .Efiller {
+	width: 100%;
+	height: 100%;
+	background: #32cd33;
+}
+
+.filler::after, .Efiller::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 50%;
+	background: linear-gradient(
+		to bottom,
+		rgba(255,255,255,0.4),
+		rgba(255,255,255,0.05)
+	);
+	border-radius: inherit;
+	pointer-events: none;
+}
+
+.Efiller {
+	background: #7c6611;
+}
+
+/* --- Description text styling --- */
+
+#Main-text, #Text {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 70%;
+	height: 90px;
+	font-size: 21px;
+	color: white;
+	background-color: rgba(34, 32, 33, 0.7);
+	border-radius: 7px;
+    padding: 10px;
+    margin-bottom: 15px;
+    animation: appear .8s linear;
+}
+
+#Text {
+	display: block;
+	max-height: 80px;
+	font-size: 20px;
+	color: #ffad15;
+}
+
+/* --- Battle styling --- */
+
+.Underworld-battle center #Text, .Olympus-battle center #Text { 
+	height: auto;
+	margin-top: 2cm;
+}
+
+canvas {
+	width: 100%;
+	height: 480px;
+}
+
+#You-dead { 
+	height: 400px;
+	width: 1000px;
+	position: absolute;
+	bottom: 2.2cm;
+	opacity: 0.5;
+}
+
+.Underworld-battle center button, .Olympus-battle center button, #You-dead { display: none }
+
+/* Buttons styling */
+
+.Mm-buttons button, .Underworld-battle center button, .Olympus-battle center button {
+	background-color: #4b3f33; /* #9e5c08; */
+    border: none;
+    padding-bottom: 2px;
+    margin-bottom: 17px;
+	margin-right: 8px;
+	height: 35px;
+	width: 5.2cm;
+	border-radius: 10px;
+    color: #0a0a23;
+	font-size: 20px;
+	font-family: GodOfWar;
+}
+
+.Mm-buttons button { 
+	background: #7a715e;
+	font-weight: 700;
+	font-size: 24px;
+}
+
+.Buttons { 
+    display: none;
+	width: 650px;
+    text-align: center;
+	margin: 0 auto;
+}
+.Buttons { display: block; margin-bottom: 15px }
+.Sparta center i { margin-left: 5px }
+
+.Mm-buttons button:hover, .Underworld-battle center button:hover, .Olympus-battle center button:hover {
+	cursor: var(--pressing), pointer;
+	transition: all 0.3s ease 0s;
+	background-color: darkgrey; /* #a23a15; */
+	color: #630b05;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+/* Hotbar styling */
+
+.Hotbar {
+	position: relative;
+	margin-top: 24px;
+	margin-bottom: 12px;
+	z-index: 1;
+}
+
+#Pslot, #Slot1, #Slot2, #Slot3, #Slot4, #Slot5 {
+	position: relative;;
+	display: inline-block;
+	margin: 0 auto;
+	width: 55px;
+	height: 45px;
+	background-color: rgba(80, 16, 3, 0.5); /* rgba(90, 57, 16, 0.5) */
+	border: 1px solid #5a3910;
+	background-size: cover;
+}
+
+#Slot1 { border: 4px ridge #5a3910 }
+
+#Pslot:hover, #Slot1:hover, #Slot2:hover, #Slot3:hover, #Slot4:hover, #Slot5:hover {
+	cursor: var(--pressing), pointer;
+}
+
+#Pslot {
+	margin-right: 50px;
+	font-weight: 700;
+	color: white;
+}
+#Pslot:hover { border: 3px ridge #5a3910 }
+
+#Pslot span { 
+   float: left; 
+   margin-top: 2px;
+   margin-left: 4px;
+}
+#potion-quantity {
+	display: none;
+	position: absolute;
+	bottom: -14px;
+	right: 2px;
+}
+
+#Slot1 { background-image: url('./Imagery/boc.png') }
+
+#Slot2 {
+	background-position: center;
+}
+
+#Slot3:hover {
+	transition: all 0.3s ease 0s;
+	background-position: center;
+}
+
+#Slot5:hover {
+	transition: all 0.3s ease 0s;
+	background-position: center;
+}
+
+#slot-num {
+	position: absolute;
+	top: -8px;
+	right: 4px;
+	font-size: 12px;
+	color: #a88868;
+}
+
+#Weapon-identifier {
+	display: none;
+	position: absolute;
+	background-color: rgba(45, 45, 50, 0.8);
+	color: grey;
+	font-family: Tahoma, sans-serif;
+	font-size: 14px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	white-space: nowrap;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	z-index: 2;
+	pointer-events: none;
+	box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#phone-warning { 
+	display: none;
+	margin-top: 4cm;
+	width: 80%;
+	text-align: center;
+	font-family: Montserrat;
+	color: #630b05; 
+}
+
+/* Animations */
+
+@keyframes notify {
+    from {
+	    right: -8cm;
+		opacity: 0;
+	} to {	
+		right: 11px;
+		opacity: 1;
+	}
+}
+@keyframes hide {
+	from {
+		right: 11px;
+		opacity: 1;
+	} to {
+		right: -8cm;
+		opacity: 0;
+	}
+}
+
+@keyframes appear { from { opacity: 0.1 } to { opacity: 1 } }
+@keyframes disappear { from { opacity: 1 } to { opacity: 0.1 } }
+
+@keyframes slide {
+	from {
+		margin-left: 80%;
+	 } to {
+		margin-left: 0%;
+	}
+}
+
+@keyframes slide-from-left {
+	from {
+		right: 20cm;
+	} to {
+		right: 0;
+	}
+}
+
+@keyframes slide-from-right {
+	from {
+		left: 20cm;
+	} to {
+		left: 0;
+	}
+}
+
+@keyframes grow {
+	20% { transform: scale(0.2, 0.2) }
+	40% { transform: scale(0.4, 0.4) }
+	60% { transform: scale(0.6, 0.6) }
+	80% { transform: scale(0.8, 0.8) }
+}
+
+@keyframes tilt-shaking {
+	0% { transform: rotate(0deg); }
+	25% { transform: rotate(5deg); }
+	50% { transform: rotate(0eg); }
+	75% { transform: rotate(-5deg); }
+	100% { transform: rotate(0deg); }
+}
+
+@keyframes vertical-shaking {
+	0% { transform: translateY(0) }
+	25% { transform: translateY(5px) }
+	50% { transform: translateY(-5px) }
+	75% { transform: translateY(5px) }
+	100% { transform: translateY(0) }
+}
+
+@keyframes horizontal-shaking {
+	0% { transform: translateX(0) }
+	25% { transform: translateX(5px) }
+	50% { transform: translateX(-5px) }
+	75% { transform: translateX(5px) }
+	100% { transform: translateX(0) }
+}
+
+@keyframes tilt-n-move-shaking {
+	0% { transform: translate(0, 0) rotate(0deg); }
+	25% { transform: translate(5px, 5px) rotate(5deg); }
+	50% { transform: translate(0, 0) rotate(0eg); }
+	75% { transform: translate(-5px, 5px) rotate(-5deg); }
+	100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes opacity { 50% { opacity: 0 } }
+
+@keyframes rotateX { 100% { transform: rotateX(360deg) }}
+
+@keyframes rotateY { 100% { transform: rotateY(360deg) } }
+
+@keyframes rotateZ { 100% { transform: rotateZ(360deg) }}
