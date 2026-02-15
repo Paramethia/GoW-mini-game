@@ -7,11 +7,11 @@ export function hotbar(g){
                     <font color="#cc9229"><span>F</span></font>
                     <p id="potion-quantity">${g.potions}</p>
                 </span>
-                <span id="Slot1"></span>
-                <span id="Slot2"></span>
-                <span id="Slot3"></span>
-                <span id="Slot4"></span>
-                <span id="Slot5"></span>
+                <span id="Slot1"><p id="slot-num">1</p></span>
+                <span id="Slot2"><p id="slot-num">2</p></span>
+                <span id="Slot3"><p id="slot-num">3</p></span>
+                <span id="Slot4"><p id="slot-num">4</p></span>
+                <span id="Slot5"><p id="slot-num">5</p></span>
             </center>
         </div>
     `
@@ -86,7 +86,7 @@ export function hotbarInit(g) {
 
 			// Check if the weapon is in inventory
 			if (weaponsClaimed[keyIndex]) {
-				sounds[keyIndex].play();
+				sounds[keyIndex].cloneNode().play();
 				identifier.style.display = 'inline';
 				identifier.innerText = identifiers[keyIndex];
 				identifier.style.top = '-35px';

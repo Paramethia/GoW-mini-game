@@ -20,8 +20,8 @@ export function battle(g) {
 	// ===== Battle constants =====
 
 	const gravity = 0.8;
-	const groundLevel = 430; 
-	const jumpPower = -16;
+	const groundLevel = 470; 
+	const jumpPower = -18;
 	const hitFlashTime = 200; // ms to stay tinted red
 	const enemy = g.enemies[g.currentEnemy];
 	
@@ -36,9 +36,7 @@ export function battle(g) {
 	kratosStandR.src = "Imagery/Kratos standing right.png";
 
 	const kratosFightingStanceL = new Image();
-	kratosFightingStanceL.src = "Imagery/Kratos fighting stance left.png";
 	const kratosFightingStanceR = new Image();
-	kratosFightingStanceR.src = "Imagery/Kratos fighting stance right.png";
 
 	const kratosWalkLeft = new Image();
 	kratosWalkLeft.src = "Imagery/Kratos walkin left.png";
@@ -55,32 +53,44 @@ export function battle(g) {
 	kratosJumpsRight.src = "Imagery/Kratos jumps right.png";
 	
 	const kratosAttackLeft = new Image();
-	kratosAttackLeft.src = "Imagery/Kratos attacks left.png";
 	const kratosAttackRight = new Image();
-	kratosAttackRight.src = "Imagery/Kratos attacks right.png";
 	
 	const kratosAirAttackLeft = new Image();
-	kratosAirAttackLeft.src = "Imagery/Kratos aerial attack left.png";
 	const kratosAirAttackRight = new Image();
-	kratosAirAttackRight.src = "Imagery/Kratos aerial attack right.png";
+	
+	const kratosBlocksLeft = new Image();
+	const kratosBlocksRight = new Image();
+
+	const kratosDeadL = new Image();
+	kratosDeadL.src = "Imagery/Kratos dead left.png";
+	const kratosDeadR = new Image();
+	kratosDeadR.src = "Imagery/Kratos dead right.png";
 
 	const enemyLeft = new Image();
 	enemyLeft.src = `Imagery/${enemy.name} facing left.png`;
 	const enemyRight = new Image();
 	enemyRight.src = `Imagery/${enemy.name} facing right.png`;
 	
-	const enemyRunsL = new Image();
-	if (g.currentEnemy > 5) enemyRunsL.src = `Imagery/${enemy.name} running left.png`;
-	const enemyRunsR = new Image();
-	if (g.currentEnemy > 5) enemyRunsR.src = `Imagery/${enemy.name} running right.png`;
+	const enemyChasesL = new Image();
+	enemyChasesL.src = `Imagery/${enemy.name} chasing left.png`;
+	const enemyChasesR = new Image();
+	enemyChasesR.src = `Imagery/${enemy.name} chasing right.png`;
 	
 	const enemyAttackR = new Image();
 	enemyAttackR.src = `Imagery/${enemy.name} attacks right.png`;
 	const enemyAttackL = new Image();
 	enemyAttackL.src = `Imagery/${enemy.name} attacks left.png`;
-	
-	const kratosAttackSounds = [g.audios.attacksHoplite, g.audios.attacksBanshee, g.audios.attacksSatyr, g.audios.attacksMinotaur, g.audios.attacksMedusa, g.audios.attacksCyclops, g.audios.attacks, g.audios.attacks2, g.audios.attacksZeus];
-	const enemyAttackSounds = [g.audios.hopliteAttacks, g.audios.bansheeAttacks2, g.audios.satyrAttacks, g.audios.minotaurAttacks, g.audios.bansheeAttacks2, g.audios.cyclopsAttacks, g.audios.herculesAttacks, g.audios.herculesAttacks2, g.audios.zeusAttacks]
+
+	function updateKratosImages() {
+		kratosFightingStanceL.src = `Imagery/Kratos fighting stance left (${g.weapons[g.currentWeapon].name})${!g.currentWeapon && attacked ? '-lit' : ''}.png`;
+		kratosFightingStanceR.src = `Imagery/Kratos fighting stance right (${g.weapons[g.currentWeapon].name})${!g.currentWeapon && attacked ? '-lit' : ''}.png`;
+		kratosAttackLeft.src = `Imagery/Kratos attacks left with ${g.weapons[g.currentWeapon].name.toLowerCase()}.png`;
+		kratosAttackRight.src = `Imagery/Kratos attacks right with ${g.weapons[g.currentWeapon].name.toLowerCase()}.png`;
+		kratosAirAttackLeft.src = `Imagery/Kratos aerial attack left with ${g.weapons[g.currentWeapon].name.toLowerCase()}.png`;
+		kratosAirAttackRight.src = `Imagery/Kratos aerial attack right with ${g.weapons[g.currentWeapon].name.toLowerCase()}.png`;
+		kratosBlocksLeft.src = `Imagery/Kratos blocking left with ${g.weapons[g.currentWeapon].name.toLowerCase()}.png`;
+		kratosBlocksRight.src = `Imagery/Kratos blocking right with ${g.weapons[g.currentWeapon].name.toLowerCase()}.png`;
+	}
 	
 	// ===== Dodge settings =====
 
@@ -89,13 +99,41 @@ export function battle(g) {
 	g.kratos.dodging = false;
 	g.kratos.dodgeEnd = 0;
 
+	// ===== Knock back =====
+
+	let knockbackStrength = 11;
+
+	// ==== Block settings ====
+
+	g.kratos.blocking = false;
+	g.kratos.blockStart = 0;
+	g.kratos.blockDuration = 1700;
+	g.kratos.blockCooldown = 2800;
+	g.kratos.lastBlock = 0;
+
+	// ===== Enemy setup ==== 
+
+	enemy.velX = 0;
+	enemy.velY = 0;
+	enemy.onGround = true;
+	enemy.attacking = false;
+	enemy.facing = "left";
+	enemy.alpha = 1;
+	enemy.hitUntil = 0;
+	enemy.lastAttack = 0;
+	enemy.deathTime = 0;
+	enemy.stunned = false;
+	enemy.stunEnd = 0;
+	enemy.knockbackVel = 0;
+
 	// ===== Input =====
 	
-	document.addEventListener("keydown", g.keydownHandler)
+	document.addEventListener("keydown", g.keydownHandler);
 	document.addEventListener("keyup", g.keyupHandler);
-	
+
 	// ===== Battle functions =====
 	
+	let attacked = false;
 	let defeated = false;
 	
 	const timeOuts = [5200, 4000, 6200];
@@ -108,15 +146,15 @@ export function battle(g) {
 		ctx.fillStyle = "#ddd";
 		switch (g.currentEnemy) {
 			case 6:
-				ctx.fillText("You may have brute force... but you lack speed!", 420, 270);
+				ctx.fillText("You may have brute force... but you lack speed!", 420, 300);
 			break;
 			case 7:
-				ctx.fillText("Hello... brother.", 500, 270)
+				ctx.fillText("Hello... brother.", 500, 300)
 			break;
 			case 8:
-				if (!firstLineC && !secondLineC) ctx.fillText("Such chaos... I will have much to do after I kill you.", 420, 270);
-				if (firstLineC && !secondLineC) ctx.fillText("Face me father... it is time to end this!", 35, 289);
-				if (firstLineC && secondLineC) ctx.fillText("Yes my son! It is time!", 670, 270);
+				if (!firstLineC && !secondLineC) ctx.fillText("Such chaos... I will have much to do after I kill you.", 420, 285);
+				if (firstLineC && !secondLineC) ctx.fillText("Face me father... it is time to end this!", 35, 295);
+				if (firstLineC && secondLineC) ctx.fillText("Yes my son! It is time!", 670, 285);
 			break;
 		}
 	}
@@ -131,21 +169,16 @@ export function battle(g) {
 			firstLineC = true;
 		}, 6270);
 		setTimeout(() => { secondLineC = true }, 11000);
-		setTimeout(() => {  lineComplete = true }, 14200);
+		setTimeout(() => { lineComplete = true }, 14200);
 	}
 
 	function updateKratos() {
-		if (g.kratos.dead) {
-			// Fade out and "fall" after death
-			g.kratos.alpha -= 0.02
-			if (g.kratos.alpha <= 0) g.kratos.alpha = 0
-			if (g.kratos.y <= 800) g.kratos.y += 1.5
-			return;
-		}
-		
+		if (g.kratos.dead) return
+
 		let speed = g.kratos.speed;
 
 		// Handle dodge
+
 		if (g.kratos.dodging) {
 			speed *= dodgeSpeedMultiplier;
 			if (Date.now() > g.kratos.dodgeEnd) {
@@ -154,14 +187,19 @@ export function battle(g) {
 		}
 		
 		// Horizontal movement
-		if (g.keys["ArrowLeft"] || g.keys["a"] || g.keys["A"]) {
-			if (g.currentEnemy > 5 && !enemy.defeated) { lineComplete ? g.kratos.velX = -speed : g.kratos.velX = 0 } else { g.kratos.velX = -speed }
-			g.kratos.facing = "left";
-		} else if (g.keys["ArrowRight"] || g.keys["d"] || g.keys["D"]) {
-			if (g.currentEnemy > 5 && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
-			g.kratos.facing = "right";
-		} else {
+		const blockingGroundAttack = g.kratos.attacking && g.kratos.onGround;
+		if (blockingGroundAttack || g.kratos.blocking) {
 			g.kratos.velX = 0;
+		} else {
+			if (g.keys["ArrowLeft"] || g.keys["a"] || g.keys["A"]) {
+				if (g.currentEnemy > 5 && !enemy.defeated) { lineComplete ? g.kratos.velX = -speed : g.kratos.velX = 0 } else { g.kratos.velX = -speed }
+				g.kratos.facing = "left";
+			} else if (g.keys["ArrowRight"] || g.keys["d"] || g.keys["D"]) {
+				if (g.currentEnemy > 5 && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
+				g.kratos.facing = "right";
+			} else {
+				g.kratos.velX = 0;
+			}
 		}
 		
 		// Only block overlap if not dodging and if the enemy is not defeated
@@ -171,23 +209,34 @@ export function battle(g) {
 
 		// Jump
 		if (g.keys[" "] && g.kratos.onGround) {
-			g.audios.evadeSound.play();
+			g.audios.evadeSound.cloneNode().play();
 			g.kratos.velY = jumpPower;
 			g.kratos.onGround = false;
 			lineComplete = true;
 		}
 
 		// Attack with e
-		if (g.keys["e"] && Date.now() - g.kratos.lastAttack > g.kratos.aC && enemy.health !== 0) {
+		if (g.keys["e"] && Date.now() - g.kratos.lastAttack > g.kratos.aC && enemy.health !== 0 && !g.kratos.blocking) {
 			g.kratos.attacking = true;
 			g.kratos.attackEnd = Date.now() + 1474;
 			g.kratos.lastAttack = Date.now();
+			attacked = true;
 
 			// Check if enemy is in range
 			if (Math.abs(g.kratos.x - enemy.x) < g.kratos.aR && Math.abs(g.kratos.y - enemy.y) < g.kratos.h) {
-				kratosAttackSounds[g.currentEnemy].play();
+				enemy.hitSound.cloneNode().play();
 				enemy.health -= g.weapons[g.currentWeapon].damage;
 				enemy.hitUntil = Date.now() + hitFlashTime; // flash red
+
+				// Knockback
+				enemy.knockbackVel = g.kratos.facing === "right" ? knockbackStrength : -knockbackStrength;
+				enemy.stunned = true;
+				enemy.stunEnd = Date.now() + 700;
+
+				// Ensures the enemy stops its current attack
+				enemy.attacking = false;
+				enemy.velX = 0;
+
 				if (enemy.health <= 0) {
 					enemy.health = 0;
 					enemy.deathTime = Date.now();
@@ -196,37 +245,40 @@ export function battle(g) {
 						localStorage.setItem(`${enemy.name.toLowerCase()}Defeated`, enemy.defeated);
 					}
 				}
-				document.getElementById('Enemy-health').innerText = enemy.health;
 				document.querySelector('.Efiller').style.width = `${enemy.health}%`;
-				
-				// Hop effect
-				const hopHeight = 10; // pixels
-				const hopDistance = (g.kratos.facing === "right" ? 5 : -5); // toward enemy
-				const hopDuration = 450; // ms
-
-				// Temporarily adjust position
-				g.kratos.y -= hopHeight;
-				g.kratos.x += hopDistance;
-
-				// Reset after hop duration
-				setTimeout(() => {
-					enemy.y = groundLevel;
-				}, hopDuration);
 			}
 		}
 
-        // Dodge
+		g.keys['e'] = false;
+		// If attack duration expired, reset
+		if (g.kratos.attacking && Date.now() > g.kratos.attackEnd) {
+			g.kratos.attacking = false;
+			g.keys['e'] = false;
+		}
 
+		// Block with q
+		if (g.keys["q"] && !g.kratos.blocking && Date.now() - g.kratos.lastBlock > g.kratos.blockCooldown) {
+			g.kratos.blocking = true;
+			g.kratos.blockStart = Date.now();
+		}
+
+		// End block after duration
+		if (g.kratos.blocking && Date.now() - g.kratos.blockStart > g.kratos.blockDuration) {
+			g.kratos.blocking = false;
+			g.kratos.lastBlock = Date.now();
+			g.keys["q"] = false;
+		}
+
+		g.keys["q"] = false;
+
+        // Dodge
         if (g.keys["Shift"] && !g.kratos.dodging) {
             g.audios.evadeSound.play();
 			g.kratos.dodging = true;
 			g.kratos.dodgeEnd = Date.now() + dodgeDuration;
         }
-		
-		// If attack duration expired, reset
-		if (g.kratos.attacking && Date.now() > g.kratos.attackEnd) {
-			g.kratos.attacking = false;
-		}
+
+		g.keys["Shift"] = false;
 
 		// Apply physics
 		g.kratos.velY += gravity;
@@ -250,7 +302,7 @@ export function battle(g) {
 		if (enemy.health === 0) {
 			// Fade out and "fall" after death
 			enemy.alpha -= 0.02;
-			if (enemy.y <= 800) enemy.y += 1.5;
+			//if (enemy.y <= 800) enemy.y += 1.5;
 			if (enemy.alpha <= 0) enemy.alpha = 0
 			if (!defeated) victory(g)
 			defeated = true;
@@ -258,6 +310,23 @@ export function battle(g) {
 		}
 		
 		const distance = g.kratos.x - enemy.x;
+
+		// Handle stun
+		if (enemy.stunned) {
+			// Apply knockback
+			enemy.x += enemy.knockbackVel;
+			// Gradually slow knockback down
+			enemy.knockbackVel *= 0.85;
+
+			// End stun when time is up or knockback is very small
+			if (Date.now() > enemy.stunEnd || Math.abs(enemy.knockbackVel) < 0.5) {
+				enemy.stunned = false;
+				enemy.knockbackVel = 0;
+			}
+
+			// While stunned, skip chasing or attacking
+			return;
+		}
 
 		// Move toward Kratos
 		if (Math.abs(distance) < 400 && !g.kratos.dead) {
@@ -277,25 +346,20 @@ export function battle(g) {
 			enemy.attacking = true;
 			enemy.attackEnd = Date.now() + 1650;
 			enemy.lastAttack = Date.now();
-			enemyAttackSounds[g.currentEnemy].play();
-			g.kratos.health -= enemy.damage;
+
+			if (g.kratos.blocking) {
+				g.audios.blockSound.cloneNode().play();
+				enemy.velX *= -0.8; // small pushback
+				if (g.currentEnemy === 0 || g.currentEnemy === 1) return; // no damage for weaker enemies
+				if (g.currentEnemy < 5) g.kratos.health -= enemy.damage * 0.85; // reduce damage by 85%
+				if (g.currentEnemy === 5) g.kratos.health -= enemy.damage * 0.7; // reduce damage by 70% for cyclops
+				if (g.currentEnemy > 5) g.kratos.health -= enemy.damage * 0.5; // reduce damage by 50%
+			} else {
+				enemy.attackSound.cloneNode().play();
+				g.kratos.health -= enemy.damage;
+				g.kratos.hitUntil = Date.now() + hitFlashTime;
+			} 
 			g.healthCheck(document.querySelector('.filler'));
-			g.kratos.hitUntil = Date.now() + hitFlashTime; // flash red
-
-			// Hop effect
-			const hopHeight = 10; // pixels
-			const hopDistance = enemy.facing === "right" ? 7 : -7; // toward Kratos
-			const hopDuration = 150; // ms
-
-			// Temporarily adjust position
-			enemy.y -= hopHeight;
-			enemy.x += hopDistance;
-			
-			// Switch back to normal after attack animation
-			setTimeout(() => {
-				enemy.y = groundLevel;
-				enemy.attacking = false;
-			}, hopDuration);
 		}
 		
 		// If attack duration expired, reset
@@ -337,41 +401,51 @@ export function battle(g) {
 	}
 
 	function drawKratos() {
+		updateKratosImages();
 		let img;
-		if (!g.kratos.onGround) {  
-			// In the air
-			if (g.kratos.attacking) {
-				img = g.kratos.facing === "right" ? kratosAirAttackRight : kratosAirAttackLeft;
-				g.kratos.w = 100;
-			} else if (g.kratos.velY < 0) {
-				// Jumping
-				img = g.kratos.facing === "right" ? kratosJumpsRight : kratosJumpsLeft;
-				g.kratos.w = 112;
-			} else {
-				// Falling
-				img = g.kratos.facing === "right" ? kratosFallsRight : kratosFallsLeft;
-				g.kratos.w = 112;
-			}
-		} else if (g.kratos.velX > 0) {
-			img = kratosWalkRight;
-			g.kratos.w = 65;
-		} else if (g.kratos.velX < 0) {
-			img = kratosWalkLeft;
-			g.kratos.w = 65;
-		} else {
-			// On the ground
-			if (enemy.health !== 0) { 
-				if (g.kratos.x < enemy.x) {
-					img = g.kratos.attacking ? kratosAttackRight : kratosFightingStanceR;
-					g.kratos.w = 99;
+		if (g.kratos.health > 0) {
+			if (!g.kratos.onGround) {  
+				// In the air
+				if (g.kratos.attacking) {
+					img = g.kratos.facing === "right" ? kratosAirAttackRight : kratosAirAttackLeft;
+					g.kratos.w = 140;
+				} else if (g.kratos.velY < 0) {
+					// Jumping
+					img = g.kratos.facing === "right" ? kratosJumpsRight : kratosJumpsLeft;
+					g.kratos.w = 127;
 				} else {
-					img = g.kratos.attacking ? kratosAttackLeft : kratosFightingStanceL;
-					g.kratos.w = 99;
+					// Falling
+					img = g.kratos.facing === "right" ? kratosFallsRight : kratosFallsLeft;
+					g.kratos.w = 127;
 				}
-			} else { 
-				img = g.kratos.facing === "right" ? kratosStandR : kratosStandL;
-				g.kratos.w = 69;
+			} else if (g.kratos.velX > 0) {
+				img = kratosWalkRight;
+				g.kratos.w = 115;
+			} else if (g.kratos.velX < 0) {
+				img = kratosWalkLeft;
+				g.kratos.w = 115;
+			} else {
+				// On the ground
+				if (g.kratos.blocking) {
+					img = g.kratos.facing === "right" ? kratosBlocksRight : kratosBlocksLeft;
+					g.kratos.w = 150;
+				} else if (enemy.health !== 0) { 
+					if (g.kratos.x < enemy.x) {
+						img = g.kratos.attacking ? kratosAttackRight : kratosFightingStanceR;
+						g.kratos.attacking ? g.kratos.w = 170 : g.kratos.w = 150
+					} else {
+						img = g.kratos.attacking ? kratosAttackLeft : kratosFightingStanceL;
+						g.kratos.attacking ? g.kratos.w = 170 : g.kratos.w = 150
+					}
+				} else { 
+					img = g.kratos.facing === "right" ? kratosStandR : kratosStandL;
+					g.kratos.w = 119;
+				}
 			}
+		} else { 
+			img = g.kratos.facing === "right" ? kratosDeadR : kratosDeadL
+			g.kratos.w = 160;
+			g.kratos.h = 55;
 		}
 		drawCharacter(img, g.kratos.x, g.kratos.y, g.kratos.w, g.kratos.h, Date.now() < g.kratos.hitUntil);
 	}
@@ -381,15 +455,15 @@ export function battle(g) {
 		let img;
 		if (enemy.attacking) {
 			img = enemy.facing === "right" ? enemyAttackR : enemyAttackL;
-			if (g.currentEnemy ===8) enemy.w = 99;
-		} else if (enemy.velX !== 0 && g.currentEnemy > 5) {
-			img = enemy.facing === "right" ? enemyRunsR : enemyRunsL;
-			if (g.currentEnemy ===8) enemy.w = 78;
+			if (g.currentEnemy === 8) enemy.w = 189;
+			if (g.currentEnemy === 2) enemy.w = 220;
+		} else if (enemy.velX !== 0) {
+			img = enemy.facing === "right" ? enemyChasesR : enemyChasesL;
+			if (g.currentEnemy === 8) enemy.w = g.eW;
 		} else {
 			img = enemy.facing === "right" ? enemyRight : enemyLeft;
-			if (g.currentEnemy ===8) enemy.w = 78;
+			enemy.w = g.eW;
 		}
-
 		drawCharacter(img, enemy.x, enemy.y, enemy.w, enemy.h, Date.now() < enemy.hitUntil);
 	}
 
@@ -397,19 +471,14 @@ export function battle(g) {
 		if (!g.kratos.onGround || !enemy.onGround) return;
 		
 		const minGap = 5; // pixels of breathing room
-		const dx = (g.kratos.x + g.kratos.w / 5) - (enemy.x + enemy.w / 5);
-		const overlap = (g.kratos.w / 5 + enemy.w / 5) - Math.abs(dx);
-
-		if (overlap > -minGap) {
-			// Push both characters apart equally
-			const push = (overlap + minGap) / 2;
-			if (dx > 0) {
-				g.kratos.x += push;
-				enemy.x -= push;
-			} else {
-				g.kratos.x -= push;
-				enemy.x += push;
-			}
+		const dx = (g.kratos.x + g.kratos.w / minGap) - (enemy.x + enemy.w / minGap); 
+		const overlap = (g.kratos.w / minGap + enemy.w / minGap) - Math.abs(dx); 
+		if (overlap > -minGap) { 
+			// Push both characters apart equally 
+			const push = (overlap + minGap) / 2; 
+			if (dx > 0) { 
+				g.kratos.x += push; enemy.x -= push 
+			} else { g.kratos.x -= push; enemy.x += push } 
 		}
 	}
 
@@ -477,20 +546,19 @@ function victory(g) {
 		g.audios.olympusAm.play()
 	}
 	document.querySelector('.Efiller').style.width = `${g.enemies[g.currentEnemy].health}%`;
-	document.getElementById('Enemy-health').innerText = 0;
 	if (g.currentEnemy < 8) { 
 		g.audios.defeatSound.play();
-		if (!g.enemies[g.currentEnemy + 1].deated) g.notify();
+		if (!g.enemies[g.currentEnemy].deated) g.notify();
 	} else { 
 		g.audios.wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this SHIT game! 🤩";
 	}
-	const rewards = [35, 59, 80, 100, 125, 150, 170, 189, 200];
+	const rewards = [24, 40, 57, 76, 100, 120, 144, 167, 189];
 	const durations = [100, 89, 82, 75, 67, 58, 50, 44, 40];
 	var enemDefR = setInterval(( )=> {
 		count++;
 		g.kratos.orbs += 1;
-		document.getElementById('Orbs-text').innerText = g.kratos.orbs;
+		document.getElementById('Orbs').innerText = g.kratos.orbs;
 		if (count === rewards[g.currentEnemy]) {
 			count = 0;
 			clearInterval(enemDefR);
@@ -508,7 +576,6 @@ function victory(g) {
 	}, 1400 );
 	[ document.getElementById("Return-Underworld"), document.getElementById("Return-Olympus") ].forEach((button) => { if (button) button.style.display = 'block' });
 	document.getElementById('Text').innerText = 'You have defeated the enemy. You have now earned some orbs from the defeated enemy.';
-	//document.removeEventListener("keydown", skh);
 	localStorage.setItem('health', g.kratos.health);
 }
 
@@ -519,6 +586,7 @@ export function death(g, healthFiller) {
 	g.audios.deathScream.play();
 	g.kratos.health = 0;
 	document.getElementById('Health').innerText = g.kratos.health;
+	g.potions = 0;
 	healthFiller.style.width = '0';
 	g.kratos.dead = true;
 	g.kratos.deathTime = Date.now();
@@ -530,34 +598,5 @@ export function death(g, healthFiller) {
 		document.getElementById('Reset').style.display = 'block';
 	}, 700 );
 	[document.querySelector('.Underworld-battle'), document.querySelector('.Olympus-battle')].forEach((container) => { if (container) container.style.background = 'black' });
-	[ 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated' ].forEach(save => localStorage.removeItem(save));
+	[ 'health', 'orbs', 'inventory', 'potions', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated' ].forEach(save => localStorage.removeItem(save));
 }
-/*
-function beatGame(g) {
-	g.audios.zeusBattle.pause();
-	g.audios.zeusBattle.currentTime = 0;
-	g.audios.wonned.play();
-	localStorage.setItem('health', g.kratos.health);
-	game.style.transform = 'none';
-	mainText.innerText = "You defeated Zeus! You have finally completed this SHIT game! 🤩";
-	fightZeus.style.display = 'none';
-	evadeB.style.display = 'none';
-	reset.style.display = 'inline';
-	hermesxkratos.style.display = 'none';
-	zeusKill.style.display = 'block';
-	var zeuef = setInterval(( )=> {
-		count += 2;
-		orbs += enemies[fighting].level - 8;
-		exp++;
-		orbsText.innerText = orbs;
-		expText.innerText = exp;
-		if (count == 160) {
-			count = 0;
-			clearInterval(zeuef);
-			localStorage.setItem('orbs', orbs);
-			localStorage.setItem('exp', exp);
-		}
-	}, 80);
-	clearInterval(zeuat);
-}
-*/

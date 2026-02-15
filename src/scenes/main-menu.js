@@ -1,9 +1,10 @@
 import { sparta } from './sparta.js';
 
 export function mainMenu(g) {
+    g.game.style.height = '70%';
     g.game.innerHTML = `
         <div class="Main-menu">
-            <button id='m-music-option'>
+            <button id='m-music'>
                 <i id ="music-note" class="fa-sharp fa-solid fa-music fa-2xl" style="color: #0d0d0d;"></i>
             </button> <span id="porp"> Play main menu music? </span>
         
@@ -36,7 +37,7 @@ export function mainMenu(g) {
 
     const savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
     
-    const musicOption = document.getElementById('m-music-option');
+    const musicOption = document.getElementById('m-music');
     const musicNote = document.getElementById('music-note');
     const newGameB = document.getElementById('New-gameB');
     const loadGameB = document.getElementById('Load-gameB');
@@ -58,10 +59,8 @@ export function mainMenu(g) {
         musicNote.style.color = '#614051';
         porp.style.display = 'inline';
         if (g.play == true) {
-            porp.innerText = "Pause main menu music?"
-        } else {
-            porp.innerText = "Play main menu music?"
-        }
+            porp.innerText = "Pause main music?"
+        } else { porp.innerText = "Play main music?" }
     }
     musicOption.onmouseout = () => {
         g.audios.hoverSound.pause(); 
@@ -70,48 +69,96 @@ export function mainMenu(g) {
         porp.style.display = 'none';
     }
     musicOption.onclick = () => {
-        switch(g.play) {
-            case false:
-                g.audios.menuTheme.play();
-                g.audios.menuTheme.loop = true;
-                g.play = true;
-            break;
-            case true:
-                g.audios.menuTheme.pause();
-                g.play = false;
-            break;
-        }
+        g.play = !g.play;
+        if (g.play) {
+            g.audios.mainTheme.play();
+            g.audios.mainTheme.loop = true;
+        } else { g.audios.mainTheme.pause() }
     }
 
     function leaveMenu() {
+        g.game.style.height = '100%';
 		g.audios.selection.play();
 		g.title.style.display = 'none';
+        document.removeEventListener("keydown", g.navKeys);
         document.removeEventListener('keydown', escHandler);
 		sparta(g);
 		g.inMainMenu = false;
 	}
 
-    newGameB.onmouseover = () => { g.audios.hoverSound.play() }
-    newGameB.onmouseout = () => { 
-        g.audios.hoverSound.pause();
-        g.audios.hoverSound.currentTime = 0;
-    }
+    const buttons = [newGameB, loadGameB, optionsB];
+    let currentIndex = -1;
+
+    if (g.navKeys) document.removeEventListener("keydown", g.navKeys);
+
+    function selectButton(index) {
+		// reset all buttons (simulate mouseout)
+		buttons.forEach(btn => btn.onmouseout && btn.onmouseout());
+
+		// apply hover effect to the current one (simulate mouseover)
+		if (buttons[index].onmouseover) {
+			buttons[index].onmouseover();
+		}
+
+		currentIndex = index;
+	}
+
+	g.navKeys = function(e) {
+        if (e.repeat) return;
+
+		if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+			let nextIndex = (currentIndex + 1) % buttons.length;
+			selectButton(nextIndex);
+		}
+
+		if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+			let prevIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+			selectButton(prevIndex);
+		}
+
+		if (e.key === "Enter") {
+			// simulate click
+			if (buttons[currentIndex].onclick) buttons[currentIndex].onclick()
+		}
+	}
+
+	document.addEventListener("keydown", g.navKeys);
+
+    buttons.forEach((button) => {
+        button.onmouseover = () => {
+            g.audios.hoverSound.cloneNode().play();
+            button.style.scale = '1.2';
+            button.style.background = 'darkgrey';
+            button.style.color = '#630b05';
+        }
+        button.onmouseout = () => {
+            button.style.transition = 'all 0.4s ease 0s';
+            button.style.scale = '1';
+            button.style.background = '#7a715e';
+            button.style.color = '#0a0a23';
+        }
+    });
+
     newGameB.onclick = () => {
         g.audios.selection.play();
-        if (savedGame) {
+        mmButtons.style.display = 'none';
+        if (savedGame) { 
             warning.style.display = 'block';
-            mmButtons.style.display = 'none';
         } else {
-            warning.style.display = 'none';
-            leaveMenu();
+            document.querySelector(".Main-menu").style.background = 'url("Imagery/Game start.gif")';
+            document.querySelector(".Main-menu").style.backgroundSize = 'cover';
+            document.querySelector(".Main-menu").style.backgroundRepeat = 'no-repeat';
+            if (g.play) g.audios.mainTheme.pause();
+            g.audios.gameStart.play();
+            setTimeout(() => {
+                warning.style.display = 'none';
+                leaveMenu();
+                if (g.play) g.audios.mainTheme.play();
+            }, 5800 )
         }
     }
 
-    yesB.onmouseover = () => { g.audios.hoverSound.play() }
-    yesB.onmouseout = () => { 
-        g.audios.hoverSound.pause();
-        g.audios.hoverSound.currentTime = 0;
-    }
+    yesB.onmouseover = () => { g.audios.hoverSound.cloneNode().play() }
     yesB.onclick = () => { 
         g.audios.selection.play();
         [g.hoplite, g.banshee, g.satyr, g.minotaur, g.medusa, g.cyclops, g.hermes, g.hercules, g.zeus].forEach((enemy) => enemy.defeated = false );
@@ -122,25 +169,16 @@ export function mainMenu(g) {
         g.potionquantity = 0;
         g.inventory = ["Blades of chaos"];
         warning.style.display = 'none';
-        leaveMenu(g)
+        leaveMenu();
     }
 
-    noB.onmouseover = () => { g.audios.hoverSound.play() }
-    noB.onmouseout = () => {
-        g.audios.hoverSound.pause();
-        g.audios.hoverSound.currentTime = 0;
-    }
+    noB.onmouseover = () => { g.audios.hoverSound.cloneNode().play() }
     noB.onclick = () => {
         g.audios.selection.play();
         warning.style.display = 'none';
         mmButtons.style.display = 'block';
     }
 
-    loadGameB.onmouseover = () => { g.audios.hoverSound.play() }
-    loadGameB.onmouseout = () => { 
-        g.audios.hoverSound.pause();
-        g.audios.hoverSound.currentTime = 0;
-    }
     loadGameB.onclick = () => {
         if (savedGame) {
             g.audios.selection.play();
@@ -148,11 +186,6 @@ export function mainMenu(g) {
         }
     }
 
-    optionsB.onmouseover = () => { g.audios.hoverSound.play() }
-    optionsB.onmouseout = () => {
-        g.audios.hoverSound.pause();
-        g.audios.hoverSound.currentTIme = 0;
-    }
     optionsB.onclick = () => {
         g.audios.selection.play();
         mmButtons.style.display = 'none';
@@ -164,7 +197,7 @@ export function mainMenu(g) {
     musicVolSlider.addEventListener('change', event => { 
         g.musicVolume = musicVolSlider.value;
 		musicVolText.innerText = g.musicVolume;
-		[g.audios.menuTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.cyclopsBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+		[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.cyclopsBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
 		localStorage.setItem('musicVolume', musicVolume);
     });
 

@@ -8,8 +8,8 @@ export function olympusBattle(g) {
 	g.game.innerHTML = `
 		<div class="Olympus-battle">
 			${settings(g, false)}
-			<center>
 			${stats(g)}
+			<center>
 			<div id="Text">
 				You are now fighting ${g.enemies[g.currentEnemy].name}. Try to not to die.
 			</div>

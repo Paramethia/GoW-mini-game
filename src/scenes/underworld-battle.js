@@ -8,8 +8,8 @@ export function underworldBattle(g) {
 	g.game.innerHTML = `
 		<div class="Underworld-battle">
 			${settings(g, false)}
-			<center>
 			${stats(g)}
+			<center>
 			<div id="Text">
 				You are now fighting a ${g.enemies[g.currentEnemy].name}. Try to not to die.
 			</div>

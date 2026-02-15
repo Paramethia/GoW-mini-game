@@ -18,12 +18,11 @@ const globals = {
     clawsSrc: "./Imagery/coh.png",
     bladeSrc: "./Imagery/boo.png",
 
-    // Audio
-    audios,
+    audios, // *audios
 
     // Stats
     kratos: {
-		w: 69, h: 99, x: 20, y: 0, speed: 2.8, velX: 0, velY: 0, aC: 2004, aR: 48,
+		w: 129, h: 159, x: 20, y: 0, speed: 3.2, velX: 0, velY: 0, aC: 2004, aR: 87,
 		onGround: true, attacking: false, lastAttack: 0,
 		health: Number(localStorage.getItem('health')) || 100, 
 		orbs: Number(localStorage.getItem('orbs')) || 0,
@@ -37,10 +36,10 @@ const globals = {
 
     weapons: [
         { name: "Blades of chaos", damage: 17 },
-        { name: "Nemesis whip", damage: 28 },
-        { name: "Gauntlet of Zeus", damage: 44 },
-        { name: "Claws of Hades", damage: 64 },
-        { name: "Blade of Olympus", damage: 88 }
+        { name: "Nemesis whip", damage: 25 },
+        { name: "Gauntlet of Zeus", damage: 37 },
+        { name: "Claws of Hades", damage: 55 },
+        { name: "Blade of Olympus", damage: 70 }
     ],
 
     // Weapon shortcuts
@@ -62,67 +61,58 @@ const globals = {
 	// Enemies
     enemies: [
         {
-			name: "Hoplite", health: 75, damage: 9, speed: 2,  
-			aC: 2000, aR: 52, x: 540, y: 0, w: 57, h: 98, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("hopliteDefeated") === "true", 
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Hoplite", health: 75, damage: 9, speed: 2.5,  
+			aC: 2000, aR: 75, x: 540, y: 0, w: 117, h: 165, 
+			attackSound: audios.hopliteAttacks, hitSound: audios.attacksHoplite,
+			defeated: localStorage.getItem("hopliteDefeated") === "true",
 		},
 		{
-			name: "Banshee", health: 100, damage: 14, speed: 1.8,  
-			aC: 1900, aR: 48, x: 520, y: 0, w: 54, h: 97, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("bansheeDefeated") === "true", 
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Banshee", health: 100, damage: 14, speed: 2.3,  
+			aC: 1900, aR: 68, x: 520, y: 0, w: 114, h: 160,  
+			attackSound: audios.bansheeAttacks2, hitSound: audios.attacksBanshee,
+			defeated: localStorage.getItem("bansheeDefeated") === "true",
 		},
 		{
-			name: "Satyr", health: 120, damage: 21, speed: 2.5,  
-			aC: 2200, aR: 44, x: 580, y: 0, w: 72, h: 112, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("satyrDefeated") === "true", 
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Satyr", health: 120, damage: 21, speed: 3,  
+			aC: 2200, aR: 100, x: 580, y: 0, w: 122, h: 182, 
+			attackSound: audios.satyrAttacks, hitSound: audios.attacksSatyr,
+			defeated: localStorage.getItem("satyrDefeated") === "true",
 		},
 		{
-			name: "Minotaur", health: 145, damage: 30, speed: 1.58,  
-			aC: 2082, aR: 64, x: 500, y: 0, w: 115, h: 159, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("minotaurDefeated") === "true", 
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Minotaur", health: 145, damage: 30, speed: 2.08,  
+			aC: 2082, aR: 84, x: 500, y: 0, w: 185, h: 219, 
+			attackSound: audios.minotaurAttacks, hitSound: audios.attacksMinotaur,
+			defeated: localStorage.getItem("minotaurDefeated") === "true",
 		},
 		{
-			name: "Medusa", health: 158, damage: 25, speed: 2.3,  
-			aC:1955, aR: 76, x: 550, y: 0, w: 77, h: 132, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("medusaDefeated") === "true", 
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Medusa", health: 158, damage: 25, speed: 2.8,  
+			aC:1955, aR: 96, x: 550, y: 0, w: 137, h: 182, 
+			attackSound: audios.medusaAttacks, hitSound: audios.attacksMedusa,
+			defeated: localStorage.getItem("medusaDefeated") === "true",
 		},
 		{
-			name: "Cyclops", health: 180, damage: 42, speed: 1.25,  
-			aC:2000, aR: 107, x: 542, y: 0, w: 125, h: 187, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("cyclopsDefeated") === "true",
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Cyclops", health: 180, damage: 42, speed: 1.75,  
+			aC:2000, aR: 127, x: 542, y: 0, w: 195, h: 247,  
+			attackSound: audios.cyclopsAttacks, hitSound: audios.attacksCyclops,
+			defeated: localStorage.getItem("cyclopsDefeated") === "true"
 		},
 		{
-			name: "Hermes", health: 210, damage: 34, speed: 5.4,  
-			aC: 1580, aR: 70, x: 599, y: 0, w: 55, h: 99, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("hermesDefeated") === "true",
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Hermes", health: 210, damage: 34, speed: 5.9,  
+			aC: 1580, aR: 90, x: 599, y: 0, w: 105, h: 159,  
+			attackSound: audios.hermesAttacks, hitSound: audios.attacks,
+			defeated: localStorage.getItem("hermesDefeated") === "true"
 		},
 		{
-			name: "Hercules", health: 255, damage: 57, speed: 2.38,  
-			aC: 2700, aR: 64, x: 540, y: 0, w: 82, h: 125, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("herculesDefeated") === "true", 
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Hercules", health: 255, damage: 57, speed: 2.88,  
+			aC: 2700, aR: 84, x: 540, y: 0, w: 137, h: 185, 
+			attackSound: audios.herculesAttacks, hitSound: audios.attacks2,
+			defeated: localStorage.getItem("herculesDefeated") === "true",
 		},
 		{
-			name: "Zeus", health: 320, damage: 65, speed: 2.7,  
-			aC: 3000, aR: 111, x: 666, y: 0, w: 77, h: 114, 
-			velX: 0, velY: 0, onGround: true, attacking: false, 
-			defeated: localStorage.getItem("zeusDefeated") === "true", 
-			lastAttack: 0, hitUntil: 0, facing: "left", deathTime: 0, alpha: 1
+			name: "Zeus", health: 320, damage: 65, speed: 3.2,  
+			aC: 3000, aR: 131, x: 666, y: 0, w: 130, h: 174, 
+			attackSound: audios.zeusAttacks, hitSound: audios.attacksZeus,
+			defeated: localStorage.getItem("zeusDefeated") === "true",
 		}
     ],
 
@@ -141,11 +131,22 @@ const globals = {
 
 	// Key event handlers
 	keys: {},
-	keydownHandler(event) { globals.keys[event.key] = true },
+	keydownHandler(event) { 
+		if (event.repeat) return;
+		if (event.key.toLowerCase() === 'q' && globals.kratos.blocking) {
+			// Cancel block if q is pressed again
+			globals.kratos.lastBlock = Date.now();
+			globals.kratos.blocking = false;
+			return;
+		}
+		globals.keys[event.key] = true;
+	},
 	keyupHandler(event) { globals.keys[event.key] = false },
 	
 	mKey: undefined,
-	escKey: undefined,
+	cKey: undefined,
+
+	navKeys: undefined,
 
 	hotbarKeys: undefined,
 
@@ -167,20 +168,20 @@ const globals = {
 	// Health bar updater
 	healthBarUpdate(healthBar, healthFiller) {
 		if (this.kratos.health === 200) {
-			healthBar.style.width = '200px';
+			healthBar.style.width = '150px';
 			healthFiller.style.background = '#299617';
 		} else if (this.kratos.health > 100) {
-			healthBar.style.width = `${this.kratos.health}px`;
+			healthBar.style.width = `${this.kratos.health - 25}px`;
 			healthFiller.style.background = '#299617'; // Healthy green
 		} else if (this.kratos.health > 50) {
-			healthBar.style.width = '100px';
+			healthBar.style.width = '75px';
 			healthFiller.style.background = '#32cd33'; // Default green
 		} else if (this.kratos.health > 25) {
 			healthFiller.style.background = '#ed7014'; // Warning orange
 		} else {
 			healthFiller.style.background = '#900604'; // Danger red
 		}
-		healthFiller.style.width = `${this.kratos.health}px`;
+		healthFiller.style.width = `${this.kratos.health - 25}px`;
 	},
 
 	stopMusic(){
@@ -211,7 +212,7 @@ const globals = {
 
 	resetThem() {
 		// Kratos reset
-		this.kratos.w = 69;
+		this.kratos.w = 89;
 		this.kratos.x = 20;
 		this.kratos.y = 0;
 		this.kratos.facing = "right";
@@ -228,11 +229,7 @@ const globals = {
 		this.enemies[this.currentEnemy].health = this.eH;
 		this.enemies[this.currentEnemy].x = 555;
 		this.enemies[this.currentEnemy].y = 0;
-		this.enemies[this.currentEnemy].lastAttack = 0;
-		this.enemies[this.currentEnemy].hitUntil = 0;
-		this.enemies[this.currentEnemy].facing = "left";
-		this.enemies[this.currentEnemy].deathTime = 0; 
-		this.enemies[this.currentEnemy].alpha = 1;
+		
 	}
 };
 
@@ -263,9 +260,8 @@ setVolumes();
 
 const h1 = document.getElementById('click-start');
 
-h1.onclick = () => { 
-	globals.game.style.display = 'flex';
-	globals.game.style.justifyContent = 'center';
+h1.onclick = () => {
 	globals.game.style.alignItems = 'center';
+	globals.game.style.justifyContent = 'center';
 	mainMenu(globals) 
 }
