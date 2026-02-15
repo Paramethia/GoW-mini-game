@@ -33,7 +33,8 @@ export const settings = (g, show) => {
 				<div class="Controls-con">
 					<div class="controls"><span> A / ← </span><font color="#f8f8e0">Walk left</font></div>
 					<div class="controls"><span> D / → </span><font color="#f8f8e0">Walk right</font></div>
-					<div class="controls"><span> E </span><font color="#f8f8e0">Attack</font></div>
+					<div class="controls"><span> E </span><font color="#f8f8e0">Light attack</font></div>
+					<div class="controls"><span> R </span><font color="#f8f8e0">Heavy attack</font></div>
 					<div class="controls"><span> Q </span><font color="#f8f8e0">Block</font></div>
 					<div class="controls"><span> Space </span><font color="#f8f8e0">Jump</font></div>
 					<div class="controls"><span> Shift </span><font color="#f8f8e0">Dodge/dash</font></div>
@@ -83,6 +84,7 @@ export function settingsInit(g) {
 		healthBarSet.innerText = "Turn off health bar";
 		healthBar.style.display = 'inline-block';
 		healthText.style.display = 'none';
+		g.healthUpdate(healthBar, healthFiller);
 	}
 
 	function turnOffHealthbar() {
@@ -93,7 +95,6 @@ export function settingsInit(g) {
 	
 	if (g.hBarOn) { 
 		turnOnHealthbar();
-		g.healthBarUpdate(healthBar, healthFiller);
 	}
 
 	function setMusic() {
@@ -120,7 +121,7 @@ export function settingsInit(g) {
 		document.addEventListener("keydown", g.mKey);
 
 		musicB.onmouseover = () => {
-			g.audios.hoverSound.play()
+			g.audios.hover.play()
 			musicNote.style.color = '#a88868';
 			musicT.style.display = 'inline';
 		}
@@ -135,7 +136,7 @@ export function settingsInit(g) {
 	}
 
 	settingsB.onmouseover = () => {
-		g.audios.hoverSound.play();
+		g.audios.hover.play();
 		gear.style.animation = 'rotateZ 0.7s';
 		gear.style.color = '#a88868';
 		settingsT.style.display = 'inline';
@@ -148,10 +149,12 @@ export function settingsInit(g) {
 	
 	function toggleSettings() {
 		g.set = !g.set;
+		g.paused = !g.paused;
 		if (g.set) {
 			gear.style.color = '#a88868';
 			document.querySelector('.Settings').style.display = 'flex';
 		} else {
+			g.audios.return.play();
 			gear.style.color = '#704028';
 			document.querySelector('.Settings').style.display = 'none';
 		}
@@ -231,7 +234,7 @@ export function settingsInit(g) {
 			g.musicVolume = Math.round(g.musicVolume / 10) * 10;
 			g.musicVolume += 10;
 			musicVolText.innerText = g.musicVolume;
-			[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.cyclopsBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+			[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.battleTheme3, g.audios.cyclopsBattle, g.audios.hadesBattle, g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
 			localStorage.setItem('musicVolume', g.musicVolume);
 	  }
 	}
@@ -240,12 +243,12 @@ export function settingsInit(g) {
 			g.musicVolume = Math.round(g.musicVolume / 10) * 10;
 			g.musicVolume -= 10;
 			musicVolText.innerText = g.musicVolume;
-			[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.cyclopsBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+			[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.battleTheme3, g.audios.cyclopsBattle, g.audios.hadesBattle, g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
 			localStorage.setItem('musicVolume', g.musicVolume);
 		}
 	}
 	musicMute.onclick = () => {
-		[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.cyclopsBattle, g.audios.zeusBattle].forEach((song) => song.volume = 0);
+		[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.battleTheme3, g.audios.cyclopsBattle, g.audios.hadesBattle, g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle].forEach((song) => song.volume = 0);
 		g.musicVolume = 0;
 		musicVolText.innerText = g.musicVolume;
 		localStorage.setItem('musicVolume', g.musicVolume);

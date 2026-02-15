@@ -1,7 +1,7 @@
 import { settings, settingsInit } from '../components/settings.js';
 import { stats, enemyStats } from '../components/stats.js';
 import { hotbar, hotbarInit } from '../components/hotbar.js';
-import {  battle, restart } from '../components/battle.js';
+import { battle, restart } from '../components/battle.js';
 import { underworld } from './underworld.js';
 
 export function underworldBattle(g) {
@@ -10,8 +10,9 @@ export function underworldBattle(g) {
 			${settings(g, false)}
 			${stats(g)}
 			<center>
+			<p><font color="#a88868">FPS: </font><span id="FPS">0</span></p>
 			<div id="Text">
-				You are now fighting a ${g.enemies[g.currentEnemy].name}. Try to not to die.
+				You are now fighting ${g.currentEnemy === 5 || g.currentEnemy === 7 ? "" : "a"} ${g.enemies[g.currentEnemy].name}. Try to not to die.
 			</div>
 			${enemyStats(g)}
 			<canvas class="Battle-area"></canvas>
@@ -22,41 +23,43 @@ export function underworldBattle(g) {
 			${hotbar(g)}
 		</div>
 	`;
+
+	if (g.currentEnemy === 7) document.querySelector(".Underworld-battle").style.backgroundImage = 'url("Imagery/Hades battle area.png")';
 	
 	settingsInit(g);
 
 	const eHealthFiller = document.querySelector('.Efiller');
 	const returnB = document.getElementById("Return-Underworld");
 	
-	g.eH = g.enemies[g.currentEnemy].health;
+	g.eHealth = g.enemies[g.currentEnemy].health;
+	g.eH = g.enemies[g.currentEnemy].h;
 	g.eW = g.enemies[g.currentEnemy].w;
 	
-	battle(g)
+	battle(g);
 	
 	returnB.onmouseover = () => {
-		g.audios.hoverSound.play();
+		g.audios.hover.play();
 		returnB.style.animation = 'horizontal-shaking 0.5s';
 	}
 	
 	returnB.onmouseout = () => {
-		g.audios.hoverSound.pause();
-		g.audios.hoverSound.currentTime = 0;
+		g.audios.hover.pause();
+		g.audios.hover.currentTime = 0;
 		returnB.style.animation = 'grow';
 	}
 	
 	returnB.onclick = () => {
 		g.stopMusic();
-		g.audios.returnSound.play();
+		g.audios.exit.play();
 		if (g.enemies[g.currentEnemy].health <= 0) eHealthFiller.style.width = '100%';
-		//localStorage.setItem('health', kratos.health);
-		underworld(g);
 		document.removeEventListener("keydown", g.keydownHandler);
 		document.removeEventListener("keyup", g.keyupHandler);
-		g.resetThem();
 		g.inBattle = false;
+		clearInterval(g.frameCount);
+		underworld(g);
+		setTimeout(() => g.resetThem(), 100 );
 	}
 	
 	hotbarInit(g);
-	
 	restart(g);
 }

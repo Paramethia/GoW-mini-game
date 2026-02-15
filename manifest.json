@@ -1,0 +1,20 @@
+{
+  "name": "God of War mini game",
+  "short_name": "GoW mini game",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000",
+  "theme_color": "#9f6c08",  
+  "icons": [
+    {
+      "src": "./Icon/GoW_symbol_192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./Icon/GoW_symbol_512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

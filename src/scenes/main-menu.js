@@ -3,9 +3,12 @@ import { sparta } from './sparta.js';
 export function mainMenu(g) {
     g.game.style.height = '70%';
     g.game.innerHTML = `
+        <div id="Load-screen">
+            <div class="loader"></div>
+        </div>
         <div class="Main-menu">
             <button id='m-music'>
-                <i id ="music-note" class="fa-sharp fa-solid fa-music fa-2xl" style="color: #0d0d0d;"></i>
+                <i id="music-note" class="fa-sharp fa-solid fa-music fa-2xl" style="color: #0d0d0d;"></i>
             </button> <span id="porp"> Play main menu music? </span>
         
             <div class="Warning">
@@ -35,6 +38,80 @@ export function mainMenu(g) {
         </div>
     `;
 
+    const gameAssets = [
+        // Main menu
+        "Imagery/Game start.gif",
+        "Imagery/Opening menu image.png",
+        // Stats
+        "Imagery/Stats blade.png",
+        // Sparta
+        "Imagery/Sparta.png",
+        "Imagery/Sparta smithy.png",
+        "Imagery/Underworld.png",
+        "Imagery/Mount Olympus.png",
+        // Smithy
+        "Imagery/In smithy.png",
+        "Imagery/Sparta background.jpg",
+        "Imagery/Nemesis whip.png",
+        "Imagery/Nemesis whip (outlined).png",
+        "Imagery/Claws of Hades.png",
+        "Imagery/Claws of Hades (outlined).png",
+        "Imagery/Gauntlet of Zeus.png",
+        "Imagery/Gauntlet of Zeus (outlined).png",
+        "Imagery/Nemean cestus.png",
+        "Imagery/Nemean cestus (outlined).png",
+        "Imagery/Blade of Olympus.png",
+        "Imagery/Blade of Olympus (outlined).png",
+        // Underworld
+        "Imagery/In underworld.png",
+        "Imagery/Hoplite.png",
+        "Imagery/Banshee.png",
+        "Imagery/Satyr.png",
+        "Imagery/Gorgon.png",
+        "Imagery/Minotaur.png",
+        "Imagery/Medusa.png",
+        "Imagery/Cyclops.png",
+        "Imagery/Hades.png",
+        // Olympus
+        "Imagery/Olympus background.png",
+        "Imagery/Hermes.png",
+        "Imagery/Hercules.png",
+        "Imagery/Zeus.png"
+    ];
+    const loaderScreen = document.getElementById("Load-screen");
+    const mainMenu = document.querySelector(".Main-menu");
+
+    loaderScreen.style.display = "flex";
+    mainMenu.style.display = "none";
+
+    preloadImages(gameAssets).then(() => {
+        g.audios.mainTheme.play();
+        loaderScreen.style.display = "none";
+        mainMenu.style.display = "block";
+    });
+
+    function preloadImages(imageArray = []) {
+        let loaded = 0;
+
+        return new Promise(resolve => {
+            if (imageArray.length === 0) resolve();
+
+            imageArray.forEach(src => {
+                const img = new Image();
+
+                img.onload = img.onerror = () => {
+                    loaded++;
+                    console.log(`Loading progress: ${Math.round(loaded / imageArray.length * 100)}$`);
+                    if (loaded === imageArray.length) resolve();
+                };
+
+                img.src = src;
+            });
+        });
+    }
+
+    document.querySelector(".Main-menu").style.display = "none";
+
     const savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
     
     const musicOption = document.getElementById('m-music');
@@ -55,7 +132,7 @@ export function mainMenu(g) {
     const ambVolSlider = document.getElementById('ambience-vol-slider');
     
     musicOption.onmouseover = () => {
-        g.audios.hoverSound.play();
+        g.audios.hover.play();
         musicNote.style.color = '#614051';
         porp.style.display = 'inline';
         if (g.play == true) {
@@ -63,8 +140,8 @@ export function mainMenu(g) {
         } else { porp.innerText = "Play main music?" }
     }
     musicOption.onmouseout = () => {
-        g.audios.hoverSound.pause(); 
-        g.audios.hoverSound.currentTime = 0;
+        g.audios.hover.pause(); 
+        g.audios.hover.currentTime = 0;
         musicNote.style.color = '#0d0d0d';
         porp.style.display = 'none';
     }
@@ -110,14 +187,11 @@ export function mainMenu(g) {
 			let nextIndex = (currentIndex + 1) % buttons.length;
 			selectButton(nextIndex);
 		}
-
 		if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
 			let prevIndex = (currentIndex - 1 + buttons.length) % buttons.length;
 			selectButton(prevIndex);
 		}
-
 		if (e.key === "Enter") {
-			// simulate click
 			if (buttons[currentIndex].onclick) buttons[currentIndex].onclick()
 		}
 	}
@@ -126,7 +200,7 @@ export function mainMenu(g) {
 
     buttons.forEach((button) => {
         button.onmouseover = () => {
-            g.audios.hoverSound.cloneNode().play();
+            g.audios.hover.cloneNode().play();
             button.style.scale = '1.2';
             button.style.background = 'darkgrey';
             button.style.color = '#630b05';
@@ -158,7 +232,7 @@ export function mainMenu(g) {
         }
     }
 
-    yesB.onmouseover = () => { g.audios.hoverSound.cloneNode().play() }
+    yesB.onmouseover = () => { g.audios.hover.cloneNode().play() }
     yesB.onclick = () => { 
         g.audios.selection.play();
         [g.hoplite, g.banshee, g.satyr, g.minotaur, g.medusa, g.cyclops, g.hermes, g.hercules, g.zeus].forEach((enemy) => enemy.defeated = false );
@@ -172,7 +246,7 @@ export function mainMenu(g) {
         leaveMenu();
     }
 
-    noB.onmouseover = () => { g.audios.hoverSound.cloneNode().play() }
+    noB.onmouseover = () => { g.audios.hover.cloneNode().play() }
     noB.onclick = () => {
         g.audios.selection.play();
         warning.style.display = 'none';
@@ -182,7 +256,7 @@ export function mainMenu(g) {
     loadGameB.onclick = () => {
         if (savedGame) {
             g.audios.selection.play();
-            leaveMenu()
+            leaveMenu();
         }
     }
 
@@ -197,14 +271,14 @@ export function mainMenu(g) {
     musicVolSlider.addEventListener('change', event => { 
         g.musicVolume = musicVolSlider.value;
 		musicVolText.innerText = g.musicVolume;
-		[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.cyclopsBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
-		localStorage.setItem('musicVolume', musicVolume);
+		[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.battleTheme3, g.audios.cyclopsBattle, g.audios.hadesBattle, g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+		localStorage.setItem('musicVolume', g.musicVolume);
     });
 
     ambVolSlider.addEventListener('change', event => { 
         g.ambienceVolume = ambVolSlider.value;
 		ambienceVolText.innerText = g.ambienceVolume;
-		[g.audios.underworldAm, g.audios.OlympusAm].forEach((song) => song.volume = g.ambienceVolume / 100);
+		[g.audios.underworldAm, g.audios.olympusAm].forEach((song) => song.volume = g.ambienceVolume / 100);
 		localStorage.setItem('ambienceVolume', g.ambienceVolume);
     });
 
@@ -212,14 +286,14 @@ export function mainMenu(g) {
 
     function escHandler(event) { 
         if (event.repeat) return;
-        if (event.key === 'Escape') close() 
+        if (event.key === 'Escape') close();
     }
 
     document.addEventListener('keydown', escHandler);
 
     function close() {
         if (options.style.display === "block") {
-            g.audios.returnSound.play();
+            g.audios.return.play();
             options.style.display = 'none';
             mmButtons.style.display = 'block';
         }

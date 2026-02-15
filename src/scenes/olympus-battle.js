@@ -10,6 +10,7 @@ export function olympusBattle(g) {
 			${settings(g, false)}
 			${stats(g)}
 			<center>
+			<p><font color="#a88868">FPS: </font><span id="FPS">0</span></p>
 			<div id="Text">
 				You are now fighting ${g.enemies[g.currentEnemy].name}. Try to not to die.
 			</div>
@@ -22,38 +23,40 @@ export function olympusBattle(g) {
 			${hotbar(g)}
 		</div>
 	`;
+	if (g.enemies[g.currentEnemy].name === "Zeus") document.querySelector(".Olympus-battle").style.backgroundImage = 'url("Imagery/Zeus battle area.png")';
 	
 	settingsInit(g);
 
 	const returnB = document.getElementById("Return-Olympus");
 	const eHealthFiller = document.querySelector('.Efiller');
 	
-	g.eH = g.enemies[g.currentEnemy].health;
+	g.eHealth = g.enemies[g.currentEnemy].health;
+	g.eH = g.enemies[g.currentEnemy].h;
 	g.eW = g.enemies[g.currentEnemy].w;
-	
-	battle(g)
+
+	battle(g);
 	
 	returnB.onmouseover = () => {
-		g.audios.hoverSound.play();
+		g.audios.hover.play();
 		returnB.style.animation = 'horizontal-shaking 0.5s';
 	}
 	
 	returnB.onmouseout = () => {
-		g.audios.hoverSound.pause();
-		g.audios.hoverSound.currentTime = 0;
+		g.audios.hover.pause();
+		g.audios.hover.currentTime = 0;
 		returnB.style.animation = 'grow';
 	}
 	
 	returnB.onclick = () => {
 		g.stopMusic();
-		g.audios.returnSound.play();
+		g.audios.exit.play();
 		if (g.enemies[g.currentEnemy].health <= 0) eHealthFiller.style.width = '100%';
-		localStorage.setItem('health', g.kratos.health);
-		olympus(g);
 		document.removeEventListener("keydown", g.keydownHandler);
 		document.removeEventListener("keyup", g.keyupHandler);
-		g.resetThem(g.eH, g.eW);
 		g.inBattle = false;
+		clearInterval(g.frameCount);
+		olympus(g);
+		setTimeout(() => g.resetThem(), 100 );
 	}
 	
 	hotbarInit(g);
