@@ -4,8 +4,9 @@ export function mainMenu(g) {
     g.game.style.height = '70%';
     g.game.innerHTML = `
         <div id="Load-screen">
-            <div class="loader"></div>
-            <span id="progress"></span>
+            <div class="loader">
+                <span id="progress"></span>
+            </div>
         </div>
         <div class="Main-menu">
             <button id='m-music'>

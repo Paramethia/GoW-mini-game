@@ -39,30 +39,35 @@ const globals = {
         { 
 			name: "Nemesis whip", 
 			lD: 7, hD: 14, lC: 480, hC: 920, lR: 107, hR: 235, lS: 480, hS: 700, lK: 7, hK: 11,
+			price: 40,
 			lAttack: audios.nwLA,
 			hAttack: audios.nwHA,
 		},
         { 
 			name: "Claws of Hades", 
 			lD: 12, hD: 20, lC: 340, hC: 740, lR: 99, hR: 245, lS: 300, hS: 380, lK: 8, hK: 13,
+			price: 70,
 			lAttack: audios.cohLA,
 			hAttack: audios.cohHA,
 		},
 		{ 
 			name: "Gauntlet of Zeus", 
 			lD: 19, hD: 28, lC: 700, hC: 1300, lR: 93, hR: 97, lS: 370, hS: 450, lK: 10, hK: 17,
+			price: 115,
 			lAttack: audios.gozLA,
 			hAttack: audios.gozHA,
 		},
 		{ 
 			name: "Nemean cestus", 
 			lD: 27, hD: 40, lC: 800, hC: 1500, lR: 95, hR: 100, lS: 440, hS: 520, lK: 12, hK: 21,
+			price: 150,
 			lAttack: audios.ncLA,
 			hAttack: audios.ncHA,
 		},
         { 
 			name: "Blade of Olympus", 
 			lD: 40, hD: 55, lC: 888, hC: 1700, lR: 78, hR: 89, lS: 500, hS: 590, lK: 15, hK: 27, 
+			price: 200,
 			lAttack: audios.booLA,
 			hAttack: audios.booHA,
 		}

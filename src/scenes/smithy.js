@@ -5,7 +5,6 @@ import { sparta } from './sparta.js';
 
 export function smithy(g){
 	const stock = g.weapons.filter(weapon => !g.inventory.includes(weapon.name) || !weapon.name === g.blades);
-	const wPrice = [40, 70, 115, 155, 200];
 	g.game.innerHTML = `
 		<div class="Smithy">
 			${settings(g, true)}
@@ -27,7 +26,7 @@ export function smithy(g){
 				${stock.map((weapon, index) => {
 					return `
 						<div class="weapon-info" id="${`weapon-${index + 1}-info`}" data-weapon="${weapon.name}">
-							<i class="Item-info" id="italics"><span><font color="#E2000C" />${wPrice[index]}</font> red orbs</span> <span><img src="Imagery/Red orb.png" width="15" height="15" alt="Red orb" /></span></i>
+							<i class="Item-info" id="italics"><span><font color="#E2000C" />${weapon.price}</font> red orbs</span> <span><img src="Imagery/Red orb.png" width="15" height="15" alt="Red orb" /></span></i>
                     		<hr color="#daa" height="1" />
 							<i class="Item-info" id="italics"><font color="#aaa"> Damages: </font> ${stock[index].lD} | ${stock[index].hD} </i>
 							<i class="Item-info" id="italics"><font color="#aaa"> Stun: </font> ${parseInt(stock[index].lS + stock[index].hS / 2) / 100}s </i>
