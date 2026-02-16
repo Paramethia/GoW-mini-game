@@ -178,7 +178,6 @@ export function smithy(g){
 					localStorage.setItem('orbs', g.kratos.orbs);
 				}
 			}, times[g.currentWeapon]);
-			//images.push[g.currentWeapon]
 			g.inventory.length > 2 ? g.currentWeapon++ : g.currentWeapon--;
 			localStorage.setItem('inventory', JSON.stringify(g.inventory));
 			localStorage.setItem('currentWeapon', g.currentWeapon);
@@ -243,6 +242,7 @@ export function smithy(g){
 				}
 			}, 110 );
 			g.currentWeapon = 2;
+			localStorage.setItem('currentWeapon', g.currentWeapon);
 			g.inventory.push(g.claws);
 			localStorage.setItem('inventory', JSON.stringify(g.inventory));
 			weaponGot();
@@ -314,16 +314,17 @@ export function smithy(g){
 				}
 			}, 55 );
 			g.currentWeapon = 4;
-			g.inventory.push(g.claws);
+			localStorage.setItem('currentWeapon', g.currentWeapon);
+			g.inventory.push(g.cestus);
 			localStorage.setItem('inventory', JSON.stringify(g.inventory));
 			weaponGot();
 			slots[g.currentWeapon].style.border = '3px solid #5a3910';
-			slots[g.currentWeapon].style.backgroundImage = `url('${g.clawsSrc}')`;
+			slots[g.currentWeapon].style.backgroundImage = `url('${g.cestusSrc}')`;
 			slots.forEach((slot, index) => { if (index !== g.currentWeapon) slot.style.border = '1.8px solid #5a3910' });
 			setTimeout(() => { revert() }, 5250 );
 		} else {
 			dialogue.style.display = 'inline-block';
-			if (!g.inventory.includes(g.claws)) {
+			if (!g.inventory.includes(g.cestus)) {
 				g.audios.brokie.play();
 				dialogueText.innerText = "You're too poor for this powerful weapon. Grind more";
 			} else {
