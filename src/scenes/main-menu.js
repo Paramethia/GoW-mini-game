@@ -5,6 +5,7 @@ export function mainMenu(g) {
     g.game.innerHTML = `
         <div id="Load-screen">
             <div class="loader"></div>
+            <span id="progress"></span>
         </div>
         <div class="Main-menu">
             <button id='m-music'>
@@ -38,14 +39,21 @@ export function mainMenu(g) {
         </div>
     `;
 
-    const gameAssets = [
+    const loaderScreen = document.getElementById("Load-screen");
+    const mainMenu = document.querySelector(".Main-menu");
+    loaderScreen.style.display = "flex";
+    mainMenu.style.display = "none";
+
+    const UIassets = [
         // Main menu
         "Imagery/Game start.gif",
         "Imagery/Opening menu image.png",
         // Stats
         "Imagery/Stats blade.png",
+        "Imagery/Red orb.png",
         // Sparta
         "Imagery/Sparta.png",
+        "Imagery/Kratos standing animation.gif",
         "Imagery/Sparta smithy.png",
         "Imagery/Underworld.png",
         "Imagery/Mount Olympus.png",
@@ -78,39 +86,305 @@ export function mainMenu(g) {
         "Imagery/Hercules.png",
         "Imagery/Zeus.png"
     ];
-    const loaderScreen = document.getElementById("Load-screen");
-    const mainMenu = document.querySelector(".Main-menu");
 
-    loaderScreen.style.display = "flex";
-    mainMenu.style.display = "none";
+    const battleAssets = [
+        // --- Kratos ---
+        "Imagery/Kratos dodging right.png",
+        "Imagery/Kratos dodging left.png",
+        "Imagery/Kratos fighting stance right (Blades of chaos).png",
+        "Imagery/Kratos fighting stance left (Blades of chaos).png",
+        "Imagery/Kratos fighting stance right (Blades of chaos)-lit.png",
+        "Imagery/Kratos fighting stance left (Blades of chaos)-lit.png",
+        "Imagery/Kratos light attacks right with blades of chaos 1.png",
+        "Imagery/Kratos light attacks right with blades of chaos 2.png",
+        "Imagery/Kratos light attacks right with blades of chaos 3.png",
+        "Imagery/Kratos light attacks left with blades of chaos 1.png",
+        "Imagery/Kratos light attacks left with blades of chaos 2.png",
+        "Imagery/Kratos light attacks left with blades of chaos 3.png",
+        "Imagery/Kratos heavy attacks right with blades of chaos 1.png",
+        "Imagery/Kratos heavy attacks right with blades of chaos 2.png",
+        "Imagery/Kratos heavy attacks left with blades of chaos 1.png",
+        "Imagery/Kratos heavy attacks left with blades of chaos 2.png",
+        "Imagery/Kratos blocking right with blades of chaos.png",
+        "Imagery/Kratos blocking left with blades of chaos.png",
+        "Imagery/Kratos aerial attack right with blades of chaos.png",
+        "Imagery/Kratos aerial attack left with blades of chaos.png",
+        "Imagery/Kratos fighting stance right (Nemesis whip).png",
+        "Imagery/Kratos fighting stance left (Nemesis whip).png",
+        "Imagery/Kratos fighting stance right (Nemesis whip)-lit.png",
+        "Imagery/Kratos fighting stance left (Nemesis whip)-lit.png",
+        "Imagery/Kratos light attacks right with nemesis whip 1.png",
+        "Imagery/Kratos light attacks right with nemesis whip 2.png",
+        "Imagery/Kratos light attacks right with nemesis whip 3.png",
+        "Imagery/Kratos light attacks left with nemesis whip 1.png",
+        "Imagery/Kratos light attacks left with nemesis whip 2.png",
+        "Imagery/Kratos light attacks left with nemesis whip 3.png",
+        "Imagery/Kratos heavy attacks right with nemesis whip 1.png",
+        "Imagery/Kratos heavy attacks right with nemesis whip 2.png",
+        "Imagery/Kratos heavy attacks left with nemesis whip 1.png",
+        "Imagery/Kratos heavy attacks left with nemesis whip 2.png",
+        "Imagery/Kratos blocking right with nemesis whip.png",
+        "Imagery/Kratos blocking left with nemesis whip.png",
+        "Imagery/Kratos aerial attack right with nemesis whip.png",
+        "Imagery/Kratos aerial attack left with nemesis whip.png",
+        "Imagery/Kratos fighting stance right (Claws of Hades).png",
+        "Imagery/Kratos fighting stance left (Claws of Hades).png",
+        "Imagery/Kratos fighting stance right (Claws of Hades)-lit.png",
+        "Imagery/Kratos fighting stance left (Claws of Hades)-lit.png",
+        "Imagery/Kratos light attacks right with claws of hades 1.png",
+        "Imagery/Kratos light attacks right with claws of hades 2.png",
+        "Imagery/Kratos light attacks right with claws of hades 3.png",
+        "Imagery/Kratos light attacks left with claws of hades 1.png",
+        "Imagery/Kratos light attacks left with claws of hades 2.png",
+        "Imagery/Kratos light attacks left with claws of hades 3.png",
+        "Imagery/Kratos heavy attacks right with claws of hades 1.png",
+        "Imagery/Kratos heavy attacks right with claws of hades 2.png",
+        "Imagery/Kratos heavy attacks left with claws of hades 1.png",
+        "Imagery/Kratos heavy attacks left with claws of hades 2.png",
+        "Imagery/Kratos blocking right with claws of hades.png",
+        "Imagery/Kratos blocking left with claws of hades.png",
+        "Imagery/Kratos aerial attack right with claws of hades.png",
+        "Imagery/Kratos aerial attack left with claws of hades.png",
+        "Imagery/Kratos fighting stance right (Gauntlet of Zeus).png",
+        "Imagery/Kratos fighting stance left (Gauntlet of Zeus).png",
+        "Imagery/Kratos light attacks right with gauntlet of zeus 1.png",
+        "Imagery/Kratos light attacks right with gauntlet of zeus 2.png",
+        "Imagery/Kratos light attacks left with gauntlet of zeus 1.png",
+        "Imagery/Kratos light attacks left with gauntlet of zeus 2.png",
+        "Imagery/Kratos heavy attacks right with gauntlet of zeus 1.png",
+        "Imagery/Kratos heavy attacks right with gauntlet of zeus 2.png",
+        "Imagery/Kratos heavy attacks left with gauntlet of zeus 1.png",
+        "Imagery/Kratos heavy attacks left with gauntlet of zeus 2.png",
+        "Imagery/Kratos blocking right with gauntlet of zeus.png",
+        "Imagery/Kratos blocking left with gauntlet of zeus.png",
+        "Imagery/Kratos aerial attack right with gauntlet of zeus.png",
+        "Imagery/Kratos aerial attack left with gauntlet of zeus.png",
+        "Imagery/Kratos fighting stance right (Nemean cestus).png",
+        "Imagery/Kratos fighting stance left (Nemean cestus).png",
+        "Imagery/Kratos light attacks right with nemean cestus 1.png",
+        "Imagery/Kratos light attacks right with nemean cestus 2.png",
+        "Imagery/Kratos light attacks left with nemean cestus 1.png",
+        "Imagery/Kratos light attacks left with nemean cestus 2.png",
+        "Imagery/Kratos heavy attacks right with nemean cestus 1.png",
+        "Imagery/Kratos heavy attacks right with nemean cestus 2.png",
+        "Imagery/Kratos heavy attacks left with nemean cestus 1.png",
+        "Imagery/Kratos heavy attacks left with nemean cestus 2.png",
+        "Imagery/Kratos blocking right with nemean cestus.png",
+        "Imagery/Kratos blocking left with nemean cestus.png",
+        "Imagery/Kratos aerial attack right with nemean cestus.png",
+        "Imagery/Kratos aerial attack left with nemean cestus.png",
+        "Imagery/Kratos fighting stance right (Blade of Olympus).png",
+        "Imagery/Kratos fighting stance left (Blade of Olympus).png",
+        "Imagery/Kratos fighting stance right (Blade of Olympus)-lit.png",
+        "Imagery/Kratos fighting stance left (Blade of Olympus)-lit.png",
+        "Imagery/Kratos light attacks right with blade of olympus 1.png",
+        "Imagery/Kratos light attacks right with blade of olympus 2.png",
+        "Imagery/Kratos light attacks left with blade of olympus 1.png",
+        "Imagery/Kratos light attacks left with blade of olympus 2.png",
+        "Imagery/Kratos heavy attacks right with blade of olympus 1.png",
+        "Imagery/Kratos heavy attacks right with blade of olympus 2.png",
+        "Imagery/Kratos heavy attacks left with blade of olympus 1.png",
+        "Imagery/Kratos heavy attacks left with blade of olympus 2.png",
+        "Imagery/Kratos blocking right with blade of olympus.png",
+        "Imagery/Kratos blocking left with blade of olympus.png",
+        "Imagery/Kratos aerial attack right with blade of olympus.png",
+        "Imagery/Kratos aerial attack left with blade of olympus.png",
+        "Imagery/Kratos damage right.png",
+        "Imagery/Kratos damage left.png",
+        "Imagery/Kratos air damage right.png",
+        "Imagery/Kratos air damage left.png",
+        "Imagery/Kratos petrified right.png",
+        "Imagery/Kratos petrified left.png",
+        "Imagery/Kratos held by hands right.png",
+        "Imagery/Kratos held by hands left.png",
+        "Imagery/Kratos dead right.png",
+        "Imagery/Kratos dead left.png",
+        "Imagery/Kratos dead as stone right.png",
+        "Imagery/Kratos dead as stone left.png",
+        // --- Death screen image ---
+        "Imagery/You are dead GoW CoO.png",
+        // --- Underworld ---
+        // Backgrounds
+        "Imagery/Underworld battle area.png",
+        "Imagery/Hades battle area.png",
+        // Enemies
+        "Imagery/Hoplite facing left.png",
+        "Imagery/Hoplite facing right.png",
+        "Imagery/Hoplite chasing left.png",
+        "Imagery/Hoplite chasing right.png",
+        "Imagery/Hoplite light attacks left.png",
+        "Imagery/Hoplite light attacks right.png",
+        "Imagery/Hoplite heavy attacks left.png",
+        "Imagery/Hoplite heavy attacks right.png",
+        "Imagery/Hoplite blocks left.png",
+        "Imagery/Hoplite blocks right.png",
+        "Imagery/Hoplite dead left.png",
+        "Imagery/Hoplite dead right.png",
+        "Imagery/Banshee facing left.png",
+        "Imagery/Banshee facing right.png",
+        "Imagery/Banshee chasing left.png",
+        "Imagery/Banshee chasing right.png",
+        "Imagery/Banshee light attacks left.png",
+        "Imagery/Banshee light attacks right.png",
+        "Imagery/Banshee heavy attacks left.png",
+        "Imagery/Banshee heavy attacks right.png",
+        "Imagery/Banshee screams left.png",
+        "Imagery/Banshee screams right.png",
+        "Imagery/Banshee dead left.png",
+        "Imagery/Banshee dead right.png",
+        "Imagery/Satyr facing left.png",
+        "Imagery/Satyr facing right.png",
+        "Imagery/Satyr chasing left.png",
+        "Imagery/Satyr chasing right.png",
+        "Imagery/Satyr light attacks left.png",
+        "Imagery/Satyr light attacks right.png",
+        "Imagery/Satyr heavy attacks left.png",
+        "Imagery/Satyr heavy attacks right.png",
+        "Imagery/Satyr blocks left.png",
+        "Imagery/Satyr blocks right.png",
+        "Imagery/Satyr dead left.png",
+        "Imagery/Satyr dead right.png",
+        "Imagery/Gorgon facing left.png",
+        "Imagery/Gorgon facing right.png",
+        "Imagery/Gorgon chasing left.png",
+        "Imagery/Gorgon chasing right.png",
+        "Imagery/Gorgon light attacks left.png",
+        "Imagery/Gorgon light attacks right.png",
+        "Imagery/Gorgon heavy attacks left.png",
+        "Imagery/Gorgon heavy attacks right.png",
+        "Imagery/Gorgon petrifies left.png",
+        "Imagery/Gorgon petrifies right.png",
+        "Imagery/Gorgon dead left.png",
+        "Imagery/Gorgon dead right.png",
+        "Imagery/Minotaur facing left.png",
+        "Imagery/Minotaur facing right.png",
+        "Imagery/Minotaur chasing left.png",
+        "Imagery/Minotaur chasing right.png",
+        "Imagery/Minotaur light attacks left.png",
+        "Imagery/Minotaur light attacks right.png",
+        "Imagery/Minotaur heavy attacks left.png",
+        "Imagery/Minotaur heavy attacks right.png",
+        "Imagery/Minotaur blocks left.png",
+        "Imagery/Minotaur blocks right.png",
+        "Imagery/Minotaur dead left.png",
+        "Imagery/Minotaur dead right.png",
+        "Imagery/Medusa facing left.png",
+        "Imagery/Medusa facing right.png",
+        "Imagery/Medusa chasing left.png",
+        "Imagery/Medusa chasing right.png",
+        "Imagery/Medusa light attacks left.png",
+        "Imagery/Medusa light attacks right.png",
+        "Imagery/Medusa heavy attacks left.png",
+        "Imagery/Medusa heavy attacks right.png",
+        "Imagery/Medusa petrifies left.png",
+        "Imagery/Medusa petrifies right.png",
+        "Imagery/Medusa dead left.png",
+        "Imagery/Medusa dead right.png",
+        "Imagery/Cyclops facing left.png",
+        "Imagery/Cyclops facing right.png",
+        "Imagery/Cyclops chasing left.png",
+        "Imagery/Cyclops chasing right.png",
+        "Imagery/Cyclops light attacks left.png",
+        "Imagery/Cyclops light attacks right.png",
+        "Imagery/Cyclops heavy attacks left.png",
+        "Imagery/Cyclops heavy attacks right.png",
+        "Imagery/Cyclops dead left.png",
+        "Imagery/Cyclops dead right.png",
+        "Imagery/Hades facing left.png",
+        "Imagery/Hades facing right.png",
+        "Imagery/Hades chasing left.png",
+        "Imagery/Hades chasing right.png",
+        "Imagery/Hades light attacks left.png",
+        "Imagery/Hades light attacks right.png",
+        "Imagery/Hades heavy attacks left.png",
+        "Imagery/Hades heavy attacks right.png",
+        "Imagery/Hades takes soul left.png",
+        "Imagery/Hades takes soul right.png",
+        "Imagery/Hades summons left.png",
+        "Imagery/Hades summons right.png",
+        "Imagery/Hades dead left.png",
+        "Imagery/Hades dead right.png",
+        // --- Olympus ----
+        // Backgrounds
+        "Imagery/Olympus battle area.png",
+        "Imagery/Zeus battle area.png",
+        // Enemies
+        "Imagery/Hermes facing left.png",
+        "Imagery/Hermes facing right.png",
+        "Imagery/Hermes chasing left.png",
+        "Imagery/Hermes chasing right.png",
+        "Imagery/Hermes light attacks left.png",
+        "Imagery/Hermes light attacks right.png",
+        "Imagery/Hermes heavy attacks left.png",
+        "Imagery/Hermes heavy attacks right.png",
+        "Imagery/Hermes dodges left.png",
+        "Imagery/Hermes dodges right.png",
+        "Imagery/Hermes sprints left.png",
+        "Imagery/Hermes sprints right.png",
+        "Imagery/Hermes dead left.png",
+        "Imagery/Hermes dead right.png",
+        "Imagery/Hercules facing left.png",
+        "Imagery/Hercules facing right.png",
+        "Imagery/Hercules chasing left.png",
+        "Imagery/Hercules chasing right.png",
+        "Imagery/Hercules light attacks left.png",
+        "Imagery/Hercules light attacks right.png",
+        "Imagery/Hercules heavy attacks left.png",
+        "Imagery/Hercules heavy attacks right.png",
+        "Imagery/Hercules blocks left.png",
+        "Imagery/Hercules blocks right.png",
+        "Imagery/Hercules smashes left.png",
+        "Imagery/Hercules smashes right.png",
+        "Imagery/Hercules dead left.png",
+        "Imagery/Hercules dead right.png",
+        "Imagery/Zeus facing left.png",
+        "Imagery/Zeus facing right.png",
+        "Imagery/Zeus chasing left.png",
+        "Imagery/Zeus chasing right.png",
+        "Imagery/Zeus light attacks left.png",
+        "Imagery/Zeus light attacks right.png",
+        "Imagery/Zeus heavy attacks left.png",
+        "Imagery/Zeus heavy attacks right.png",
+        "Imagery/Zeus teleports left.png",
+        "Imagery/Zeus teleports right.png",
+        "Imagery/Zeus blocks left.png",
+        "Imagery/Zeus blocks right.png",
+        "Imagery/Zeus falls left.png",
+        "Imagery/Zeus falls right.png",
+        "Imagery/Zeus victory pose left.png",
+        "Imagery/Zeus victory pose right.png",
+        "Imagery/Zeus dead left.png",
+        "Imagery/Zeus dead right.png",
+    ];
 
-    preloadImages(gameAssets).then(() => {
+    preloadImages(UIassets).then(() => {
         g.audios.mainTheme.play();
         loaderScreen.style.display = "none";
         mainMenu.style.display = "block";
+        preloadImages(battleAssets).then(() => console.log("Done"));
     });
 
-    function preloadImages(imageArray = []) {
+    function preloadImages(images = []) {
+        const progress = document.getElementById('progress');
+        if (images.length > 100) console.log("Loading other images in the background...")
         let loaded = 0;
 
         return new Promise(resolve => {
-            if (imageArray.length === 0) resolve();
+            if (images.length === 0) resolve();
 
-            imageArray.forEach(src => {
+            images.forEach(src => {
                 const img = new Image();
 
                 img.onload = img.onerror = () => {
                     loaded++;
-                    console.log(`Loading progress: ${Math.round(loaded / imageArray.length * 100)}$`);
-                    if (loaded === imageArray.length) resolve();
+                    images.length < 100 ? progress.innerText = `${Math.round(loaded / images.length * 100)}%` : console.log(`Loading progress: ${Math.round(loaded / images.length * 100)}$`);
+                    if (loaded === images.length) resolve();
                 };
 
                 img.src = src;
             });
         });
     }
-
-    document.querySelector(".Main-menu").style.display = "none";
 
     const savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
     

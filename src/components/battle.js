@@ -1632,7 +1632,7 @@ export function battle(g) {
 		const enemyXpos = enemy.x + g.eW / 2;
 		const kratosXpos = g.kratos.x + 150 / 2;
 		const distance = Math.abs(Math.round(kratosXpos - enemyXpos));
-		const kratosAttackableX = g.kratos.facing === "left" ? kratosXpos + 75 / 2 : kratosXpos - 75 / 2;
+		const kratosAttackableX = g.kratos.facing === "left" ? kratosXpos + (75 / 2) : kratosXpos - (75 / 2) - 10;
 		const enemyAttackX = enemy.facing === "right" ? enemyXpos + g.eW / 2 : enemy.x;
 		const attackDis = Math.abs(Math.round(enemyAttackX - kratosAttackableX));
 
@@ -1897,7 +1897,12 @@ export function battle(g) {
 		// Attack states handling
 		if (enemy.state === "lAttack" && !enemy.hasHit) {
 			enemy.attackSound[0].cloneNode().play();
-			if (g.kratos.blocking) {
+			enemy.hasHit = true;
+			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
+
+			if (g.kratos.dodging || !inFront) {
+				return
+			} else if (g.kratos.blocking) {
 				g.audios.blockSound.cloneNode().play();
 				if (g.currentEnemy < 2) g.kratos.health -= 0; // no damage for weaker enemies
 				if (g.currentEnemy >= 2) g.kratos.health -= Math.round(enemy.lD * 0.85); // reduce damage by 85% for medium
@@ -1928,13 +1933,17 @@ export function battle(g) {
 				g.kratos.stunned = true;
 				g.kratos.stunEnd = Date.now() + enemy.lS;
 			}
+			
+		} else if (enemy.state === "hAttack" && !enemy.hasHit) {
+			enemy.attackSound[1].cloneNode().play();
 			enemy.hasHit = true;
-		} else if (enemy.state === "hAttack" && !enemy.hasHit && !g.kratos.dodging) {
+			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
+
+			if (g.kratos.dodging || !inFront) return
 			if (g.currentEnemy > 1) {
 				g.kratos.blocking = false;
 				g.keys['q'] = false;
 			}
-			enemy.attackSound[1].cloneNode().play();
 			
 			if (g.currentEnemy <= 4) {
 				!g.kratos.petrified ? g.playCaudio(g.audios.hurt[2], g.damageVolume) : g.audios.stoneBreak.cloneNode().play()
@@ -1945,7 +1954,6 @@ export function battle(g) {
 			}
 			g.kratos.health -= g.currentEnemy < 2 && g.kratos.blocking ? Math.round(enemy.hD / 2) : enemy.hD;
 			g.kratos.hitUntil = Date.now() + hitFlashTime;
-			enemy.hasHit = true;
 			g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'));
 			
 			if (!g.kratos.held) {
