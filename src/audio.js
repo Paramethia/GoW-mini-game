@@ -157,7 +157,7 @@ export const audios = {
     // Hercules
     herculesAttacks: [new Audio('../Audio/Punch 2.mp3'), new Audio('../Audio/Hercules attack.mp3')],
     herculesAttacked: new Audio('../Audio/Flesh impact.mp3'),
-    hermesDeath: new Audio('../Audio/Hercules death.mp3'),
+    herculesDeath: new Audio('../Audio/Hercules death.mp3'),
     smash: new Audio('../Audio/Smash.mp3'),
     // Zeus
     zeusAttacks: [new Audio('../Audio/Zeus attack.mp3'), new Audio('../Audio/Zeus attack 2.mp3')],

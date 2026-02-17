@@ -156,14 +156,14 @@ const globals = {
 			lD: 14, hD: 17, lC: 200, hC: 400, lR: 67, hR: 79, lS: 200, hS: 300, 
 			dC: 1500, ssC: 2300, lightChance: 0.5, heavyChance: 0.5, dodgeChance: 0.7, speedStrikeChance: 0.55,
 			defeated: localStorage.getItem("hermesDefeated") === "true",
-			attackSound: audios.hermesAttacks, hitSound: audios.hadesAttacked, death: audios.hermesDeath,
+			attackSound: audios.hermesAttacks, hitSound: audios.hermesAttacked, deathSound: audios.hermesDeath,
 		},
 		{
 			name: "Hercules", health: 290, speed: 2.78, x: 540, y: 0, w: 157, h: 225,
 			lD: 30, hD: 40, lC: 700, hC: 1600, lR: 116, hR: 171, lS: 600, hS: 1100, 
 			bC: 5500, bD: 1700, sC: 3500, lightChance: 0.5, heavyChance: 0.5, blockChance: 0.45, smashChance: 0.4,
 			defeated: localStorage.getItem("herculesDefeated") === "true",
-			attackSound: audios.herculesAttacks, hitSound: audios.hadesAttacked, deathSound: audios.hermesDeath,
+			attackSound: audios.herculesAttacks, hitSound: audios.herculesAttacked, deathSound: audios.herculesDeath,
 		},
 		{
 			name: "Zeus", health: 350, speed: 3.2, x: 666, y: 0, w: 130, h: 174, 
