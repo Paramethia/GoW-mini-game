@@ -45,6 +45,8 @@ body {
 .Noti i { margin-left: 7px }
 
 #Title { 
+	width: 430px;
+	height: 117px;
 	margin-top: 55px;
 	margin-bottom: 25px;
 }
