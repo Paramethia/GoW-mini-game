@@ -2456,15 +2456,15 @@ export function restart(g) {
 	}
 	reset.onclick = () => { 
         g.stopAmbience();
-        g.audios.returnSound.play();
+        g.audios.exit.play();
         setTimeout(() => { g.audios.ahShit.play() }, 1800 );
         g.kratos.health = 100;
         g.kratos.orbs = 0;
         g.currentWeapon = 0;
         g.potions = 0;
         g.inventory = ["Blades of chaos"];
-        [g.hoplite, g.banshee, g.satyr, g.minotaur, g.medusa, g.cyclops, g.hermes, g.hercules, g.zeus].forEach((enemy) => enemy.defeated = false );
-        [ 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated'].forEach(save => localStorage.removeItem(save));
+        [g.hoplite, g.banshee, g.satyr, g.gorgon, g.minotaur, g.medusa, g.cyclops, g.hades, g.hermes, g.hercules, g.zeus].forEach((enemy) => enemy.defeated = false );
+        [ 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'gorgonDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hadesDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated'].forEach(save => localStorage.removeItem(save));
         g.inBattle = false;
 		clearInterval(g.frameCount);
 		sparta(g);

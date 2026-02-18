@@ -154,7 +154,7 @@ export function settingsInit(g) {
 			gear.style.color = '#a88868';
 			document.querySelector('.Settings').style.display = 'flex';
 		} else {
-			g.audios.return.play();
+			g.audios.return.cloneNode().play();
 			gear.style.color = '#704028';
 			document.querySelector('.Settings').style.display = 'none';
 		}
