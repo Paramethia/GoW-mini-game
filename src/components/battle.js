@@ -471,7 +471,7 @@ export function battle(g) {
 		const attackDis = Math.abs(Math.round(kratosAttackX - enemyAttackableXpos));
 
 		// Attack with e (light attacks)
-		if (g.keys["e"] && Date.now() - g.kratos.lastLattack > weapon.lC && enemy.health !== 0 && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned) {
+		if (g.keys["e"] && Date.now() - g.kratos.lastLattack > weapon.lC && enemy.health !== 0 && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.hAttacking) {
 			const now = Date.now();
 
 			if (g.currentWeapon < 3) {
@@ -578,7 +578,7 @@ export function battle(g) {
 		}
 		
 		// Attack with r (heavy attacks)
-		if (g.keys["r"] && Date.now() - g.kratos.lastHattack > weapon.hC && enemy.health !== 0 && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned) {
+		if (g.keys["r"] && Date.now() - g.kratos.lastHattack > weapon.hC && enemy.health !== 0 && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking) {
 			const now = Date.now();
 
 			g.kratos.heavyCombo = (g.kratos.heavyCombo + 1) % 2; // 2 hit combo for now
@@ -686,10 +686,10 @@ export function battle(g) {
 			g.keys['r'] = false;
 		}
 		// Block with q
-		if (g.keys["q"] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned) g.kratos.blocking = true
+		if (g.keys["q"] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
 
         // Dodge
-        if (g.keys["Shift"] && !g.kratos.dodging && !g.kratos.stunned) {
+        if (g.keys["Shift"] && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking && !g.kratos.hAttacking) {
             g.audios.evadeSound.play();
 			g.kratos.dodging = true;
 			g.kratos.dodgeEnd = Date.now() + dodgeDuration;
