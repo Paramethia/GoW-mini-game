@@ -18,10 +18,10 @@ export function underworld(g) {
 	];
 	const moreCinfo = [
 		"This is a standard simple enemy that deals little damage & has little health. Hoplites can also block randomly as defense. Heavy attacks can break their blocks.",
-		"The banshee has slightly more health than the hoplite, with similar hit damage. It will randomly scream, dealing 1 health per 0.25s of the scream duration.",
+		"The banshee has less health than the hoplite, with similar hit damage. It will randomly scream, dealing 1 health per 0.25s of the scream duration.",
 		"Satyrs may be a little challenging without upgrading your standard weapon. They have a little more health than Kratos' average health. They have a higher chance of blocking than hoplites. And their blocks are unbreakable without a better weapon.",
-		"Gorgons have slightly less health than satyrs, and with damage a little more than the banshee. They have the ability of petrifying at a specific range. It can still attack you while you are petrified, so be sure to break out of the petrification quickly.",
-		"Minotaurs have similar skills to the satyrs, but they deal more damage of course. Their blocks are basically unbreakable without using at least the Gauntlet of Zeus.",
+		"Gorgons have less health than satyrs, and with damage a little more than the banshee. They have the ability of petrifying at a specific range. It can still attack you while you are petrified, so be sure to break out of the petrification quickly.",
+		"Minotaurs have similar skills to the satyrs, but they deal much more damage, and have more health. Their blocks are unbreakable without using at least the Gauntlet of Zeus.",
 		"Medusa is pretty much the same as the gorgon with similar damage, much higher petrification chance, slightly faster petrification timing, lower petrification cooldown, and higher petrification range.",
 		"The Cyclops does not have any special abilities like blocking, petrifying, etc. Although, it does have a lot of health (a little more than Kratos max health) and deals significant damage due it's large size.",
 		"Hades has the ability to summon out hands from underground. You can dodge these by dodging or by jumping in time. He can also decide to take your soul which takes 3 health each 0.25s as he does this. He also pulls you towards him as he takes our soul."
