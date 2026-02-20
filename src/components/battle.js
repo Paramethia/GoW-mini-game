@@ -550,7 +550,7 @@ export function battle(g) {
 
 					// Stun enemy
 					enemy.stunned = true;
-					if (g.currentEnemy !== 4 && g.currentEnemy !== 6 && g.currentEnemy !== 7 && g.currentEnemy !== 9) {
+					if (g.currentEnemy !== 4 && g.currentEnemy !== 6 && g.currentEnemy !== 7 && g.currentEnemy !== 8 && g.currentEnemy !== 9) {
 						enemy.stunEnd = Date.now() + weapon.lS;
 					} else { // Less stunn for bigger aor stronger enemies
 						enemy.stunEnd = Date.now() + weapon.lS / 2 
@@ -605,15 +605,18 @@ export function battle(g) {
 						if (g.currentEnemy === 10) return
 						enemy.knockbackVel = g.kratos.facing === "right" ? knockback : -knockback;
 					if (g.currentEnemy) {
-						if (g.currentEnemy === 2 && weapon.name === "Claws of Hades") {
+						if (g.currentEnemy === 2 && g.currentWeapon >= 2) {
 							g.audios.blockSound.play();
 							breakBlock();
 							return
-						} else if (g.currentEnemy === 4 && weapon.name === "Gauntlet of Zeus") {
+						} else if (g.currentEnemy === 4 && g.currentWeapon >= 3) {
 							g.audios.minBlock.play();
 							breakBlock();
 							return
-						} else if (g.currentEnemy === 9 && weapon.name === "Blade of Olympus") {
+						} else if (g.currentEnemy === 9 && g.currentWeapon >= 4) {
+							breakBlock();
+							return
+						} else if (g.currentEnemy === 10 && g.currentWeapon === 5) {
 							breakBlock();
 							return
 						}
@@ -621,7 +624,7 @@ export function battle(g) {
 
 						enemy.stunned = true;
 						enemy.stunEnd = Date.now() + weapon.hS / g.currentEnemy !== 4 && g.currentEnemy !== 6 ? 2 : 3;
-					} else { // You can break blocks for Hoplites only (with heavy attacks)
+					} else { // Hoplite blocks can be broken with any weapon (Only with heavy attacks)
 						g.audios.blockSound.play();
 						breakBlock()
 					}
@@ -686,10 +689,10 @@ export function battle(g) {
 			g.keys['r'] = false;
 		}
 		// Block with q
-		if (g.keys["q"] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
+		if (g.keys["q"] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
 
         // Dodge
-        if (g.keys["Shift"] && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking && !g.kratos.hAttacking) {
+        if (g.keys["Shift"] && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.blocking && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) {
             g.audios.evadeSound.play();
 			g.kratos.dodging = true;
 			g.kratos.dodgeEnd = Date.now() + dodgeDuration;
@@ -1075,6 +1078,9 @@ export function battle(g) {
 		enemy.stateEnd = now + enemy.bD;
 		enemy.blocking = true;
 		enemy.lastBlock = now;
+	}
+	function knockbackKratos(knockback) {
+		g.kratos.knockbackVel = enemy.facing === "right" ? knockback : -knockback;
 	}
 
 	function bansheeScreams() {
@@ -1899,16 +1905,18 @@ export function battle(g) {
 			enemy.attackSound[0].cloneNode().play();
 			enemy.hasHit = true;
 			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
-
+			let knockback = 5 + g.currentEnemy + g.currentEnemy;
+			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 3 + g.currentEnemy
 			if (g.kratos.dodging || !inFront) {
 				return
 			} else if (g.kratos.blocking) {
 				g.audios.blockSound.cloneNode().play();
-				if (g.currentEnemy < 2) g.kratos.health -= 0; // no damage for weaker enemies
-				if (g.currentEnemy >= 2) g.kratos.health -= Math.round(enemy.lD * 0.85); // reduce damage by 85% for medium
-				if (g.currentEnemy > 5) g.kratos.health -= Math.round(enemy.lD * 0.7); // reduce damage by 70% for stronger enemies
-				if (g.currentEnemy > 7) g.kratos.health -= Math.round(enemy.lD * 0.6); // reduce damage by 60% for gods of olympus
-				g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'));
+				if (enemy.name === "Hoplite" || enemy.name === "Satyr") g.kratos.health -= 0 // no damage for Hoplites or Satyrs
+				if (enemy.name === "Minotaur") g.kratos.health -= Math.round(enemy.lD * 0.95) // reduce damage by 95% for the Minotaur
+				if (enemy.name === "Hercules") g.kratos.health -= Math.round(enemy.lD * 0.8) // reduce damage by 80% for Hercules
+				if (enemy.name === "Zeus") g.kratos.health -= Math.round(enemy.lD * 0.7) // reduce damage by 70% for Zeus
+				knockback -= 2;
+				g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'))
 			} else {
 				if (g.currentEnemy <= 4) {
 					!g.kratos.petrified ? g.playCaudio(g.audios.hurt[0], g.damageVolume) : g.audios.stoneBreak.cloneNode().play()
@@ -1923,11 +1931,7 @@ export function battle(g) {
 				g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'));
 
 				// Knockback kratos		
-				if (!g.kratos.held) {
-					let knockback = 5 + g.currentEnemy + g.currentEnemy;
-					if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 3 + g.currentEnemy
-					g.kratos.knockbackVel = enemy.facing === "right" ? knockback : -knockback;
-				}
+				if (!g.kratos.held) knockbackKratos(knockback)
 				
 				// Stun kratos
 				g.kratos.stunned = true;
@@ -1938,11 +1942,40 @@ export function battle(g) {
 			enemy.attackSound[1].cloneNode().play();
 			enemy.hasHit = true;
 			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
-
+			let damage = enemy.hD;
+			let knockback = 8 + g.currentEnemy + g.currentEnemy;
+			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 5 + g.currentEnemy
+			
 			if (g.kratos.dodging || !inFront) return
-			if (g.currentEnemy > 1) {
-				g.kratos.blocking = false;
-				g.keys['q'] = false;
+			if (g.kratos.blocking) {
+				function breakBlock() {
+					g.audios.blockSound.cloneNode().play();
+					g.kratos.blocking = false;
+					g.keys['q'] = false;
+				}
+				if ((enemy.name === "Satyr" && g.currentWeapon >= 1) || (enemy.name === "Minotaur" && g.currentWeapon >= 3) || (enemy.name === "Hercules" && g.currentWeapon >= 4) || (enemy.name === "Zeus" && g.currentWeapon === 5)) {
+					breakBlock();
+					if (enemy.name === "Satyr") g.kratos.health -= Math.round(damage * 0.85) // reduce damage by 85%
+					if (enemy.name === "Minotaur") g.kratos.health -= Math.round(damage * 0.65) // reduce damage by 65% for the Minotaur
+					if (enemy.name === "Hercules") g.kratos.health -= Math.round(damage * 0.50) // reduce damage by 50% for Hercules
+					if (enemy.name === "Zeus") g.kratos.health -= Math.round(damage * 0.35) // reduce damage by 35% for Zeus
+					g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'));
+					g.kratos.hitUntil = Date.now() + (hitFlashTime - 50);
+					knockback -= 2;
+					knockbackKratos(knockback);
+					return
+				} else { 
+					breakBlock();
+					if (enemy.name === "Satyr") g.kratos.health -= Math.round(damage * 0.75) // reduce damage by 75%
+					if (enemy.name === "Minotaur") g.kratos.health -= Math.round(damage * 0.55) // reduce damage by 55% for the Minotaur
+					if (enemy.name === "Hercules") g.kratos.health -= Math.round(damage * 0.40) // reduce damage by 40% for Hercules
+					if (enemy.name === "Zeus") g.kratos.health -= Math.round(damage * 0.25) // reduce damage by 25% for Zeus
+					g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'));
+					g.kratos.hitUntil = Date.now() + (hitFlashTime / 2);
+					knockback -= 3;
+					knockbackKratos(knockback);
+					return
+				}
 			}
 			
 			if (g.currentEnemy <= 4) {
@@ -1952,15 +1985,11 @@ export function battle(g) {
 			} else {
 				g.playCaudio(g.audios.hurt[4], g.damageVolume)
 			}
-			g.kratos.health -= g.currentEnemy < 2 && g.kratos.blocking ? Math.round(enemy.hD / 2) : enemy.hD;
+			g.kratos.health -= damage;
 			g.kratos.hitUntil = Date.now() + hitFlashTime;
 			g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'));
 			
-			if (!g.kratos.held) {
-				let knockback = 8 + g.currentEnemy + g.currentEnemy + g.currentEnemy;
-				if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 5 + g.currentEnemy
-				g.kratos.knockbackVel = enemy.facing === "right" ? knockback : -knockback;
-			}
+			if (!g.kratos.held) knockbackKratos(knockback)
 			
 			g.kratos.stunned = true;
 			g.kratos.stunEnd = Date.now() + enemy.hS;
