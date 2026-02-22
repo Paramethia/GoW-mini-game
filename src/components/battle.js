@@ -443,10 +443,10 @@ export function battle(g) {
 		} else {
 			if (g.kratos.stunned || enemy.speedStriking) return
 			if (g.keys["ArrowLeft"] || g.keys["a"] || g.keys["A"]) {
-				if (g.currentEnemy > 5 && !enemy.defeated) { lineComplete ? g.kratos.velX = -speed : g.kratos.velX = 0 } else { g.kratos.velX = -speed }
+				if (g.currentEnemy > 6 && !enemy.defeated) { lineComplete ? g.kratos.velX = -speed : g.kratos.velX = 0 } else { g.kratos.velX = -speed }
 				g.kratos.facing = "left";
 			} else if (g.keys["ArrowRight"] || g.keys["d"] || g.keys["D"]) {
-				if (g.currentEnemy > 5 && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
+				if (g.currentEnemy > 6 && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
 				g.kratos.facing = "right";
 			} else {
 				g.kratos.velX = 0;
@@ -974,6 +974,7 @@ export function battle(g) {
 		enemy.nextSmashTime = 0;
 		enemy.smashHasHit = false;
 	} else if (g.currentEnemy === 10) {
+		enemy.maxHealth = g.eHealth;
 		enemy.teleporting = false;
 		enemy.lastTeleport = 0;
 
@@ -1031,7 +1032,7 @@ export function battle(g) {
 		if (enemy.soulTakeChance && !g.kratos.took && !g.kratos.held && now - enemy.lastSoulTake > enemy.sTC) options.soulTake = enemy.soulTakeChance
 		if (enemy.graspChance && !g.kratos.held && now - enemy.lastGrasp > enemy.gC) options.grasp = enemy.graspChance
 		if (enemy.speedStrikeChance && now - enemy.lastSpeedStrike > enemy.ssC) options.speedStrike = enemy.speedStrikeChance
-		if (enemy.smashChance && now - enemy.lastSmash > enemy.sC) options.smash = enemy.smashChance;
+		if (enemy.smashChance && now - enemy.lastSmash > enemy.sC) options.smash = enemy.smashChance
 
 		if (!Object.keys(options).length) return;
 
@@ -2515,15 +2516,15 @@ function victory(g) {
 		g.audios.olympusAm.play()
 	}
 	document.querySelector('.Efiller').style.width = `${g.enemies[g.currentEnemy].health}%`;
-	if (g.currentEnemy < 8) { 
+	if (g.currentEnemy < 10) { 
 		g.audios.defeatSound.play();
 		if (!g.enemies[g.currentEnemy].deated) g.notify();
+		document.getElementById('Text').innerText = 'You have defeated the enemy. You have now earned some orbs from the defeated enemy.';
 	} else { 
 		g.audios.wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this absolute SHIT game! 🤩";
 	}
 	[ document.getElementById("Return-Underworld"), document.getElementById("Return-Olympus") ].forEach((button) => { if (button) button.style.display = 'block' });
-	document.getElementById('Text').innerText = 'You have defeated the enemy. You have now earned some orbs from the defeated enemy.';
 }
 
 export function death(g) {
