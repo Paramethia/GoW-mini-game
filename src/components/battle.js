@@ -692,8 +692,8 @@ export function battle(g) {
 		if (g.keys["q"] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
 
         // Dodge
-        if (g.keys["Shift"] && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.blocking && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) {
-            g.audios.evadeSound.play();
+        if (g.keys["Shift"] && g.kratos.velX && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.blocking && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) {
+			g.audios.evadeSound.play();
 			g.kratos.dodging = true;
 			g.kratos.dodgeEnd = Date.now() + dodgeDuration;
         }

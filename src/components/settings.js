@@ -173,6 +173,8 @@ export function settingsInit(g) {
 	}
 
 	settingsB.onclick = () => { toggleSettings() }
+	settings.onclick = () => { toggleSettings() }
+	document.querySelector(".con").onclick = (event) => event.stopPropagation()
 
 	healthBarSet.onclick = () => { 
 		switch(g.hBarOn) {
