@@ -123,5 +123,6 @@ You can now install the game directly to your device. To quickly access it inste
 **_Development improvement:_**
 
 - Refactored some code.
-- Removed some audio I accidentally left in ./Audio that was not being used
+- Organised images to seperate sub-folders like ".Imagery/UI" and ".Imagery/battle". Same with audio
+- Removed some audio and images I accidentally left in their directories that was not being used
 - Better variable naming & variable definition placements in src/audio.js + comments with organisation
