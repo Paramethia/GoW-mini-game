@@ -30,7 +30,7 @@ export const olympus = (g) => {
 				</div>
 				<span id="prev">&Omega;</span>
 				<span id="next">&Omega;</span>
-				<img id="Enemy" src="Imagery/Hermes.png" />
+				<img id="Enemy" src="Imagery/UI/Hermes.png" />
 				<button id="Fight"> Fight </button>
 				<span id="enemy-i-tog"><i class="fa-solid fa-circle-info fa-xl"></i></span>
 				<div id="More-info">
@@ -82,7 +82,7 @@ export const olympus = (g) => {
 		enemyDamage.innerText = Math.round(enemies[selectedEnemyI].lD + enemies[selectedEnemyI].hD / 2);
 		enemySpeed.innerText = enemies[selectedEnemyI].speed;
 		enemyStun.innerText = `${parseInt(Math.round(enemies[selectedEnemyI].lS + enemies[selectedEnemyI].hS / 2)) / 100}s`
-		enemyImage.src = `Imagery/${enemies[selectedEnemyI].name}.png`;
+		enemyImage.src = `./Imagery/UI/${enemies[selectedEnemyI].name}.png`;
 		fightB.innerHTML = `Fight ${defeats[selectedEnemyI]? '' : '<i class="fa-solid fa-lock"></i>'}`;
 	}
 	

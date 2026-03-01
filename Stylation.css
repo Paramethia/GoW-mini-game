@@ -5,18 +5,18 @@ body {
 	margin: 0;
 	padding: 12px;
 	background-color: black;
-	cursor: url("Imagery/Hand_default.png"), auto;
+	cursor: url("./Imagery/UI/Hand_default.png"), auto;
 }
 
 :root {
-	--pressing: url("Imagery/Hand_pressing.png");
-	--hover: url("Imagery/Hand_hover.png");
-	--main-menu-img: url("Imagery/Opening menu image.png");
-	--sparta-img: url("Imagery/Sparta.png");
-	--Smithy-img: url("Imagery/In smithy.png");
-	--underworld-img: url("Imagery/In underworld.png");
-	--olympus-img: url("Imagery/Olympus background.png");
-	--boc-cur: url("Imagery/boc-cursor.png");
+	--pressing: url("./Imagery/UI/Hand_pressing.png");
+	--hover: url("./Imagery/UI/Hand_hover.png");
+	--main-menu-img: url("./Imagery/UI/Opening menu image.png");
+	--sparta-img: url("./Imagery/UI/Sparta.png");
+	--Smithy-img: url("./Imagery/UI/In smithy.png");
+	--underworld-img: url("./Imagery/UI/In underworld.png");
+	--olympus-img: url("./Imagery/UI/Olympus background.png");
+	--boc-cur: url("./Imagery/UI/boc-cursor.png");
 }
 
 #version {
@@ -72,7 +72,7 @@ body {
 /* --- Loading screen styling --- */
 
 #Load-screen {
-	display: flex;
+	display: none;
 	align-items: center;
 	justify-content: center;
 	width: 80%;
@@ -714,7 +714,7 @@ body {
 
 	/* Battle area styling */
 
-.Underworld-battle { background-image: url("Imagery/Underworld battle area.png") }
+.Underworld-battle { background-image: url("./Imagery/battle/Underworld battle area.png") }
 
 #FPS { color: lightgray }
 
@@ -771,7 +771,7 @@ body {
 
 /* Battle area styling */
 
-.Olympus-battle { background-image: url("Imagery/Olympus battle area.png") }
+.Olympus-battle { background-image: url("./Imagery/battle/Olympus battle area.png") }
 
 	/* Enemy info styling */
 
@@ -1043,7 +1043,7 @@ canvas {
 	cursor: var(--pressing), pointer;
 }
 
-#Slot1 { background-image: url('./Imagery/Blades-of-chaos.png') }
+#Slot1 { background-image: url('./Imagery/UI/Blades-of-chaos.png') }
 
 #Slot2 {
 	background-position: center;

@@ -16,14 +16,14 @@ export function olympusBattle(g) {
 			</div>
 			${enemyStats(g)}
 			<canvas class="Battle-area"></canvas>
-			<img id="You-dead" src="Imagery/You are dead GoW CoO.png">
+			<img id="You-dead" src="Imagery/battle/You are dead GoW CoO.png">
 			<button id="Return-Olympus">Return</button>
 			<button id='Reset'> Restart? </button>
 			</center>
 			${hotbar(g)}
 		</div>
 	`;
-	if (g.enemies[g.currentEnemy].name === "Zeus") document.querySelector(".Olympus-battle").style.backgroundImage = 'url("Imagery/Zeus battle area.png")';
+	if (g.enemies[g.currentEnemy].name === "Zeus") document.querySelector(".Olympus-battle").style.backgroundImage = 'url("./Imagery/UI/Zeus battle area.png")';
 	
 	settingsInit(g);
 

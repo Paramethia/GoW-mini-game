@@ -16,7 +16,7 @@ export function smithy(g){
             <div class="Mid">     
                 <img id="Kratos">
                 
-				${stock.map((weapon => { return `<img id="${weapon.name.replaceAll(" ", "-")}" src="Imagery/${weapon.name}.png" />`})).join("")}
+				${stock.map((weapon => { return `<img id="${weapon.name.replaceAll(" ", "-")}" src="Imagery/UI/${weapon.name}.png" />`})).join("")}
 
 				<button id="Sell-weapon">Sell weapon</button>
                 
@@ -26,7 +26,7 @@ export function smithy(g){
 				${stock.map((weapon, index) => {
 					return `
 						<div class="weapon-info" id="${`weapon-${index + 1}-info`}" data-weapon="${weapon.name}">
-							<i class="Item-info" id="italics"><span><font color="#E2000C" />${weapon.price}</font> red orbs</span> <span><img src="Imagery/Red orb.png" width="15" height="15" alt="Red orb" /></span></i>
+							<i class="Item-info" id="italics"><span><font color="#E2000C" />${weapon.price}</font> red orbs</span> <span><img src="Imagery/UI/Red orb.png" width="15" height="15" alt="Red orb" /></span></i>
                     		<hr color="#daa" height="1" />
 							<i class="Item-info" id="italics"><font color="#aaa"> Damages: </font> ${stock[index].lD} | ${stock[index].hD} </i>
 							<i class="Item-info" id="italics"><font color="#aaa"> Stun: </font> ${parseInt(stock[index].lS + stock[index].hS / 2) / 100}s </i>
@@ -134,14 +134,14 @@ export function smithy(g){
 		if (image.style.display !== 'none') {
 			image.onmouseover = () => {
 				g.audios.hover.cloneNode().play();
-				image.src = `Imagery/${names[index]} (outlined).png`;
+				image.src = `./Imagery/UI/${names[index]} (outlined).png`;
 				image.style.transform = transformations[index];
 				dialogue.style.display = 'block';
 				dialogueText.innerText = `${index === 1 ? 'Those are' : 'This is'} the ${names[index]}`;
 				if (info) info.style.display = 'inline-block';
 			}
 			image.onmouseout = () => {
-				image.src = `Imagery/${names[index]}.png`;
+				image.src = `./Imagery/UI/${names[index]}.png`;
 				image.style.transform = defTrans[index];
 				dialogue.style.display = 'none';
 				if (info) info.style.display = 'none';
@@ -372,20 +372,20 @@ export function smithy(g){
 
 	function weaponGot() {
 		document.removeEventListener('keydown', g.navKeys);
-		document.querySelector('.Smithy').style.backgroundImage = 'url("Imagery/Sparta background.jpg")';
+		document.querySelector('.Smithy').style.backgroundImage = 'url("./Imagery/UI/Sparta background.jpg")';
 		text.style.color = '#d8c8a8';
 		text.innerText = "You now have the " + g.weapons[g.currentWeapon].name;
 		[sellWeaponB, nemesisWhip, clawsHades, gauntletZeus, nemeanCestus, bladeOlympus].forEach(element => element.style.display = 'none');
 		document.querySelectorAll('.weapon-info').forEach(info => info.style.display = 'none');
 		kratos.style.display = 'inline';
-		kratos.src = `Imagery/Kratos standing (${g.weapons[g.currentWeapon].name}).png`;
+		kratos.src = `./Imagery/UI/Kratos standing (${g.weapons[g.currentWeapon].name}).png`;
 		if (g.currentWeapon === 3) kratos.style.width = '140px';
 		if (g.curentWeapon === 4) kratos.style.width = '150px';
 	}
 
 	function revert() {
 		document.addEventListener('keydown', g.navKeys);
-		document.querySelector('.Smithy').style.backgroundImage = 'url("Imagery/In smithy.png")';
+		document.querySelector('.Smithy').style.backgroundImage = 'url("./Imagery/UI/In smithy.png")';
 		text.style.color = '#ffad15';
 		text.innerText = "You enter the smithy. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 		kratos.style.display = 'none';

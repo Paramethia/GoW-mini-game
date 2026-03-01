@@ -18,7 +18,7 @@ export function sparta(g) {
 					${defaultText.replace('\n', '<br />')}
 				</div>
 				<div class="Mid">
-					<img id="Kratos" src="Imagery/Kratos standing animation.gif">
+					<img id="Kratos" src="Imagery/UI/Kratos standing animation.gif">
 				</div>
 			</center>
 			<div class="Places">
@@ -75,7 +75,7 @@ export function sparta(g) {
 	
 	smithyB.onmouseover = () => {
 		g.audios.hover.cloneNode().play();
-		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/Sparta smithy.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta smithy.png")';
 		kratos.style.bottom = '-1.4cm';
         kratos.style.right = '65%';
 		kratos.style.height = '254px';
@@ -85,7 +85,7 @@ export function sparta(g) {
 		smithyB.style.background = '#232d34';
 	}
 	smithyB.onmouseout = () => {
-		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/Sparta.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
 		kratos.style.bottom = '0';
         kratos.style.right = '42%';
 		kratos.style.height = '142px';
@@ -101,7 +101,7 @@ export function sparta(g) {
 
 	underworldB.onmouseover = () => {
 		g.audios.hover.cloneNode().play();
-		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/Underworld.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Underworld.png")';
 		kratos.style.right = '62%';
 		kratos.style.height = '244px';
 		kratos.style.width = '124px';
@@ -110,7 +110,7 @@ export function sparta(g) {
 		underworldB.style.background = '#25201c';
 	}
 	underworldB.onmouseout = () => {;
-		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/Sparta.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
 		kratos.style.right = '42%';
 		kratos.style.height = '142px';
 		kratos.style.width = '82px';
@@ -131,7 +131,7 @@ export function sparta(g) {
 
 	olympusB.onmouseover = () => {
 		g.audios.hover.cloneNode().play();
-		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/Mount Olympus.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Mount Olympus.png")';
 		document.querySelector('.Sparta').style.backgroundPosition = 'bottom';
 		kratos.style.bottom = '1.1cm';
 		kratos.style.right = '60%';
@@ -142,7 +142,7 @@ export function sparta(g) {
 		olympusB.style.background = '#5e4915';
 	}
 	olympusB.onmouseout = () => {
-		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/Sparta.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
 		document.querySelector('.Sparta').style.backgroundPosition = 'center';
 		kratos.style.bottom = '0cm';
 		kratos.style.right = '42%';

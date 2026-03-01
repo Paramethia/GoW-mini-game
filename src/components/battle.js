@@ -26,26 +26,26 @@ export function battle(g) {
 	// ===== Load images =====
 	
 	const kratosStandL = new Image();
-	kratosStandL.src = "Imagery/Kratos standing left.png";
+	kratosStandL.src = "Imagery/battle/Kratos standing left.png";
 	const kratosStandR = new Image();
-	kratosStandR.src = "Imagery/Kratos standing right.png";
+	kratosStandR.src = "Imagery/battle/Kratos standing right.png";
 
 	const kratosFightingStanceL = new Image();
 	const kratosFightingStanceR = new Image();
 
 	const kratosJogLeft = new Image();
-	kratosJogLeft.src = "Imagery/Kratos jogging left.png";
+	kratosJogLeft.src = "Imagery/battle/Kratos jogging left.png";
 	const kratosJogRight = new Image();
-	kratosJogRight.src = "Imagery/Kratos jogging right.png";
+	kratosJogRight.src = "Imagery/battle/Kratos jogging right.png";
 	
 	const kratosFallsLeft = new Image();
-	kratosFallsLeft.src = "Imagery/Kratos lands left.png";
+	kratosFallsLeft.src = "Imagery/battle/Kratos lands left.png";
 	const kratosFallsRight= new Image();
-	kratosFallsRight.src = "Imagery/Kratos lands right.png";
+	kratosFallsRight.src = "Imagery/battle/Kratos lands right.png";
 	const kratosJumpsLeft = new Image(); 
-	kratosJumpsLeft.src = "Imagery/Kratos jumps left.png";
+	kratosJumpsLeft.src = "Imagery/battle/Kratos jumps left.png";
 	const kratosJumpsRight = new Image(); 
-	kratosJumpsRight.src = "Imagery/Kratos jumps right.png";
+	kratosJumpsRight.src = "Imagery/battle/Kratos jumps right.png";
 	
 	const lightAttackLeft = new Image();
 	const lightAttackRight = new Image();
@@ -60,25 +60,25 @@ export function battle(g) {
 	const kratosBlocksRight = new Image();
 
 	const kratosStunnedLeft = new Image();
-	kratosStunnedLeft.src = "Imagery/Kratos damage left.png";
+	kratosStunnedLeft.src = "Imagery/battle/Kratos damage left.png";
 	const kratosStunnedRight = new Image();
-	kratosStunnedRight.src = "Imagery/Kratos damage right.png";
+	kratosStunnedRight.src = "Imagery/battle/Kratos damage right.png";
 
 	const kratosAirStunnedL = new Image();
-	kratosAirStunnedL.src = "Imagery/Kratos air damage left.png";
+	kratosAirStunnedL.src = "Imagery/battle/Kratos air damage left.png";
 	const kratosAirStunnedR = new Image();
-	kratosAirStunnedR.src = "Imagery/Kratos air damage right.png";
+	kratosAirStunnedR.src = "Imagery/battle/Kratos air damage right.png";
 
 	const kratosDodgesLeft = new Image();
-	kratosDodgesLeft.src = "Imagery/Kratos dodging left.png";
+	kratosDodgesLeft.src = "Imagery/battle/Kratos dodging left.png";
 	const kratosDodgesRight = new Image();
-	kratosDodgesRight.src = "Imagery/Kratos dodging right.png";
+	kratosDodgesRight.src = "Imagery/battle/Kratos dodging right.png";
 
 	const kratosDeafenedL = new Image();
 	const kratosDeafenedR = new Image();
 	if (enemy.name === "Banshee") {
-		kratosDeafenedL.src = "Imagery/Kratos covering ears left.png";
-		kratosDeafenedR.src = "Imagery/Kratos covering ears right.png";
+		kratosDeafenedL.src = "Imagery/battle/Kratos covering ears left.png";
+		kratosDeafenedR.src = "Imagery/battle/Kratos covering ears right.png";
 	}
 
 	const kratosPetrifiedL = new Image();
@@ -86,10 +86,10 @@ export function battle(g) {
 	const kratosDeadPetrifiedL = new Image();
 	const kratosDeadPetrifiedR = new Image();
 	if (enemy.name === "Gorgon" || enemy.name === "Medusa") {
-		kratosPetrifiedL.src = "Imagery/Kratos petrified left.png";
-		kratosPetrifiedR.src = "Imagery/Kratos petrified right.png";
-		kratosDeadPetrifiedL.src = "Imagery/Kratos dead as stone left.png";
-		kratosDeadPetrifiedR.src = "Imagery/Kratos dead as stone right.png";
+		kratosPetrifiedL.src = "Imagery/battle/Kratos petrified left.png";
+		kratosPetrifiedR.src = "Imagery/battle/Kratos petrified right.png";
+		kratosDeadPetrifiedL.src = "Imagery/battle/Kratos dead as stone left.png";
+		kratosDeadPetrifiedR.src = "Imagery/battle/Kratos dead as stone right.png";
 	}
 
 	const kratosSoulTookL = new Image();
@@ -97,89 +97,89 @@ export function battle(g) {
 	const kratosHeldL = new Image();
 	const kratosHeldR = new Image();
 	if (enemy.name === "Hades") {
-		kratosSoulTookL.src = "Imagery/Kratos soul left.png";
-		kratosSoulTookR.src = "Imagery/Kratos soul right.png";
-		kratosHeldL.src = "Imagery/Kratos held by hands left.png";
-		kratosHeldR.src = "Imagery/Kratos held by hands right.png";
+		kratosSoulTookL.src = "Imagery/battle/Kratos soul left.png";
+		kratosSoulTookR.src = "Imagery/battle/Kratos soul right.png";
+		kratosHeldL.src = "Imagery/battle/Kratos held by hands left.png";
+		kratosHeldR.src = "Imagery/battle/Kratos held by hands right.png";
 	}
 
 	const kratosDeadL = new Image();
-	kratosDeadL.src = "Imagery/Kratos dead left.png";
+	kratosDeadL.src = "Imagery/battle/Kratos dead left.png";
 	const kratosDeadR = new Image();
-	kratosDeadR.src = "Imagery/Kratos dead right.png";
+	kratosDeadR.src = "Imagery/battle/Kratos dead right.png";
 
 	const enemyLeft = new Image();
-	enemyLeft.src = `Imagery/${enemy.name} facing left.png`;
+	enemyLeft.src = `Imagery/battle/${enemy.name} facing left.png`;
 	const enemyRight = new Image();
-	enemyRight.src = `Imagery/${enemy.name} facing right.png`;
+	enemyRight.src = `Imagery/battle/${enemy.name} facing right.png`;
 	
 	const enemyChasesL = new Image();
-	enemyChasesL.src = `Imagery/${enemy.name} chasing left.png`;
+	enemyChasesL.src = `Imagery/battle/${enemy.name} chasing left.png`;
 	const enemyChasesR = new Image();
-	enemyChasesR.src = `Imagery/${enemy.name} chasing right.png`;
+	enemyChasesR.src = `Imagery/battle/${enemy.name} chasing right.png`;
 	
 	const enemyLattackR = new Image();
-	enemyLattackR.src = `Imagery/${enemy.name} light attacks right.png`;
+	enemyLattackR.src = `Imagery/battle/${enemy.name} light attacks right.png`;
 	const enemyLattackL = new Image();
-	enemyLattackL.src = `Imagery/${enemy.name} light attacks left.png`;
+	enemyLattackL.src = `Imagery/battle/${enemy.name} light attacks left.png`;
 	const enemyHattackR = new Image();
-	enemyHattackR.src = `Imagery/${enemy.name} heavy attacks right.png`;
+	enemyHattackR.src = `Imagery/battle/${enemy.name} heavy attacks right.png`;
 	const enemyHattackL = new Image();
-	enemyHattackL.src = `Imagery/${enemy.name} heavy attacks left.png`;
+	enemyHattackL.src = `Imagery/battle/${enemy.name} heavy attacks left.png`;
 
 	const enemyBlocksR = new Image();
 	const enemyBlocksL = new Image();
 	if (enemy.blockChance) {
-		enemyBlocksR.src = `Imagery/${enemy.name} blocks right.png`;
-		enemyBlocksL.src = `Imagery/${enemy.name} blocks left.png`;
+		enemyBlocksR.src = `Imagery/battle/${enemy.name} blocks right.png`;
+		enemyBlocksL.src = `Imagery/battle/${enemy.name} blocks left.png`;
 	}
 
 	const bansheeScreamsR = new Image();
 	const bansheeScreamsL = new Image();
 	if (enemy.screamChance) {
-		bansheeScreamsR.src = `Imagery/${enemy.name} screams right.png`;
-		bansheeScreamsL.src = `Imagery/${enemy.name} screams left.png`;
+		bansheeScreamsR.src = `Imagery/battle/${enemy.name} screams right.png`;
+		bansheeScreamsL.src = `Imagery/battle/${enemy.name} screams left.png`;
 	}
 
 	const enemyPetrifiesR = new Image();
 	const enemyPetrifiesL = new Image();
 	if (enemy.petrifyChance) {
-		enemyPetrifiesR.src = `Imagery/${enemy.name} petrifies right.png`;
-		enemyPetrifiesL.src = `Imagery/${enemy.name} petrifies left.png`;
+		enemyPetrifiesR.src = `Imagery/battle/${enemy.name} petrifies right.png`;
+		enemyPetrifiesL.src = `Imagery/battle/${enemy.name} petrifies left.png`;
 	}
 
 	const enemyTakesSoulR = new Image();
 	const enemyTakesSoulL = new Image();
 	if (enemy.soulTakeChance) {
-		enemyTakesSoulR.src = `Imagery/${enemy.name} takes soul right.png`;
-		enemyTakesSoulL.src = `Imagery/${enemy.name} takes soul left.png`;
+		enemyTakesSoulR.src = `Imagery/battle/${enemy.name} takes soul right.png`;
+		enemyTakesSoulL.src = `Imagery/battle/${enemy.name} takes soul left.png`;
 	}
 	const enemySummonsR = new Image();
 	const enemySummonsL = new Image();
 	if (enemy.graspChance) {
-		enemySummonsR.src = `Imagery/${enemy.name} summons right.png`;
-		enemySummonsL.src = `Imagery/${enemy.name} summons left.png`;
+		enemySummonsR.src = `Imagery/battle/${enemy.name} summons right.png`;
+		enemySummonsL.src = `Imagery/battle/${enemy.name} summons left.png`;
 	}
 
 	const enemyDodgesR = new Image();
 	const enemyDodgesL = new Image();
 	if (enemy.dodgeChance) {
-		enemyDodgesR.src = `Imagery/${enemy.name} dodges right.png`;
-		enemyDodgesL.src = `Imagery/${enemy.name} dodges left.png`;
+		enemyDodgesR.src = `Imagery/battle/${enemy.name} dodges right.png`;
+		enemyDodgesL.src = `Imagery/battle/${enemy.name} dodges left.png`;
 	}
 
 	const enemySprintsR = new Image();
 	const enemySprintsL = new Image();
 	if (enemy.speedStrikeChance) {
-		enemySprintsR.src = `Imagery/${enemy.name} sprints right.png`;
-		enemySprintsL.src = `Imagery/${enemy.name} sprints left.png`;
+		enemySprintsR.src = `Imagery/battle/${enemy.name} sprints right.png`;
+		enemySprintsL.src = `Imagery/battle/${enemy.name} sprints left.png`;
 	}
 
 	const enemySmashesR = new Image();
 	const enemySmashesL = new Image();
 	if (enemy.smashChance) {
-		enemySmashesR.src = `Imagery/${enemy.name} smashes right.png`;
-		enemySmashesL.src = `Imagery/${enemy.name} smashes left.png`;
+		enemySmashesR.src = `Imagery/battle/${enemy.name} smashes right.png`;
+		enemySmashesL.src = `Imagery/battle/${enemy.name} smashes left.png`;
 	}
 
 	const enemyTeleportsR = new Image();
@@ -193,38 +193,38 @@ export function battle(g) {
 	const enemyVictoryR = new Image();
 	const enemyVictoryL = new Image();
 	if (enemy.name === "Zeus") {
-		enemyTeleportsR.src = "Imagery/Zeus teleports right.png";
-		enemyTeleportsL.src = "Imagery/Zeus teleports left.png";
-		enemyLevitatesR.src = "Imagery/Zeus levitates right.png";
-		enemyLevitatesL.src = "Imagery/Zeus levitates left.png";
-		enemyFliesR.src = "Imagery/Zeus flies right.png";
-		enemyFliesL.src = "Imagery/Zeus flies left.png";
-		enemyFallsR.src = "Imagery/Zeus falls right.png";
-		enemyFallsL.src = "Imagery/Zeus falls left.png";
-		enemyVictoryR.src = "Imagery/Zeus victory pose right.png";
-		enemyVictoryL.src = "Imagery/Zeus victory pose left.png";
+		enemyTeleportsR.src = "Imagery/battle/Zeus teleports right.png";
+		enemyTeleportsL.src = "Imagery/battle/Zeus teleports left.png";
+		enemyLevitatesR.src = "Imagery/battle/Zeus levitates right.png";
+		enemyLevitatesL.src = "Imagery/battle/Zeus levitates left.png";
+		enemyFliesR.src = "Imagery/battle/Zeus flies right.png";
+		enemyFliesL.src = "Imagery/battle/Zeus flies left.png";
+		enemyFallsR.src = "Imagery/battle/Zeus falls right.png";
+		enemyFallsL.src = "Imagery/battle/Zeus falls left.png";
+		enemyVictoryR.src = "Imagery/battle/Zeus victory pose right.png";
+		enemyVictoryL.src = "Imagery/battle/Zeus victory pose left.png";
 	}
 
 	const enemyDeadR = new Image();
-	enemyDeadR.src = `Imagery/${enemy.name} dead right.png`;
+	enemyDeadR.src = `Imagery/battle/${enemy.name} dead right.png`;
 	const enemyDeadL = new Image();
-	enemyDeadL.src = `Imagery/${enemy.name} dead left.png`;
+	enemyDeadL.src = `Imagery/battle/${enemy.name} dead left.png`;
 
 	let weapon = g.weapons[g.currentWeapon];
 
 	function updateKratosSprites() {
 		weapon = g.weapons[g.currentWeapon];
 		const lightableWeapon = g.currentWeapon <= 2 || g.currentWeapon === 5;
-		kratosFightingStanceL.src = `Imagery/Kratos fighting stance left (${weapon.name})${lightableWeapon && attacked ? '-lit' : ''}.png`;
-		kratosFightingStanceR.src = `Imagery/Kratos fighting stance right (${weapon.name})${lightableWeapon && attacked ? '-lit' : ''}.png`;
-		lightAttackLeft.src = `Imagery/Kratos light attacks left with ${weapon.name.toLowerCase()} ${g.kratos.lightCombo + 1}.png`;
-		lightAttackRight.src = `Imagery/Kratos light attacks right with ${weapon.name.toLowerCase()} ${g.kratos.lightCombo + 1}.png`;
-		heavyAttackLeft.src = `Imagery/Kratos heavy attacks left with ${weapon.name.toLowerCase()} ${g.kratos.heavyCombo + 1}.png`;
-		heavyAttackRight.src = `Imagery/Kratos heavy attacks right with ${weapon.name.toLowerCase()} ${g.kratos.heavyCombo + 1}.png`;
-		kratosAirAttackLeft.src = `Imagery/Kratos aerial attack left with ${weapon.name.toLowerCase()}.png`;
-		kratosAirAttackRight.src = `Imagery/Kratos aerial attack right with ${weapon.name.toLowerCase()}.png`;
-		kratosBlocksLeft.src = `Imagery/Kratos blocking left with ${weapon.name.toLowerCase()}.png`;
-		kratosBlocksRight.src = `Imagery/Kratos blocking right with ${weapon.name.toLowerCase()}.png`;
+		kratosFightingStanceL.src = `Imagery/battle/Kratos fighting stance left (${weapon.name})${lightableWeapon && attacked ? '-lit' : ''}.png`;
+		kratosFightingStanceR.src = `Imagery/battle/Kratos fighting stance right (${weapon.name})${lightableWeapon && attacked ? '-lit' : ''}.png`;
+		lightAttackLeft.src = `Imagery/battle/Kratos light attacks left with ${weapon.name.toLowerCase()} ${g.kratos.lightCombo + 1}.png`;
+		lightAttackRight.src = `Imagery/battle/Kratos light attacks right with ${weapon.name.toLowerCase()} ${g.kratos.lightCombo + 1}.png`;
+		heavyAttackLeft.src = `Imagery/battle/Kratos heavy attacks left with ${weapon.name.toLowerCase()} ${g.kratos.heavyCombo + 1}.png`;
+		heavyAttackRight.src = `Imagery/battle/Kratos heavy attacks right with ${weapon.name.toLowerCase()} ${g.kratos.heavyCombo + 1}.png`;
+		kratosAirAttackLeft.src = `Imagery/battle/Kratos aerial attack left with ${weapon.name.toLowerCase()}.png`;
+		kratosAirAttackRight.src = `Imagery/battle/Kratos aerial attack right with ${weapon.name.toLowerCase()}.png`;
+		kratosBlocksLeft.src = `Imagery/battle/Kratos blocking left with ${weapon.name.toLowerCase()}.png`;
+		kratosBlocksRight.src = `Imagery/battle/Kratos blocking right with ${weapon.name.toLowerCase()}.png`;
 	}
 	
 	// ===== Dodge settings =====
@@ -1247,7 +1247,7 @@ export function battle(g) {
 	}
 
 	const graspHand = new Image();
-	graspHand.src = "Imagery/Underground hand.png";
+	if (enemy.name === "Hades") graspHand.src = "Imagery/battle/Underground hand.png";
 
 	function drawHandGrasp() {
 		if (!graspFX.active) return;
@@ -1426,7 +1426,7 @@ export function battle(g) {
 	}
 
 	const lightningSprite = new Image();
-	lightningSprite.src = "Imagery/Lightning bolt.png";
+	if (enemy.name === "Zeus") lightningSprite.src = "Imagery/battle/Lightning bolt.png";
 
 	const lightnings = [];
 

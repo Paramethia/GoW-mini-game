@@ -16,7 +16,7 @@ export function underworldBattle(g) {
 			</div>
 			${enemyStats(g)}
 			<canvas class="Battle-area"></canvas>
-			<img id="You-dead" src="Imagery/You are dead GoW CoO.png">
+			<img id="You-dead" src="Imagery/battle/You are dead GoW CoO.png">
 			<button id="Return-Underworld">Return</button>
 			<button id='Reset'> Restart? </button>
 			</center>
@@ -24,7 +24,7 @@ export function underworldBattle(g) {
 		</div>
 	`;
 
-	if (g.currentEnemy === 7) document.querySelector(".Underworld-battle").style.backgroundImage = 'url("Imagery/Hades battle area.png")';
+	if (g.enemies[g.currentEnemy].name === "Hades") document.querySelector(".Underworld-battle").style.backgroundImage = 'url("./Imagery/battle/Hades battle area.png")';
 	
 	settingsInit(g);
 

@@ -40,7 +40,7 @@ export function underworld(g) {
 				</div>
 				<span id="prev">&Omega;</span>
 				<span id="next">&Omega;</span>
-				<img id="Creature" src="Imagery/Hoplite.png" />
+				<img id="Creature" src="Imagery/UI/Hoplite.png" />
 				<button id="Fight"> Fight </button>
 				<span id="enemy-i-tog"><i class="fa-solid fa-circle-info fa-xl"></i></span>
 				<div id="More-info">
@@ -90,7 +90,7 @@ export function underworld(g) {
 		enemyDamage.innerText = Math.round(creatures[g.currentEnemy].lD + creatures[g.currentEnemy].hD / 2);
 		enemySpeed.innerText = creatures[g.currentEnemy].speed;
 		enemyStun.innerText = `${parseInt(Math.round(creatures[g.currentEnemy].lS + creatures[g.currentEnemy].hS / 2)) / 100}s`
-		creatureImage.src = `Imagery/${creatures[g.currentEnemy].name}.png`;
+		creatureImage.src = `./Imagery/UI/${creatures[g.currentEnemy].name}.png`;
 		fightB.innerHTML = `Fight ${defeats[g.currentEnemy]? '' : '<i class="fa-solid fa-lock"></i>'}`;
 	}
 	

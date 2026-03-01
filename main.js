@@ -11,12 +11,12 @@ const globals = {
     h1: document.getElementById('click-start'),
 
     // Image sources
-    bladesSrc: "./Imagery/Blades-of-chaos.png",
-    whipSrc: "./Imagery/Nemesis whip.png",
-    clawsSrc: "./Imagery/Claws-of-Hades.png",
-	gauntletSrc: "./Imagery/Gauntlet of Zeus.png",
-	cestusSrc: "./Imagery/Nemean-cestus.png",
-    bladeSrc: "./Imagery/Blade-of-Olympus.png",
+    bladesSrc: "./Imagery/UI/Blades-of-chaos.png",
+    whipSrc: "./Imagery/UI/Nemesis whip.png",
+    clawsSrc: "./Imagery/UI/Claws-of-Hades.png",
+	gauntletSrc: "./Imagery/UI/Gauntlet of Zeus.png",
+	cestusSrc: "./Imagery/UI/Nemean-cestus.png",
+    bladeSrc: "./Imagery/UI/Blade-of-Olympus.png",
 
     audios, // *audio
 
@@ -83,6 +83,7 @@ const globals = {
     blade: "Blade of Olympus",
 
     // Conditions and settings
+	loaded: false,
     play: true,
     set: false,
     hBarOn: localStorage.getItem('healthBarOn') === 'true',
