@@ -356,7 +356,7 @@ export function mainMenu(g) {
         "Imagery/battle/Zeus dead right.png",
     ];
 
-    if (!g.loaded || localStorage.getItem("imagesCached")) {
+    if (!localStorage.getItem("imagesCached") || !g.loaded) {
         loaderScreen.style.display = "flex";
         mainMenu.style.display = "none";
         preloadImages(UIassets).then(() => {
@@ -382,13 +382,12 @@ export function mainMenu(g) {
             images.forEach(src => {
                 const img = new Image();
 
-                img.onload = img.onerror = () => {
-                    img.decode();
+                img.onload = img.onerror = async () => {
+                    await img.decode();
                     loaded++;
-                    images.length < 100 ? progress.innerText = `${Math.round(loaded / images.length * 100)}%` : console.log(`Loading progress: ${Math.round(loaded / images.length * 100)}$`);
+                    images.length <= 100 ? progress.innerText = `${Math.round(loaded / images.length * 100)}%` : console.log(`Loading progress: ${Math.round(loaded / images.length * 100)}$`);
                     if (loaded === images.length) resolve();
                 };
-
                 img.src = src;
             });
         });

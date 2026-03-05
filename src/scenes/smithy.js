@@ -375,7 +375,7 @@ export function smithy(g){
 		document.querySelector('.Smithy').style.backgroundImage = 'url("./Imagery/UI/Sparta background.jpg")';
 		text.style.color = '#d8c8a8';
 		text.innerText = "You now have the " + g.weapons[g.currentWeapon].name;
-		[sellWeaponB, nemesisWhip, clawsHades, gauntletZeus, nemeanCestus, bladeOlympus].forEach(element => element.style.display = 'none');
+		[sellWeaponB, nemesisWhip, clawsHades, gauntletZeus, nemeanCestus, bladeOlympus].forEach(element => { if (element) element.style.display = 'none' });
 		document.querySelectorAll('.weapon-info').forEach(info => info.style.display = 'none');
 		kratos.style.display = 'inline';
 		kratos.src = `./Imagery/UI/Kratos standing (${g.weapons[g.currentWeapon].name}).png`;
@@ -390,7 +390,7 @@ export function smithy(g){
 		text.innerText = "You enter the smithy. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 		kratos.style.display = 'none';
 		kratos.style.width = '184px';
-		[sellWeaponB, nemesisWhip, clawsHades, gauntletZeus, nemeanCestus, bladeOlympus].forEach(element => element.style.display = 'inline');
+		[sellWeaponB, nemesisWhip, clawsHades, gauntletZeus, nemeanCestus, bladeOlympus].forEach(element => { if (element) element.style.display = 'inline' });
 	}
 	
 	hotbarInit(g);

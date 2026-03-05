@@ -126,7 +126,7 @@ const globals = {
 		},
 		{
 			name: "Minotaur", health: 155, speed: 1.9, x: 500, y: 0, w: 185, h: 219,  
-			lD: 13, hD: 17, lC: 1200, hC: 1800, lR: 135, hR: 182, lS: 400, hS: 600, 
+			lD: 13, hD: 17, lC: 1200, hC: 1800, lR: 100, hR: 182, lS: 400, hS: 600, 
 			bC: 5500, bD: 2000, lightChance: 0.65, heavyChance: 0.25, blockChance: 0.3,
 			defeated: localStorage.getItem("minotaurDefeated") === "true",
 			attackSound: audios.minotaurAttacks, hitSound: audios.minotaurAttacked, deathSound: audios.minotaurDeath,
@@ -140,14 +140,14 @@ const globals = {
 		},
 		{
 			name: "Cyclops", health: 210, speed: 1.6, x: 542, y: 0, w: 260, h: 350,
-			lD: 16, hD: 22, lC: 1100, hC: 1600, lR: 154, hR: 274, lS: 500, hS: 900,
+			lD: 16, hD: 22, lC: 1100, hC: 1600, lR: 89, hR: 204, lS: 500, hS: 900,
 			lightChance: 0.6, heavyChance: 0.4,
 			defeated: localStorage.getItem("cyclopsDefeated") === "true",
 			attackSound: audios.cyclopsAttacks, hitSound: audios.cyclopsAttacked, deathSound: audios.cyclopsDeath,
 		},
 		{
 			name: "Hades", health: 255, speed: 2.9, x: 599, y: 0, w: 265, h: 277,
-			lD: 20, hD: 25, lC: 750, hC: 1400, lR: 199, hR: 210, lS: 500, hS: 990, 
+			lD: 20, hD: 25, lC: 750, hC: 1400, lR: 109, hR: 130, lS: 500, hS: 990, 
 			sTC: 4200, sTD: 5000, gC: 5000, gD: 1700, lightChance: 0.55, heavyChance: 0.5, soulTakeChance: 0.2, graspChance: 0.3,
 			defeated: localStorage.getItem("hadesDefeated") === "true",
 			attackSound: audios.hadesAttacks, hitSound: audios.hadesAttacked, deathSound: audios.hadesDeath,
@@ -161,7 +161,7 @@ const globals = {
 		},
 		{
 			name: "Hercules", health: 290, speed: 2.78, x: 540, y: 0, w: 157, h: 225,
-			lD: 30, hD: 37, lC: 700, hC: 1600, lR: 116, hR: 171, lS: 600, hS: 1100, 
+			lD: 30, hD: 37, lC: 700, hC: 1600, lR: 86, hR: 141, lS: 600, hS: 1100, 
 			bC: 5500, bD: 1700, sC: 3500, lightChance: 0.5, heavyChance: 0.5, blockChance: 0.45, smashChance: 0.4,
 			defeated: localStorage.getItem("herculesDefeated") === "true",
 			attackSound: audios.herculesAttacks, hitSound: audios.herculesAttacked, deathSound: audios.herculesDeath,
@@ -255,7 +255,7 @@ const globals = {
 	},
 
 	stopMusic(){
-		[this.audios.battleTheme, this.audios.battleTheme2, this.audios.cyclopsBattle, this.audios.zeusBattle].forEach(theme => {
+		[this.audios.battleTheme, this.audios.battleTheme2, this.audios.battleTheme3, this.audios.cyclopsBattle, this.audios.hadesBattle, this.audios.hermesBattle, this.audios.herculesBattle, this.audios.zeusBattle].forEach(theme => {
 			if (theme && typeof theme.pause === 'function') {
 				theme.pause();
 				theme.currentTime = 0;

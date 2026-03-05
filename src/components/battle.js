@@ -919,26 +919,24 @@ export function battle(g) {
 	enemy.onGround = true;
 	enemy.state = "idle";
 	enemy.facing = "left";
+	enemy.decision = null;
 	enemy.lAttacking = false;
 	enemy.hAttacking = false;
 	enemy.alpha = 1;
 	enemy.hasHit = false;
 	enemy.hitUntil = 0;
 	enemy.lastAttack = 0;
-	enemy.attackRange = enemy.lR;
-	enemy.attackCooldown = enemy.hC - enemy.lC + 400;
-	if (g.currentEnemy === 4) enemy.attackCooldown = 1500;
-	if (g.currentEnemy === 6) enemy.attackCooldown = 2600;
-	if (g.currentEnemy === 7) enemy.attackCooldown = 2000;
-	if (g.currentEnemy === 9) enemy.attackCooldown += 350;
+	enemy.dCooldown = 700;
 	if (g.currentEnemy === 1) {
 		enemy.screaming = false;
 		enemy.lastScream = 0;
 		enemy.lastScreamTick = 0;
+		enemy.screamRange = 320;
 	} else if (g.currentEnemy === 3 || g.currentEnemy === 5) {
 		enemy.petrifying = false;
 		enemy.petrifyStart = 0;
 		enemy.lastPetrify = 0;
+		enemy.petrifyRange = g.currentEnemy === 3 ? 295 : 400;
 	} else if (g.currentEnemy === 7) {
 		enemy.soulTaking = false;
 		enemy.lastSoulTake = 0;
@@ -1039,18 +1037,7 @@ export function battle(g) {
 		console.log("Deciding...");
 		const choice = decision(options);
 		console.log("Decided:", choice);
-
-		switch (choice) {
-			case "lAttack": enemyLightAttacks(); break;
-			case "hAttack": enemyHeavyAttacks(); break;
-			case "block": enemyBlocks(); break;
-			case "scream": bansheeScreams(); break;
-			case "petrify": enemyPetrifies(); break;
-			case "soulTake": hadesTakesSoul(); break;
-			case "grasp": hadesGrasp(); break;
-			case "speedStrike": hermesSpeedStrike(); break;
-			case "smash": herculesSmash(); break;
-		}
+		return choice
 	}
 
 	function enemyLightAttacks() {
@@ -1104,7 +1091,7 @@ export function battle(g) {
 	function endScream() {
 		enemy.screaming = false;
 		enemy.state = "idle";
-		enemy.attackRange = enemy.lR;
+		enemy.decision = null;
 		
 		g.kratos.covering = false;
 		g.kratos.screamBreak = 0;
@@ -1161,7 +1148,7 @@ export function battle(g) {
 	function endSoulTake() {
 		enemy.soulTaking = false;
 		enemy.state = "idle";
-		enemy.attackRange = enemy.lR;
+		enemy.decision = null;
 		
 		g.kratos.took = false;
 		g.kratos.soulTakeBreak = 0;
@@ -1215,7 +1202,7 @@ export function battle(g) {
 	function endGrasp() {
 		enemy.grasping = false;
 		enemy.state = "idle";
-		enemy.attackRange = enemy.lR;
+		enemy.decision = null;
 
 		graspFX.active = false;
 	}
@@ -1325,6 +1312,7 @@ export function battle(g) {
 
 	function endSpeedStrike() {
 		enemy.state = "idle";
+		enemy.decision = null;
 		enemy.speedStriking = false;
 		enemy.velX = 0;
 		// Snap back to original spot
@@ -1606,10 +1594,11 @@ export function battle(g) {
 		ctx.restore();
 	}
 	function showEnemyAttackRange(attackPos) {
+		const attackRange = enemy.decision === "lAttack" ? enemy.lR : enemy.hR;
 		ctx.strokeStyle = "red";
 		ctx.beginPath();
 		ctx.moveTo(attackPos, enemy.y);
-		ctx.lineTo(attackPos + (enemy.facing === "right" ? enemy.attackRange : -enemy.attackRange), enemy.y);
+		ctx.lineTo(attackPos + (enemy.facing === "right" ? attackRange : -attackRange), enemy.y);
 		ctx.stroke();
 	}
 
@@ -1689,10 +1678,8 @@ export function battle(g) {
 		// ---- Gorgon / Medusa petrification ----
 		if (enemy.state === "petrify") {
 			enemyXpos < kratosXpos ? enemy.facing = "right" : enemy.facing = "left"
-			const petrifyRange = g.currentEnemy === 3 ? 295 : 400;
-			const distance = Math.abs(Math.round(kratosAttackableX - enemyAttackX));
 			if (Date.now() > enemy.stateEnd && !g.kratos.petrified) {
-				if (distance <= petrifyRange) {
+				if (attackDis <= enemy.petrifyRange) {
 					g.kratos.petrified = true;
 					g.kratos.petrifyBreak = 0;
 					sButtonActivate();
@@ -1701,6 +1688,7 @@ export function battle(g) {
 					if (g.kratos.y <= 340) g.kratos.petrifiedInAir = !g.kratos.onGround;
 				}
 				enemy.state = "idle";
+				enemy.decision = null;
 				enemy.petrifying = false;
 			}
 
@@ -1768,6 +1756,7 @@ export function battle(g) {
 
 			if (Date.now() > enemy.stateEnd) {
 				enemy.state = "idle";
+				enemy.decision = null;
 				enemy.dodging = false;
 				enemy.invulnerable = false;
 				enemy.velX = 0;
@@ -1846,6 +1835,7 @@ export function battle(g) {
 			// End smash after all hits
 			if (enemy.smashCount >= enemy.maxSmashes && now > enemy.nextSmashTime) {
 				enemy.state = "idle";
+				enemy.decision = null;
 				enemy.smashing = false;
 			}
 
@@ -1856,7 +1846,8 @@ export function battle(g) {
 
 		if (enemy.state === "teleport") {
 			if (Date.now() > enemy.stateEnd) {
-				enemy.state = "idle";
+				enemy.state = !enemy.flying ? "idle" : "fly";
+				enemy.decision = null;
 				enemy.teleporting = false;
 			}
 			return
@@ -1875,29 +1866,63 @@ export function battle(g) {
 			return;
 		}
 
-		// Enemy state handling
+		// Enemy state & decision handling
 
-		const inRange = attackDis <= enemy.attackRange;
-		const ready = Date.now() - enemy.lastAttack > enemy.attackCooldown;
-
-		if (enemy.state === "idle" && g.kratos.health > 0 && !enemy.stunned && !enemy.dodging) {
-			if (inRange && ready && !enemy.speedStriking) {
-			 	enemyDecides()
-			} else if (distance <= chaseRange) {
-				if (g.currentEnemy >= 7 && !enemy.defeated) {
-					if (lineComplete) if (enemy.state !== "dodge") enemy.state = "chase"
+		if (!enemy.decision && Date.now() - enemy.lastAttack > enemy.dCooldown) enemy.decision = enemyDecides();
+		
+		if (g.kratos.health > 0 && !enemy.stunned && !enemy.dodging) {
+			if (distance <= chaseRange && enemy.state === "idle") {
+				if (g.currentEnemy >= 7 && !enemy.defeated && !lineComplete) {
+					if (enemy.state !== "dodge") enemy.state = "chase"
 				} else { enemy.state = "chase" }
 			}
 		}
+		
+		let inRange = null;
+		if (enemy.decision === "lAttack" || enemy.decision === "hAttack") inRange = enemy.decision === "lAttack" ? attackDis <= enemy.lR : attackDis <= enemy.hR;
 
-		if (enemy.state === "chase") {
-			if (inRange) {
-				enemy.velX = 0;
-				enemy.state = "idle";
+		if (enemy.state === "chase" || enemy.state === "idle" && g.kratos.health) {
+			if (g.currentEnemy >= 7 && !enemy.defeated && !lineComplete) return
+			if (enemy.decision === "block") {
+				enemyBlocks();
+			} else if (enemy.decision === "lAttack" && inRange) {
+				enemyLightAttacks();
+			} else if (enemy.decision === "hAttack" && inRange) {
+				enemyHeavyAttacks();
+			} else if (enemy.decision === "scream" && attackDis <= enemy.screamRange) {
+				bansheeScreams();
+			} else if (enemy.decision === "petrify" && attackDis <= enemy.petrifyRange) {
+				enemyPetrifies();
+			} else if (enemy.decision === "grasp") {
+				hadesGrasp();
+			} else if (enemy.decision === "soulTake") {
+				hadesTakesSoul();
+			} else if (enemy.decision === "speedStrike") {
+				hermesSpeedStrike();
+			} else if (enemy.decision === "smash") {
+				herculesSmash();
 			} else {
-				enemy.velX = Math.round(kratosXpos - enemyXpos) > 0 ? enemy.speed : -enemy.speed;
+				enemy.state = "chase";
+				enemy.velX = kratosXpos > enemyXpos ? enemy.speed : -enemy.speed;
 				enemy.facing = enemy.velX > 0 ? "right" : "left";
 				enemy.x += enemy.velX;
+			}
+		}
+
+		if (enemy.state === "lAttack"|| enemy.state === "hAttack") {
+			if (Date.now() > enemy.stateEnd) {
+				enemy.state = inRange ? "idle" : "chase";
+				enemy.hasHit = false;
+				enemy.lAttacking = false;
+				enemy.hAttacking = false;
+				enemy.decision = null;
+				return
+			}
+		} else if (enemy.state === "block") {
+			if (Date.now() > enemy.stateEnd) {
+				enemy.state = "idle";
+				enemy.blocking = false;
+				enemy.decision = null;
 			}
 		}
 
@@ -1908,7 +1933,7 @@ export function battle(g) {
 			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
 			let knockback = 5 + g.currentEnemy + g.currentEnemy;
 			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 3 + g.currentEnemy
-			if (g.kratos.dodging || !inFront) {
+			if (g.kratos.dodging || !inRange || !inFront) {
 				return
 			} else if (g.kratos.blocking) {
 				g.audios.blockSound.cloneNode().play();
@@ -1947,7 +1972,7 @@ export function battle(g) {
 			let knockback = 8 + g.currentEnemy + g.currentEnemy;
 			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 5 + g.currentEnemy
 			
-			if (g.kratos.dodging || !inFront) return
+			if (g.kratos.dodging || !inRange || !inFront) return
 			if (g.kratos.blocking) {
 				function breakBlock() {
 					g.audios.blockSound.cloneNode().play();
@@ -1995,16 +2020,6 @@ export function battle(g) {
 			g.kratos.stunned = true;
 			g.kratos.stunEnd = Date.now() + enemy.hS;
 		}
-		
-		// State check
-		if (enemy.state !== "idle" && enemy.state !== "grasp" && enemy.state !== "speedStrike" && enemy.state !== "smash" && Date.now() > enemy.stateEnd) {
-			enemy.state = inRange ? "idle" : "chase";
-			enemy.hasHit = false;
-			enemy.lAttacking = false;
-			enemy.hAttacking = false;
-			enemy.blocking = false;
-			enemy.velX = 0;
-		}
 
 		// Apply physics
 		enemy.velY += gravity;
@@ -2015,7 +2030,10 @@ export function battle(g) {
 			enemy.y = groundLevel;
 			enemy.velY = 0;
 			enemy.onGround = true;
-			if (enemy.state === "fall") enemy.state = "idle"
+			if (enemy.state === "fall") {
+				enemy.state = "idle";
+				enemy.decision = null;
+			}
 		}
 
 		// Keep inside canvas
