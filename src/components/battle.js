@@ -1910,6 +1910,7 @@ export function battle(g) {
 
 		if (enemy.state === "lAttack"|| enemy.state === "hAttack") {
 			if (Date.now() > enemy.stateEnd) {
+				const inRange = enemy.state === "lAttack" ? attackDis <= enemy.lR : attackDis <= enemy.hR;
 				enemy.state = inRange ? "idle" : "chase";
 				enemy.hasHit = false;
 				enemy.lAttacking = false;
@@ -1932,7 +1933,7 @@ export function battle(g) {
 			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
 			let knockback = 5 + g.currentEnemy + g.currentEnemy;
 			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 3 + g.currentEnemy
-			if (g.kratos.dodging || !attackDis <= enemy.lR || !inFront) {
+			if (g.kratos.dodging || attackDis > enemy.lR || !inFront) {
 				return
 			} else if (g.kratos.blocking) {
 				g.audios.blockSound.cloneNode().play();
@@ -1971,7 +1972,7 @@ export function battle(g) {
 			let knockback = 8 + g.currentEnemy + g.currentEnemy;
 			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 5 + g.currentEnemy
 			
-			if (g.kratos.dodging || !attackDis <= enemy.hR || !inFront) return
+			if (g.kratos.dodging || attackDis > enemy.hR || !inFront) return
 			if (g.kratos.blocking) {
 				function breakBlock() {
 					g.audios.blockSound.cloneNode().play();
