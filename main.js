@@ -83,7 +83,6 @@ const globals = {
     blade: "Blade of Olympus",
 
     // Conditions and settings
-	loaded: false,
     play: true,
     set: false,
     hBarOn: localStorage.getItem('healthBarOn') === 'true',
@@ -303,8 +302,6 @@ const globals = {
 		this.enemies[this.currentEnemy].y = 0;
 	}
 };
-
-if (localStorage.getItem("potions")) localStorage.removeItem("potions"); // If your local storage has potions in it, then it will be removed.
 
 // Screen and window size check
 

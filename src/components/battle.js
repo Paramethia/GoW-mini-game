@@ -388,6 +388,8 @@ export function battle(g) {
 			}
 			if (g.currentEnemy === 7 && g.kratos.took) {
 				var inRange = Math.abs(kratosXpos  - enemyXpos) <= enemy.lR;
+				if (g.kratos.facing === enemy.facing && g.kratos.facing === "right") g.kratos.facing = "left"
+				if (g.kratos.facing === enemy.facing && g.kratos.facing === "left") g.kratos.facing = "right"
 				if (!inRange) g.kratos.x += g.kratos.facing === "right" ? speed / 2 : -speed / 2
 			} 
 			if (g.kratos.held && sPressed) {
@@ -1472,7 +1474,7 @@ export function battle(g) {
 			y: startY,
 			velX: (dx / dist) * speed,
 			velY: (dy / dist) * speed,
-			damage: 6,
+			damage: 7,
 			active: true
 		});
 	}
@@ -1527,7 +1529,7 @@ export function battle(g) {
 		enemy.currentFlightTargetY = enemy.flightY + enemy.strikeOffsetY + 20;
 
 		g.audios.gorgonAttacks[0].cloneNode().play();
-		g.kratos.health -= 7;
+		g.kratos.health -= 9;
 		g.kratos.hitUntil = Date.now() + hitFlashTime;
 		g.kratos.stunned = true;
 		g.kratos.stunEnd = Date.now() + enemy.hS;
@@ -1877,17 +1879,14 @@ export function battle(g) {
 				} else { enemy.state = "chase" }
 			}
 		}
-		
-		let inRange = null;
-		if (enemy.decision === "lAttack" || enemy.decision === "hAttack") inRange = enemy.decision === "lAttack" ? attackDis <= enemy.lR : attackDis <= enemy.hR;
 
 		if (enemy.state === "chase" || enemy.state === "idle" && g.kratos.health) {
 			if (g.currentEnemy >= 7 && !enemy.defeated && !lineComplete) return
 			if (enemy.decision === "block") {
 				enemyBlocks();
-			} else if (enemy.decision === "lAttack" && inRange) {
+			} else if (enemy.decision === "lAttack" && attackDis <= enemy.lR) {
 				enemyLightAttacks();
-			} else if (enemy.decision === "hAttack" && inRange) {
+			} else if (enemy.decision === "hAttack" && attackDis <= enemy.hR) {
 				enemyHeavyAttacks();
 			} else if (enemy.decision === "scream" && attackDis <= enemy.screamRange) {
 				bansheeScreams();
