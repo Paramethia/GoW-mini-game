@@ -1,4 +1,4 @@
-import { mainMenu } from '../scenes/main-menu.js';
+import mainMenu from '../scenes/main-menu.js';
 
 export const settings = (g, show) => { 
     return `
