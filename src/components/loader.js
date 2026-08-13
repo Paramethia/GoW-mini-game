@@ -324,7 +324,7 @@ export default function loader(g, loadE, scene) {
         loadE.style.display = "flex";
         scene.style.display = "none";
         preloadImages(UIassets).then(() => {
-            g.audios.mainTheme.play();
+            g.audio.mainTheme.play();
             loadE.style.display = "none";
             scene.style.display = "block";
             preloadImages(battleAssets).then(() => {

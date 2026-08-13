@@ -1,4 +1,4 @@
-export const audios = {
+export default {
     // --- UI audio ----
 
     hover: new Audio('../Audio/UI/Hover sound GoW2.mp3'),

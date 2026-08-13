@@ -1,11 +1,11 @@
 import { settings, settingsInit } from '../components/settings.js';
 import { stats } from '../components/stats.js';
 import { hotbar, hotbarInit } from '../components/hotbar.js';
-import { smithy } from './smithy.js';
-import { underworld } from './underworld.js';
-import { olympus } from './olympus.js';
+import smithy from './smithy.js';
+import underworld from './underworld.js';
+import olympus from './olympus.js';
 
-export function sparta(g) {
+export default function sparta(g) {
     let defaultText = "Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use w/s to navigate to different places.";
     if (Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'))) defaultText = "Welcome back to God of War. You already know what to do mos. \n ;-)";
 
@@ -26,7 +26,7 @@ export function sparta(g) {
 				<button id="Underworld-button">Underworld</button>
 				<button id="Olympus-button">Mount Olympus ${g.hades.defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
 			</div>
-            ${hotbar(g)}
+            ${hotbar}
 		</div>
 	`;
 
@@ -74,7 +74,7 @@ export function sparta(g) {
 	document.addEventListener("keydown", g.navKeys);
 	
 	smithyB.onmouseover = () => {
-		g.audios.hover.cloneNode().play();
+		g.audio.hover.cloneNode().play();
 		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta smithy.png")';
 		kratos.style.bottom = '-1.4cm';
         kratos.style.right = '65%';
@@ -95,12 +95,12 @@ export function sparta(g) {
 		smithyB.style.background = '#0a0a23';
 	}
 	smithyB.onclick = () => {
-		g.audios.selection.play();
+		g.audio.selection.play();
 		smithy(g);
 	}
 
 	underworldB.onmouseover = () => {
-		g.audios.hover.cloneNode().play();
+		g.audio.hover.cloneNode().play();
 		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Underworld.png")';
 		kratos.style.right = '62%';
 		kratos.style.height = '244px';
@@ -119,18 +119,18 @@ export function sparta(g) {
 		underworldB.style.background = '#0a0a23';
 	}
 	underworldB.onclick = () => {
-		g.audios.selection.play();
+		g.audio.selection.play();
 		if (g.play === true) {
-			g.audios.mainTheme.pause();
-			g.audios.mainTheme.currentTime = 0;
+			g.audio.mainTheme.pause();
+			g.audio.mainTheme.currentTime = 0;
 		}
 		underworld(g);
-		g.audios.underworldAm.play();
-		g.audios.underworldAm.loop = true;
+		g.audio.underworldAm.play();
+		g.audio.underworldAm.loop = true;
 	}
 
 	olympusB.onmouseover = () => {
-		g.audios.hover.cloneNode().play();
+		g.audio.hover.cloneNode().play();
 		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Mount Olympus.png")';
 		document.querySelector('.Sparta').style.backgroundPosition = 'bottom';
 		kratos.style.bottom = '1.1cm';
@@ -154,14 +154,14 @@ export function sparta(g) {
 	}
 	olympusB.onclick = () => {
 		if (g.hades.defeated) {
-			g.audios.selection.play();
+			g.audio.selection.play();
 			if (g.play === true) {
-				g.audios.mainTheme.pause();
-				g.audios.mainTheme.currentTime = 0;
+				g.audio.mainTheme.pause();
+				g.audio.mainTheme.currentTime = 0;
 			}
 			olympus(g);
-			g.audios.olympusAm.play();
-			g.audios.olympusAm.loop = true;
+			g.audio.olympusAm.play();
+			g.audio.olympusAm.loop = true;
 			document.removeEventListener('keydown', g.mHandler);
 		}
 	}

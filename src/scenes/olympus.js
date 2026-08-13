@@ -1,10 +1,10 @@
 import { settings, settingsInit } from '../components/settings.js';
 import { stats } from '../components/stats.js';
 import { hotbar, hotbarInit } from '../components/hotbar.js';
-import { olympusBattle } from './olympus-battle.js';
-import { sparta } from './sparta.js';
+import olympusBattle from './olympus-battle.js';
+import sparta from './sparta.js';
 
-export const olympus = (g) => {
+export default function olympus(g) {
 	const enemies = g.enemies.slice(8);
 	const enemiesInfo = [
 		"<strong>Hermes</strong> is the Olympian God of Travelers, Messengers, Thieves, Commerce, Sports, Athletics, and mostly.. Speed.",
@@ -42,7 +42,7 @@ export const olympus = (g) => {
 				</div>
 			</div>
 			</center>
-			${hotbar(g)}
+			${hotbar}
 		</div>
 	`;
 	
@@ -69,8 +69,8 @@ export const olympus = (g) => {
 	let selectedEnemyI = 0;
 
 	function navigateEnemies(i) {
-		g.audios.hover2.currentTime = 0;
-		g.audios.hover2.cloneNode().play();
+		g.audio.hover2.currentTime = 0;
+		g.audio.hover2.cloneNode().play();
 		i ? selectedEnemyI++ : selectedEnemyI--
 		if (selectedEnemyI > 2) { 
 			selectedEnemyI = 0 
@@ -87,7 +87,7 @@ export const olympus = (g) => {
 	}
 	
 	fightB.onmouseover = () => {
-		g.audios.hover.cloneNode().play();
+		g.audio.hover.cloneNode().play();
 		fightB.style.animation = 'tilt-shaking 0.5s';
 	}
 	fightB.onmouseout = () => {
@@ -109,21 +109,21 @@ export const olympus = (g) => {
 	document.addEventListener("keydown", g.navKeys);
 	
 	function goBattle() {
-		var lines = [g.audios.hermesLine, g.audios.herculesLine, g.audios.zeusLine];
+		var lines = [g.audio.hermesLine, g.audio.herculesLine, g.audio.zeusLine];
 		var texts = [
 			"You are now facing the god, Hermes. Be careful of his incredible speed.",
 			"Hercules gets in your way, to Zeus. He challenges you to fight him to the death to see who is stronger.",
 			"You finally arrive to the god of thunder and lightning, and also your father, Zeus. Kill this f***er."
 		];
 		var intervalTimes = [4200, 3000, 14200];
-		var battleThemes = [g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle];
+		var battleThemes = [g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle];
 
 		if (defeats[selectedEnemyI]) {
-			g.audios.olympusAm.pause();
-			g.audios.olympusAm.currentTime = 0;
+			g.audio.olympusAm.pause();
+			g.audio.olympusAm.currentTime = 0;
 			if (!enemies[selectedEnemyI].defeated) lines[selectedEnemyI].play();
 			setTimeout(() => {
-				g.audios.selection2.play();
+				g.audio.selection2.play();
 				setTimeout(() => {
 					battleThemes[selectedEnemyI].play();
 				}, 1000 );
@@ -136,10 +136,10 @@ export const olympus = (g) => {
 	}
 
 	function leaveOlympus() {
-		g.audios.olympusAm.pause();
-		g.audios.olympusAm.currentTime = 0;
-		g.audios.exit.play();
-		if (g.play === true) g.audios.mainTheme.play();
+		g.audio.olympusAm.pause();
+		g.audio.olympusAm.currentTime = 0;
+		g.audio.exit.play();
+		if (g.play === true) g.audio.mainTheme.play();
 		sparta(g);
 	}
 	

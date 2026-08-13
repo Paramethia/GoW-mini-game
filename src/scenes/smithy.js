@@ -1,10 +1,10 @@
 import { settings, settingsInit } from '../components/settings.js';
 import { stats } from '../components/stats.js';
 import { hotbar, hotbarInit } from '../components/hotbar.js';
-import { sparta } from './sparta.js';
+import sparta from './sparta.js';
 
-export function smithy(g){
-	const stock = g.weapons.filter(weapon => !g.inventory.includes(weapon.name) || !weapon.name === g.blades);
+export default function smithy(g){
+	const stock = g.weapons.filter(weapon => !g.kratos.inventory.includes(weapon.name) || !weapon.name === g.blades);
 	g.game.innerHTML = `
 		<div class="Smithy">
 			${settings(g, true)}
@@ -35,7 +35,7 @@ export function smithy(g){
 					`;
 				}).join("")}
             </div>
-            ${hotbar(g)}
+            ${hotbar}
 			</center>
 		</div>
 	`;
@@ -68,7 +68,7 @@ export function smithy(g){
 	
 	sellWeaponB.onmouseover = () => {
 		if (!g.currentWeapon) return
-		g.audios.hover.cloneNode().play();
+		g.audio.hover.cloneNode().play();
 		dialogue.style.display = 'inline';
 		dialogueText.innerText = `I'll take your ${g.weapons[g.currentWeapon].name} for ${sellPrices[g.currentWeapon]} orbs`;
 		sellWeaponB.style.animation = 'vertical-shaking 0.5s';
@@ -133,7 +133,7 @@ export function smithy(g){
 		const info = weaponsInfo[weaponName]; 
 		if (image.style.display !== 'none') {
 			image.onmouseover = () => {
-				g.audios.hover.cloneNode().play();
+				g.audio.hover.cloneNode().play();
 				image.src = `./Imagery/UI/${names[index]} (outlined).png`;
 				image.style.transform = transformations[index];
 				dialogue.style.display = 'block';
@@ -151,7 +151,7 @@ export function smithy(g){
 	})
 
 	function leaveSmithy() {
-		g.audios.exit.play();
+		g.audio.exit.play();
 		sparta(g);
 	}
 
@@ -162,10 +162,10 @@ export function smithy(g){
 	function sellWeapon() {
 		var sellingWeapon = g.weapons[g.currentWeapon].name;
 		var times = [155, 140, 125, 110, 100];
-		if (g.inventory.length > 1 && g.inventory.includes(sellingWeapon) && g.weapons[g.currentWeapon].name !== "Blades of chaos") {
-			g.audios.hmmmm.play();
+		if (g.kratos.inventory.length > 1 && g.kratos.inventory.includes(sellingWeapon) && g.weapons[g.currentWeapon].name !== "Blades of chaos") {
+			g.audio.hmmmm.play();
 			dialogue.style.display = 'none';
-			g.inventory = g.inventory.filter(weapon => weapon !== sellingWeapon);
+			g.kratos.inventory = g.kratos.inventory.filter(weapon => weapon !== sellingWeapon);
 			slots[g.currentWeapon].style.display = 'none';
 			var sell = setInterval(() => {
 				count++;
@@ -177,12 +177,12 @@ export function smithy(g){
 					localStorage.setItem('orbs', g.kratos.orbs);
 				}
 			}, times[g.currentWeapon]);
-			g.inventory.length > 2 ? g.currentWeapon++ : g.currentWeapon--;
-			localStorage.setItem('inventory', JSON.stringify(g.inventory));
+			g.kratos.inventory.length > 2 ? g.currentWeapon++ : g.currentWeapon--;
+			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			localStorage.setItem('currentWeapon', g.currentWeapon);
 			text.innerText = `You sold the ${sellingWeapon} for ${sellPrices[g.currentWeapon]}.`;
 		} else {
-			g.audios.bruh.play();
+			g.audio.bruh.play();
 			dialogue.style.display = 'inilne-block';
 			dialogueText.innerText = "I can't buy that weapon...";
 		setTimeout(() => {
@@ -191,8 +191,8 @@ export function smithy(g){
 	}}
 
 	function buyWhip() {
-		if(g.kratos.orbs >= 30 && !g.inventory.includes(g.whip)) {
-			g.audios.achievement.play();
+		if(g.kratos.orbs >= 30 && !g.kratos.inventory.includes(g.whip)) {
+			g.audio.achievement.play();
 			dialogue.style.display = 'none';
 			var bought = setInterval (() => {
 				count++;
@@ -206,8 +206,8 @@ export function smithy(g){
 			}, 140 );
 			g.currentWeapon = 1;
 			localStorage.setItem('currentWeapon', g.currentWeapon);
-			g.inventory.push(g.whip);
-			localStorage.setItem('inventory', JSON.stringify(g.inventory));
+			g.kratos.inventory.push(g.whip);
+			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			weaponGot();
 			slots[g.currentWeapon].style.border = '3px solid #5a3910';
 			slots[g.currentWeapon].style.backgroundImage = `url('${g.whipSrc}')`;
@@ -215,11 +215,11 @@ export function smithy(g){
 			setTimeout(() => { revert() }, 5250 );
 		} else {
 			dialogue.style.display = 'inline-block';
-			if (!g.inventory.includes(g.whip)) {
-				g.audios.brokie.play();
+			if (!g.kratos.inventory.includes(g.whip)) {
+				g.audio.brokie.play();
 				dialogueText.innerText = "Don't make me whip you for being such a brokie";
 			} else {
-				g.audios.bruh.play();
+				g.audio.bruh.play();
 				dialogueText.innerText = "You already have that weapon, you twat!";
 			}
 			setTimeout(() => { revert() }, 3000 );
@@ -227,8 +227,8 @@ export function smithy(g){
 	}
 
 	function buyClaws() {
-		if(g.kratos.orbs >= 55 && !g.inventory.includes(g.claws)) {
-			g.audios.achievement.play();
+		if(g.kratos.orbs >= 55 && !g.kratos.inventory.includes(g.claws)) {
+			g.audio.achievement.play();
 			dialogue.style.display = 'none';
 			var bought = setInterval (() => {
 				count++;
@@ -242,8 +242,8 @@ export function smithy(g){
 			}, 110 );
 			g.currentWeapon = 2;
 			localStorage.setItem('currentWeapon', g.currentWeapon);
-			g.inventory.push(g.claws);
-			localStorage.setItem('inventory', JSON.stringify(g.inventory));
+			g.kratos.inventory.push(g.claws);
+			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			weaponGot();
 			slots[g.currentWeapon].style.border = '3px solid #5a3910';
 			slots[g.currentWeapon].style.backgroundImage = `url('${g.clawsSrc}')`;
@@ -251,11 +251,11 @@ export function smithy(g){
 			setTimeout(() => { revert() }, 5250 );
 		} else {
 			dialogue.style.display = 'inline-block';
-			if (!g.inventory.includes(g.claws)) {
-				g.audios.brokie.play();
+			if (!g.kratos.inventory.includes(g.claws)) {
+				g.audio.brokie.play();
 				dialogueText.innerText = "You're too poor for these claws. Go grind";
 			} else {
-				g.audios.bruh.play();
+				g.audio.bruh.play();
 				dialogueText.innerText = "You already have that weapon, you twat!";
 			}
 			setTimeout(() => { revert() }, 3000 );
@@ -263,8 +263,8 @@ export function smithy(g){
 	}
 
 	function buyGauntlet() {
-		if(g.kratos.orbs >= 99 && !g.inventory.includes(g.gauntlet)) {
-			g.audios.achievement.play();
+		if(g.kratos.orbs >= 99 && !g.kratos.inventory.includes(g.gauntlet)) {
+			g.audio.achievement.play();
 			dialogue.style.display = 'none';
 			var bought = setInterval (() => {
 				count++;
@@ -278,8 +278,8 @@ export function smithy(g){
 			}, 85 );
 			g.currentWeapon = 3;
 			localStorage.setItem('currentWeapon', g.currentWeapon);
-			g.inventory.push(g.gauntlet);
-			localStorage.setItem('inventory', JSON.stringify(g.inventory));
+			g.kratos.inventory.push(g.gauntlet);
+			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			weaponGot();
 			slots[g.currentWeapon].style.border = '3px solid #5a3910';
 			slots[g.currentWeapon].style.backgroundImage = `url('${g.gauntletSrc}')`;
@@ -287,11 +287,11 @@ export function smithy(g){
 			setTimeout(() => { revert() }, 5250 );
 		} else {
 			dialogue.style.display = 'inline-block';
-			if (!g.inventory.includes(g.gauntlet)) {
-				g.audios.brokie.play();
+			if (!g.kratos.inventory.includes(g.gauntlet)) {
+				g.audio.brokie.play();
 				dialogueText.innerText = "You're too broke for this gauntlet";
 			} else {
-				g.audios.bruh.play();
+				g.audio.bruh.play();
 				dialogueText.innerText = "You already have that weapon, you twat!";
 			}
 			setTimeout(() => { revert() }, 3000 );
@@ -299,8 +299,8 @@ export function smithy(g){
 	}
 
 	function buyCestus() {
-		if(g.kratos.orbs >= 155 && !g.inventory.includes(g.cestus)) {
-			g.audios.achievement.play();
+		if(g.kratos.orbs >= 155 && !g.kratos.inventory.includes(g.cestus)) {
+			g.audio.achievement.play();
 			dialogue.style.display = 'none';
 			var bought = setInterval (() => {
 				count++;
@@ -314,8 +314,8 @@ export function smithy(g){
 			}, 55 );
 			g.currentWeapon = 4;
 			localStorage.setItem('currentWeapon', g.currentWeapon);
-			g.inventory.push(g.cestus);
-			localStorage.setItem('inventory', JSON.stringify(g.inventory));
+			g.kratos.inventory.push(g.cestus);
+			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			weaponGot();
 			slots[g.currentWeapon].style.border = '3px solid #5a3910';
 			slots[g.currentWeapon].style.backgroundImage = `url('${g.cestusSrc}')`;
@@ -323,11 +323,11 @@ export function smithy(g){
 			setTimeout(() => { revert() }, 5250 );
 		} else {
 			dialogue.style.display = 'inline-block';
-			if (!g.inventory.includes(g.cestus)) {
-				g.audios.brokie.play();
+			if (!g.kratos.inventory.includes(g.cestus)) {
+				g.audio.brokie.play();
 				dialogueText.innerText = "You're too poor for this powerful weapon. Grind more";
 			} else {
-				g.audios.bruh.play();
+				g.audio.bruh.play();
 				dialogueText.innerText = "You already have that weapon, you twat!";
 			}
 			setTimeout(() => { revert() }, 3000 );
@@ -335,8 +335,8 @@ export function smithy(g){
 	}
 
 	function buyBlade() {
-		if(g.kratos.orbs >= 200 && !g.inventory.includes(g.blade)) {
-			g.audios.achievement.play();
+		if(g.kratos.orbs >= 200 && !g.kratos.inventory.includes(g.blade)) {
+			g.audio.achievement.play();
 			dialogue.style.display = 'none';
 			var bought = setInterval (() => {
 				count++;
@@ -350,8 +350,8 @@ export function smithy(g){
 			}, 35 );
 			g.currentWeapon = 5;
 			localStorage.setItem('currentWeapon', g.currentWeapon);
-			g.inventory.push(g.blade);
-			localStorage.setItem('inventory', JSON.stringify(g.inventory));
+			g.kratos.inventory.push(g.blade);
+			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			weaponGot();
 			slots[g.currentWeapon].style.border = '3px solid #5a3910';
 			slots[g.currentWeapon].style.backgroundImage = `url('${g.bladeSrc}')`;
@@ -359,11 +359,11 @@ export function smithy(g){
 			setTimeout(() => { revert() }, 5250 );
 		} else {
 			dialogue.style.display = 'inline-block';
-			if (!g.inventory.includes(g.blade)) {
-				g.audios.brokie.play();
+			if (!g.kratos.inventory.includes(g.blade)) {
+				g.audio.brokie.play();
 				dialogueText.innerText = "This god-killing weapon is not for brokies";
 			} else {
-				g.audios.bruh.play();
+				g.audio.bruh.play();
 				dialogueText.innerText = "You already have that weapon, you twat!";
 			}
 			setTimeout(() => { revert() }, 3000 );

@@ -101,11 +101,11 @@ export function settingsInit(g) {
 		if (document.getElementById('music') === null) return
 		g.play = !g.play;
 		if (g.play) {
-			g.audios.mainTheme.play();
+			g.audio.mainTheme.play();
 			musicNote.style.color = '#a88868';
-			g.audios.mainTheme.loop = true;
+			g.audio.mainTheme.loop = true;
 		} else {
-			g.audios.mainTheme.pause();
+			g.audio.mainTheme.pause();
 			musicNote.style.color = '#704028';
 		}
 	}
@@ -121,7 +121,7 @@ export function settingsInit(g) {
 		document.addEventListener("keydown", g.mKey);
 
 		musicB.onmouseover = () => {
-			g.audios.hover.play()
+			g.audio.hover.play()
 			musicNote.style.color = '#a88868';
 			musicT.style.display = 'inline';
 		}
@@ -136,7 +136,7 @@ export function settingsInit(g) {
 	}
 
 	settingsB.onmouseover = () => {
-		g.audios.hover.play();
+		g.audio.hover.play();
 		gear.style.animation = 'rotateZ 0.7s';
 		gear.style.color = '#a88868';
 		settingsT.style.display = 'inline';
@@ -154,7 +154,7 @@ export function settingsInit(g) {
 			gear.style.color = '#a88868';
 			document.querySelector('.Settings').style.display = 'flex';
 		} else {
-			g.audios.return.cloneNode().play();
+			g.audio.return.cloneNode().play();
 			gear.style.color = '#704028';
 			document.querySelector('.Settings').style.display = 'none';
 		}
@@ -236,7 +236,7 @@ export function settingsInit(g) {
 			g.musicVolume = Math.round(g.musicVolume / 10) * 10;
 			g.musicVolume += 10;
 			musicVolText.innerText = g.musicVolume;
-			[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.battleTheme3, g.audios.cyclopsBattle, g.audios.hadesBattle, g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+			[g.audio.mainTheme, g.audio.battleTheme, g.audio.battleTheme2, g.audio.battleTheme3, g.audio.cyclopsBattle, g.audio.hadesBattle, g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
 			localStorage.setItem('musicVolume', g.musicVolume);
 	  }
 	}
@@ -245,12 +245,12 @@ export function settingsInit(g) {
 			g.musicVolume = Math.round(g.musicVolume / 10) * 10;
 			g.musicVolume -= 10;
 			musicVolText.innerText = g.musicVolume;
-			[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.battleTheme3, g.audios.cyclopsBattle, g.audios.hadesBattle, g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+			[g.audio.mainTheme, g.audio.battleTheme, g.audio.battleTheme2, g.audio.battleTheme3, g.audio.cyclopsBattle, g.audio.hadesBattle, g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
 			localStorage.setItem('musicVolume', g.musicVolume);
 		}
 	}
 	musicMute.onclick = () => {
-		[g.audios.mainTheme, g.audios.battleTheme, g.audios.battleTheme2, g.audios.battleTheme3, g.audios.cyclopsBattle, g.audios.hadesBattle, g.audios.hermesBattle, g.audios.herculesBattle, g.audios.zeusBattle].forEach((song) => song.volume = 0);
+		[g.audio.mainTheme, g.audio.battleTheme, g.audio.battleTheme2, g.audio.battleTheme3, g.audio.cyclopsBattle, g.audio.hadesBattle, g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle].forEach((song) => song.volume = 0);
 		g.musicVolume = 0;
 		musicVolText.innerText = g.musicVolume;
 		localStorage.setItem('musicVolume', g.musicVolume);
@@ -261,7 +261,7 @@ export function settingsInit(g) {
 			g.ambienceVolume = Math.round(g.ambienceVolume / 10) * 10;
 			g.ambienceVolume += 10;
 			ambVolText.innerText = g.ambienceVolume;
-			[g.audios.underworldAm, g.audios.olympusAm].forEach((song) => { song.volume = g.ambienceVolume / 100 });
+			[g.audio.underworldAm, g.audio.olympusAm].forEach((song) => { song.volume = g.ambienceVolume / 100 });
 			localStorage.setItem('ambienceVolume', g.ambienceVolume);
 	  }
 	}
@@ -270,14 +270,14 @@ export function settingsInit(g) {
 			g.ambienceVolume = Math.round(g.ambienceVolume / 10) * 10;
 			g.ambienceVolume -= 10;
 			ambVolText.innerText = g.ambienceVolume;
-			[g.audios.underworldAm, g.audios.olympusAm].forEach((song) => { song.volume = g.ambienceVolume / 100 });
+			[g.audio.underworldAm, g.audio.olympusAm].forEach((song) => { song.volume = g.ambienceVolume / 100 });
 			localStorage.setItem('ambienceVolume', g.ambienceVolume);
 		}
 	}
 	ambMute.onclick = () => {
 		g.ambienceVolume = 0;
 		ambVolText.innerText = g.ambienceVolume;
-		[g.audios.underworldAm, g.audios.olympusAm].forEach((song) => { song.volume = 0 });
+		[g.audio.underworldAm, g.audio.olympusAm].forEach((song) => { song.volume = 0 });
 		localStorage.setItem('ambienceVolume', g.ambienceVolume);
 	}
 	
@@ -301,7 +301,8 @@ export function settingsInit(g) {
 
 	returnTMM.onclick = () => { 
 		if (!g.inBattle) {
-			g.audios.selection.play();
+			g.audio.selection.play();
+			g.stopAmbience();
 			g.title.style.display = 'block';
 			mainMenu(g);
 			g.inMainMenu = true;

@@ -1,5 +1,5 @@
-import { audios } from './src/audio.js';
-import { mainMenu } from './src/scenes/main-menu.js';
+import audio from './src/audio.js';
+import mainMenu from './src/scenes/main-menu.js';
 import { lowHealth, death } from './src/components/battle.js';
 
 const globals = {
@@ -18,58 +18,58 @@ const globals = {
 	cestusSrc: "./Imagery/UI/Nemean-cestus.png",
     bladeSrc: "./Imagery/UI/Blade-of-Olympus.png",
 
-    audios, // *audio
+    audio,
 
     // Kratos Stats
     kratos: {
 		w: 150, h: 159, x: 20, y: 0, speed: 3.2, velX: 0, velY: 0,
 		health: Number(localStorage.getItem('health')) || 100, 
 		orbs: Number(localStorage.getItem('orbs')) || 0,
+		inventory: JSON.parse(localStorage.getItem('inventory')) || ["Blades of chaos"]
 	},
-    inventory: JSON.parse(localStorage.getItem('inventory')) || ["Blades of chaos"],
 
 	// Weapons
     weapons: [
         { 
 			name: "Blades of chaos", 
 			lD: 5, hD: 8, lC: 570, hC: 1200, lR: 90, hR: 180, lS: 200, hS: 330, lK: 5, hK: 10,
-			lAttack: audios.bocLA,
-			hAttack: audios.bocHA
+			lAttack: audio.bocLA,
+			hAttack: audio.bocHA
 		}, 
         { 
 			name: "Nemesis whip", 
 			lD: 7, hD: 14, lC: 480, hC: 920, lR: 107, hR: 235, lS: 480, hS: 700, lK: 7, hK: 11,
 			price: 40,
-			lAttack: audios.nwLA,
-			hAttack: audios.nwHA,
+			lAttack: audio.nwLA,
+			hAttack: audio.nwHA,
 		},
         { 
 			name: "Claws of Hades", 
 			lD: 12, hD: 20, lC: 340, hC: 740, lR: 99, hR: 245, lS: 300, hS: 380, lK: 8, hK: 13,
 			price: 70,
-			lAttack: audios.cohLA,
-			hAttack: audios.cohHA,
+			lAttack: audio.cohLA,
+			hAttack: audio.cohHA,
 		},
 		{ 
 			name: "Gauntlet of Zeus", 
 			lD: 19, hD: 28, lC: 700, hC: 1300, lR: 93, hR: 97, lS: 370, hS: 450, lK: 10, hK: 17,
 			price: 115,
-			lAttack: audios.gozLA,
-			hAttack: audios.gozHA,
+			lAttack: audio.gozLA,
+			hAttack: audio.gozHA,
 		},
 		{ 
 			name: "Nemean cestus", 
 			lD: 27, hD: 40, lC: 800, hC: 1500, lR: 95, hR: 100, lS: 440, hS: 520, lK: 12, hK: 21,
 			price: 150,
-			lAttack: audios.ncLA,
-			hAttack: audios.ncHA,
+			lAttack: audio.ncLA,
+			hAttack: audio.ncHA,
 		},
         { 
 			name: "Blade of Olympus", 
 			lD: 40, hD: 55, lC: 888, hC: 1700, lR: 78, hR: 89, lS: 500, hS: 590, lK: 15, hK: 27, 
 			price: 200,
-			lAttack: audios.booLA,
-			hAttack: audios.booHA,
+			lAttack: audio.booLA,
+			hAttack: audio.booHA,
 		}
     ],
 	currentWeapon: Number(localStorage.getItem('currentWeapon')) || 0,
@@ -88,7 +88,7 @@ const globals = {
     hBarOn: localStorage.getItem('healthBarOn') === 'true',
     musicVolume: localStorage.getItem('musicVolume') ? Number(localStorage.getItem('musicVolume')) : 100,
     ambienceVolume: localStorage.getItem('ambienceVolume') ? Number(localStorage.getItem('ambienceVolume')) : 100,
-	damageVolume: 0.55,
+	sfxVolume: localStorage.getItem('sfxVolume') ? Number(localStorage.getItem('sfxVolume')) : 100,
 	inMainMenu: false,
 	inBattle: false,
 	paused: false,
@@ -100,77 +100,77 @@ const globals = {
 			lD: 4, hD: 7, lC: 900, hC: 1500, lR: 78, hR: 110, lS: 200, hS: 270,
 			bC: 4000, bD: 3000, lightChance: 0.70, heavyChance: 0.25, blockChance: 0.2,
 			defeated: localStorage.getItem("hopliteDefeated") === "true",
-			attackSound: audios.hopliteAttacks, hitSound: audios.hopliteAttacked, deathSound: audios.hopliteDeath,
+			attackSound: audio.hopliteAttacks, hitSound: audio.hopliteAttacked, deathSound: audio.hopliteDeath,
 		},
 		{
 			name: "Banshee", health: 60, speed: 2.7, x: 520, y: 0, w: 114, h: 160, 
 			lD: 5, hD: 8, lC: 600, hC: 1200, lR: 57, hR: 84, lS: 150, hS: 200, 
 			sC: 5000, lightChance: 0.65, heavyChance: 0.25, screamChance: 0.3,
 			defeated: localStorage.getItem("bansheeDefeated") === "true",
-			attackSound: audios.bansheeAttacks, hitSound: audios.bansheeAttacked, deathSound: audios.bansheeDeath,
+			attackSound: audio.bansheeAttacks, hitSound: audio.bansheeAttacked, deathSound: audio.bansheeDeath,
 		},
 		{
 			name: "Satyr", health: 110, speed: 3.2, x: 580, y: 0, w: 148, h: 227, 
 			lD: 8, hD: 13, lC: 720, hC: 1400, lR: 123, hR: 115, lS: 270, hS: 390,
 			bC: 3000, bD: 4000, lightChance: 0.65, heavyChance: 0.45, blockChance: 0.35,
 			defeated: localStorage.getItem("satyrDefeated") === "true",
-			attackSound: audios.satyrAttacks, hitSound: audios.satyrAttacked, deathSound: audios.satyrDeath,
+			attackSound: audio.satyrAttacks, hitSound: audio.satyrAttacked, deathSound: audio.satyrDeath,
 		},
 		{
 			name: "Gorgon", health: 90, speed: 2.6, x: 580, y: 0, w: 122, h: 182, 
 			lD: 6, hD: 10, lC: 670, hC: 1300, lR: 70, hR: 110, lS: 170, hS: 240, 
 			pC: 4500, lightChance: 0.65, heavyChance: 0.25, petrifyChance: 0.25,
 			defeated: localStorage.getItem("gorgonDefeated") === "true",
-			attackSound: audios.gorgonAttacks, hitSound: audios.gorgonAttacked, deathSound: audios.gorgonDeath,
+			attackSound: audio.gorgonAttacks, hitSound: audio.gorgonAttacked, deathSound: audio.gorgonDeath,
 		},
 		{
 			name: "Minotaur", health: 155, speed: 1.9, x: 500, y: 0, w: 185, h: 219,  
 			lD: 13, hD: 17, lC: 1200, hC: 1800, lR: 100, hR: 182, lS: 400, hS: 600, 
 			bC: 5500, bD: 2000, lightChance: 0.65, heavyChance: 0.25, blockChance: 0.3,
 			defeated: localStorage.getItem("minotaurDefeated") === "true",
-			attackSound: audios.minotaurAttacks, hitSound: audios.minotaurAttacked, deathSound: audios.minotaurDeath,
+			attackSound: audio.minotaurAttacks, hitSound: audio.minotaurAttacked, deathSound: audio.minotaurDeath,
 		},
 		{
 			name: "Medusa", health: 125, speed: 2.9, x: 550, y: 0, w: 132, h: 195, 
 			lD: 7, hD: 11, lC: 600, hC: 1200, lR: 71, hR: 103, lS: 220, hS: 300, 
 			pC: 3200, lightChance: 0.65, heavyChance: 0.25, petrifyChance: 0.5,
 			defeated: localStorage.getItem("medusaDefeated") === "true",
-			attackSound: audios.medusaAttacks, hitSound: audios.medusaAttacked, deathSound: audios.medusaDeath,
+			attackSound: audio.medusaAttacks, hitSound: audio.medusaAttacked, deathSound: audio.medusaDeath,
 		},
 		{
 			name: "Cyclops", health: 210, speed: 1.6, x: 542, y: 0, w: 260, h: 350,
 			lD: 16, hD: 22, lC: 1100, hC: 1600, lR: 89, hR: 204, lS: 500, hS: 900,
 			lightChance: 0.6, heavyChance: 0.4,
 			defeated: localStorage.getItem("cyclopsDefeated") === "true",
-			attackSound: audios.cyclopsAttacks, hitSound: audios.cyclopsAttacked, deathSound: audios.cyclopsDeath,
+			attackSound: audio.cyclopsAttacks, hitSound: audio.cyclopsAttacked, deathSound: audio.cyclopsDeath,
 		},
 		{
 			name: "Hades", health: 255, speed: 2.9, x: 599, y: 0, w: 265, h: 277,
 			lD: 20, hD: 25, lC: 750, hC: 1400, lR: 109, hR: 130, lS: 500, hS: 990, 
 			sTC: 4200, sTD: 5000, gC: 5000, gD: 1700, lightChance: 0.55, heavyChance: 0.5, soulTakeChance: 0.2, graspChance: 0.3,
 			defeated: localStorage.getItem("hadesDefeated") === "true",
-			attackSound: audios.hadesAttacks, hitSound: audios.hadesAttacked, deathSound: audios.hadesDeath,
+			attackSound: audio.hadesAttacks, hitSound: audio.hadesAttacked, deathSound: audio.hadesDeath,
 		},
 		{
 			name: "Hermes", health: 200, speed: 5.9, x: 599, y: 0, w: 75, h: 159,
 			lD: 14, hD: 17, lC: 200, hC: 400, lR: 67, hR: 79, lS: 200, hS: 300, 
 			dC: 1500, ssC: 2300, lightChance: 0.5, heavyChance: 0.5, dodgeChance: 0.7, speedStrikeChance: 0.55,
 			defeated: localStorage.getItem("hermesDefeated") === "true",
-			attackSound: audios.hermesAttacks, hitSound: audios.hermesAttacked, deathSound: audios.hermesDeath,
+			attackSound: audio.hermesAttacks, hitSound: audio.hermesAttacked, deathSound: audio.hermesDeath,
 		},
 		{
 			name: "Hercules", health: 290, speed: 2.78, x: 540, y: 0, w: 157, h: 225,
 			lD: 30, hD: 37, lC: 700, hC: 1600, lR: 86, hR: 141, lS: 600, hS: 1100, 
 			bC: 5500, bD: 1700, sC: 3500, lightChance: 0.5, heavyChance: 0.5, blockChance: 0.45, smashChance: 0.4,
 			defeated: localStorage.getItem("herculesDefeated") === "true",
-			attackSound: audios.herculesAttacks, hitSound: audios.herculesAttacked, deathSound: audios.herculesDeath,
+			attackSound: audio.herculesAttacks, hitSound: audio.herculesAttacked, deathSound: audio.herculesDeath,
 		},
 		{
 			name: "Zeus", health: 350, speed: 3.2, x: 666, y: 0, w: 130, h: 174, 
 			lD: 25, hD: 32, lC: 550, hC: 1100, lR: 94, hR: 99, lS: 870, hS: 1450, 
 			bC: 7000, bD: 2000, tC: 2760, lightChance: 0.5, heavyChance: 0.5, blockChance: 0.6, teleportChance: 0.35,
 			defeated: localStorage.getItem("zeusDefeated") === "true",
-			attackSound: audios.zeusAttacks, hitSound: audios.zeusAttacked, deathSound: audios.zeusDeath,
+			attackSound: audio.zeusAttacks, hitSound: audio.zeusAttacked, deathSound: audio.zeusDeath,
 		}
     ],
 	currentEnemy: 0,
@@ -249,12 +249,12 @@ const globals = {
 
 	playCaudio(aE, volume = 1) {
 		const audio = aE.cloneNode();
-		audio.volume = volume;
+		audio.volume = volume / 100;
 		audio.play();
 	},
 
 	stopMusic(){
-		[this.audios.battleTheme, this.audios.battleTheme2, this.audios.battleTheme3, this.audios.cyclopsBattle, this.audios.hadesBattle, this.audios.hermesBattle, this.audios.herculesBattle, this.audios.zeusBattle].forEach(theme => {
+		[this.audio.battleTheme, this.audio.battleTheme2, this.audio.battleTheme3, this.audio.cyclopsBattle, this.audio.hadesBattle, this.audio.hermesBattle, this.audio.herculesBattle, this.audio.zeusBattle].forEach(theme => {
 			if (theme && typeof theme.pause === 'function') {
 				theme.pause();
 				theme.currentTime = 0;
@@ -263,13 +263,10 @@ const globals = {
 	},
 
 	stopAmbience() {
-		if (this.currentEnemy <= 7) {
-			this.audios.underworldAm.pause();
-			this.audios.underworldAm.currentTime = 0;
-		} else {
-			this.audios.olympusAm.pause();
-			this.audios.olympusAm.currentTime = 0;
-		}
+		this.audio.underworldAm.pause();
+		this.audio.underworldAm.currentTime = 0;
+		this.audio.olympusAm.pause();
+		this.audio.olympusAm.currentTime = 0;
 	},
 
 	notify() {
@@ -320,8 +317,27 @@ if (screen.width <= 455 || window.width <= 455) {
 // Saved volumes settings
 
 function setVolumes() {
-	if (globals.musicVolume !== 100) [globals.audios.mainTheme, globals.audios.battleTheme, globals.audios.battleTheme2, globals.audios.battleTheme3, globals.audios.cyclopsBattle, globals.audios.hadesBattle, globals.audios.hermesBattle, globals.audios.herculesBattle, globals.audios.zeusBattle].forEach((song) => song.volume = globals.musicVolume / 100)
-	if (globals.ambienceVolume !== 100) [globals.audios.underworldAm, globals.audios.olympusAm].forEach((song) => { song.volume = globals.ambienceVolume / 100 })
+	if (globals.musicVolume !== 100) [
+		globals.audio.mainTheme, globals.audio.battleTheme, globals.audio.battleTheme2, globals.audio.battleTheme3, globals.audio.cyclopsBattle, 
+		globals.audio.hadesBattle, globals.audio.hermesBattle, globals.audio.herculesBattle, globals.audio.zeusBattle
+	].forEach((song) => song.volume = globals.musicVolume / 100)
+	if (globals.ambienceVolume !== 100) [globals.audio.underworldAm, globals.audio.olympusAm].forEach((amb) => { amb.volume = globals.ambienceVolume / 100 })
+	if (globals.sfxVolume !== 100) [
+		globals.audio.evadeSound, globals.audio.blockSound, 
+		globals.audio.stoneHit, globals.audio.stoneBreak, globals.audio.stoneBroke, globals.audio.stonify, globals.audio.deathScream, 
+		globals.audio.hopliteAttacked, globals.audio.hopliteDeath, 
+		globals.audio.bansheeAttacked, globals.audio.bansheeDeath, globals.audio.bansheeScream, 
+		globals.audio.satyrAttacked, globals.audio.satyrDeath, 
+		globals.audio.gorgonAttacked, globals.audio.gorgonDeath, globals.audio.gorgonPetrify, globals.audio.snakesHiss,
+		globals.audio.minotaurAttacked, globals.audio.minotaurDeath, globals.audio.minBlock,
+		globals.audio.medusaAttacked, globals.audio.medusaDeath, globals.audio.medusaPetrify, globals.audio.medusaLaugh,
+		globals.audio.cyclopsAttacked, globals.audio.cyclopsDeath,
+		globals.audio.hadesAttacked, globals.audio.hadesDeath, globals.audio.soulTake, globals.audio.handGrasp, globals.audio.held,
+		globals.audio.hermesAttacked, globals.audio.hermesDeath, globals.audio.dodge, globals.audio.speedStrike,
+		globals.audio.herculesAttacked, globals.audio.herculesDeath, globals.audio.smash,
+		globals.audio.zeusDeath, globals.audio.electrify, globals.audio.teleport, globals.audio.lShoot,
+		globals.audio.heartbeat, globals.audio.achievement, globals.audio.defeatSound, globals.audio.redOrbSound, globals.audio.greenOrbSound, globals.audio.wonned
+	].forEach((sound) => { sound.volume = globals.sfxVolume / 100 })
 }
 
 setVolumes();

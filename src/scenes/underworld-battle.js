@@ -2,9 +2,9 @@ import { settings, settingsInit } from '../components/settings.js';
 import { stats, enemyStats } from '../components/stats.js';
 import { hotbar, hotbarInit } from '../components/hotbar.js';
 import { battle, restart } from '../components/battle.js';
-import { underworld } from './underworld.js';
+import underworld from './underworld.js';
 
-export function underworldBattle(g) {
+export default function underworldBattle(g) {
 	g.game.innerHTML = `
 		<div class="Underworld-battle">
 			${settings(g, false)}
@@ -20,7 +20,7 @@ export function underworldBattle(g) {
 			<button id="Return-Underworld">Return</button>
 			<button id='Reset'> Restart? </button>
 			</center>
-			${hotbar(g)}
+			${hotbar}
 		</div>
 	`;
 
@@ -38,19 +38,19 @@ export function underworldBattle(g) {
 	battle(g);
 	
 	returnB.onmouseover = () => {
-		g.audios.hover.play();
+		g.audio.hover.play();
 		returnB.style.animation = 'horizontal-shaking 0.5s';
 	}
 	
 	returnB.onmouseout = () => {
-		g.audios.hover.pause();
-		g.audios.hover.currentTime = 0;
+		g.audio.hover.pause();
+		g.audio.hover.currentTime = 0;
 		returnB.style.animation = 'grow';
 	}
 	
 	returnB.onclick = () => {
 		g.stopMusic();
-		g.audios.exit.play();
+		g.audio.exit.play();
 		if (g.enemies[g.currentEnemy].health <= 0) eHealthFiller.style.width = '100%';
 		document.removeEventListener("keydown", g.keydownHandler);
 		document.removeEventListener("keyup", g.keyupHandler);

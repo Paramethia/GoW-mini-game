@@ -170,11 +170,14 @@ body {
 	background: linear-gradient(rgba(204, 146, 41, 0.8), rgba(70, 52, 40, 0.8), rgba(26, 8, 3, 0.8), rgba(73, 39, 7, 0.8));
 	border-radius: 15px;
 	padding: 14px;
+	padding-bottom: 20px;
 	z-index: 2;
 	position: relative;
-	left:11cm;
+	left: 11cm;
+	bottom: 25px;
 	font-size: 17px;
 }
+.Options center { margin-top: 40px }
 .Options button {
 	width: 55px;
 	height: 32px;
@@ -192,18 +195,14 @@ body {
 .Options h3 {
 	background: #482708;
 	width: 75%;
-	margin-top: 28px;
 	padding: 8px;
 	border-radius: 5px;
 	color: white;
 	font-weight: 100;
 }
 .Options p {
+	margin-top: 3px;
 	color: lightgray;
-}
-
-.Options #first {
-	margin-top: 50px;
 }
 
 .Options input {
@@ -211,7 +210,6 @@ body {
 	appearance: none;
     width: 150px;
 	height: 20px;
-	margin-top: 15px;
     cursor: var(--pressing), pointer;
     outline: none;
     border-radius: 16px;
@@ -246,7 +244,7 @@ body {
 	border: 2px solid #463428;
 }
 
-#music-volume, #ambience-volume { color: #cc9229 }
+#music-volume, #ambience-volume, #sfx-volume { color: #cc9229 }
 
 /* --- Game styling --- */
 

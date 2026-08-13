@@ -1,4 +1,4 @@
-import { sparta } from '../scenes/sparta.js';
+import sparta from '../scenes/sparta.js';
 
 export function battle(g) {
 	g.inBattle = true;
@@ -314,7 +314,7 @@ export function battle(g) {
 		if (g.kratos.health <= 0) {
 			// Physics will still apply
 			if (sButtonPrompt.active) sButtonPrompt.active = false;
-			//if (g.kratos.petrified) g.audios.stoneBroke.play();
+			//if (g.kratos.petrified) g.audio.stoneBroke.play();
 			physics();
 			return
 		} 
@@ -457,7 +457,7 @@ export function battle(g) {
 
 		// Jump
 		if (g.keys[" "] && g.kratos.onGround && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.blocking) {
-			g.audios.evadeSound.cloneNode().play();
+			g.audio.evadeSound.cloneNode().play();
 			g.kratos.velY = jumpPower;
 			g.kratos.onGround = false;
 			lineComplete = true;
@@ -503,10 +503,10 @@ export function battle(g) {
 						g.kratos.stunEnd = Date.now() + 350;
 						g.kratos.hitUntil = Date.now() + hitFlashTime;
 						g.kratos.health -= 2;
-						g.audios.electrify.cloneNode().play();
+						g.audio.electrify.cloneNode().play();
 						return
 					}
-					g.currentEnemy !== 4 ? g.audios.blockSound.cloneNode().play() : g.audios.minBlock.cloneNode().play();
+					g.currentEnemy !== 4 ? g.audio.blockSound.cloneNode().play() : g.audio.minBlock.cloneNode().play();
 					const knockback = g.currentEnemy !== 4 && g.currentEnemy !== 6 && g.currentEnemy !== 7 && g.currentEnemy !== 9 && g.currentEnemy !== 10 ? Math.round(weapon.lK / 2) : 0
 					enemy.knockbackVel = g.kratos.facing === "right" ? knockback : -knockback;
 
@@ -516,19 +516,19 @@ export function battle(g) {
 					}
 				} else {
 					if (enemy.name === "Hermes" && tryDodge()) {
-						g.audios.dodge.cloneNode().play();
+						g.audio.dodge.cloneNode().play();
 						return
 					}
 
 					if (enemy.name === "Zeus" && tryTeleport()) {
-						g.audios.teleport.cloneNode().play();
+						g.audio.teleport.cloneNode().play();
 						return
 					}
 
 					if (enemy.name === "Zeus" && g.kratos.onGround && enemy.flying) return
 
 					const hitSound = g.currentEnemy !== 10 ? enemy.hitSound : enemy.hitSound[0];
-					g.playCaudio(hitSound, g.damageVolume);
+					g.playCaudio(hitSound, g.sfxVolume);
 					enemy.health -= weapon.lD;
 					enemy.hitUntil = Date.now() + hitFlashTime; // flash red
 
@@ -584,9 +584,9 @@ export function battle(g) {
 			const now = Date.now();
 
 			g.kratos.heavyCombo = (g.kratos.heavyCombo + 1) % 2; // 2 hit combo for now
-			g.playCaudio(g.audios.grunt[(g.kratos.heavyCombo + 1) % 2], 0.7);
+			g.playCaudio(g.audio.grunt[(g.kratos.heavyCombo + 1) % 2], 0.7);
 			weapon.hAttack[(g.kratos.heavyCombo + 1) % 2].cloneNode().play();
-			if(g.currentWeapon === 4) g.audios.nemeanRoar.cloneNode().play();
+			if(g.currentWeapon === 4) g.audio.nemeanRoar.cloneNode().play();
 			
 			g.kratos.hAttacking = true;
 			g.kratos.hAttackEnd =  now + weapon.hC - 50;
@@ -608,11 +608,11 @@ export function battle(g) {
 						enemy.knockbackVel = g.kratos.facing === "right" ? knockback : -knockback;
 					if (g.currentEnemy) {
 						if (g.currentEnemy === 2 && g.currentWeapon >= 2) {
-							g.audios.blockSound.play();
+							g.audio.blockSound.play();
 							breakBlock();
 							return
 						} else if (g.currentEnemy === 4 && g.currentWeapon >= 3) {
-							g.audios.minBlock.play();
+							g.audio.minBlock.play();
 							breakBlock();
 							return
 						} else if (g.currentEnemy === 9 && g.currentWeapon >= 4) {
@@ -622,29 +622,29 @@ export function battle(g) {
 							breakBlock();
 							return
 						}
-						g.currentEnemy !== 4 ? g.audios.blockSound.cloneNode().play() : g.audios.minBlock.cloneNode().play();
+						g.currentEnemy !== 4 ? g.audio.blockSound.cloneNode().play() : g.audio.minBlock.cloneNode().play();
 
 						enemy.stunned = true;
 						enemy.stunEnd = Date.now() + weapon.hS / g.currentEnemy !== 4 && g.currentEnemy !== 6 ? 2 : 3;
 					} else { // Hoplite blocks can be broken with any weapon (Only with heavy attacks)
-						g.audios.blockSound.play();
+						g.audio.blockSound.play();
 						breakBlock()
 					}
 				} else {
 					if (enemy.name === "Hermes" && tryDodge()) {
-						g.audios.dodge.cloneNode().play();
+						g.audio.dodge.cloneNode().play();
 						return;
 					}
 
 					if (enemy.name === "Zeus" && tryTeleport()) {
-						g.audios.teleport.cloneNode().play();
+						g.audio.teleport.cloneNode().play();
 						return
 					}
 
 					if (enemy.name === "Zeus" && g.kratos.onGround && enemy.flying) return
 
 					const hitSound = g.currentEnemy !== 10 ? enemy.hitSound : enemy.hitSound[1];
-					g.playCaudio(hitSound, g.damageVolume);
+					g.playCaudio(hitSound, g.sfxVolume);
 					enemy.health -= weapon.hD;
 					enemy.hitUntil = Date.now() + hitFlashTime; // flash red
 
@@ -695,7 +695,7 @@ export function battle(g) {
 
         // Dodge
         if (g.keys["Shift"] && g.kratos.velX && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.blocking && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) {
-			g.audios.evadeSound.play();
+			g.audio.evadeSound.play();
 			g.kratos.dodging = true;
 			g.kratos.dodgeEnd = Date.now() + dodgeDuration;
         }
@@ -1087,7 +1087,7 @@ export function battle(g) {
 
 		sButtonActivate();
 
-		g.audios.bansheeScream.play();
+		g.audio.bansheeScream.play();
 	}
 
 	function endScream() {
@@ -1101,9 +1101,9 @@ export function battle(g) {
 		sButtonPrompt.active = false;
     	sButtonPrompt.visualPress = false;
 
-		if (g.audios.bansheeScream.currentTime > 0) {
-			g.audios.bansheeScream.pause();
-			g.audios.bansheeScream.currentTime = 0;
+		if (g.audio.bansheeScream.currentTime > 0) {
+			g.audio.bansheeScream.pause();
+			g.audio.bansheeScream.currentTime = 0;
 		}
 	}
 
@@ -1118,7 +1118,7 @@ export function battle(g) {
 		enemy.lastPetrify = now;
 		enemy.velX = 0;
 
-		enemy.name === "Gorgon" ? g.audios.gorgonPetrify.play() : g.audios.medusaPetrify.play();
+		enemy.name === "Gorgon" ? g.audio.gorgonPetrify.play() : g.audio.medusaPetrify.play();
 	}
 
 	function breakPetrification() {
@@ -1127,7 +1127,7 @@ export function battle(g) {
 
 		sButtonPrompt.active = false;
 		sButtonPrompt.visualPress = false;
-		g.audios.stoneBroke.play();
+		g.audio.stoneBroke.play();
 	}
 
 	function hadesTakesSoul() {
@@ -1143,7 +1143,7 @@ export function battle(g) {
 		g.kratos.took = true;
 		g.kratos.soulTakeBreak = 0;
 
-		g.audios.soulTake.play();
+		g.audio.soulTake.play();
 		sButtonActivate();
 	}
 
@@ -1157,9 +1157,9 @@ export function battle(g) {
 
 		sButtonPrompt.active = false;
     	sButtonPrompt.visualPress = false;
-		if (g.audios.soulTake.currentTime > 0) {
-			g.audios.soulTake.pause();
-			g.audios.soulTake.currentTime = 0;
+		if (g.audio.soulTake.currentTime > 0) {
+			g.audio.soulTake.pause();
+			g.audio.soulTake.currentTime = 0;
 		}
 	}
 
@@ -1184,7 +1184,7 @@ export function battle(g) {
 
 		enemy.graspAttempts++;
 		enemy.nextGraspTime = now + 1500; // delay between attempts
-		g.audios.handGrasp.play();
+		g.audio.handGrasp.play();
 	}
 
 	function hadesGrasp() {
@@ -1309,7 +1309,7 @@ export function battle(g) {
 		enemy.velX = enemy.speedStrikeSpeed * enemy.speedStrikeDir;
 		g.kratos.velX = 0;
 
-		g.audios.speedStrike.play();
+		g.audio.speedStrike.play();
 	}
 
 	function endSpeedStrike() {
@@ -1433,7 +1433,7 @@ export function battle(g) {
 
 			// ---- Hit Kratos ----
 			if (l.x > g.kratos.x && l.x < g.kratos.x + g.kratos.w && l.y > g.kratos.y - g.kratos.h && l.y < g.kratos.y) {
-				g.audios.electrify.play();
+				g.audio.electrify.play();
 				g.kratos.health -= l.damage;
 				g.kratos.hitUntil = Date.now() + hitFlashTime;
 				l.active = false;
@@ -1454,7 +1454,7 @@ export function battle(g) {
 	}
 
 	function spawnZeusLightning() {
-		g.audios.lShoot.cloneNode().play();
+		g.audio.lShoot.cloneNode().play();
 
 		const dir = enemy.facing === "right" ?  1 : -1;
 		const startX = enemy.x + enemy.w / 2 + 40 * dir;
@@ -1528,7 +1528,7 @@ export function battle(g) {
 		// Force lowest dip during hit
 		enemy.currentFlightTargetY = enemy.flightY + enemy.strikeOffsetY + 20;
 
-		g.audios.gorgonAttacks[0].cloneNode().play();
+		g.audio.gorgonAttacks[0].cloneNode().play();
 		g.kratos.health -= 9;
 		g.kratos.hitUntil = Date.now() + hitFlashTime;
 		g.kratos.stunned = true;
@@ -1604,6 +1604,8 @@ export function battle(g) {
 		ctx.stroke();
 	}
 
+	let halved = false;
+
 	function updateEnemy() {
 		// Handle death
 		if (enemy.health === 0 && !defeated) {
@@ -1626,6 +1628,11 @@ export function battle(g) {
 			}
 			return
 		} 
+
+		if (!halved && g.currentEnemy > 6 && enemy.health <= g.eHealth / 2) {
+			halved = true;
+			spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, "green", greenOrbs - 12);
+		}
 
 		const enemyXpos = enemy.x + g.eW / 2;
 		const kratosXpos = g.kratos.x + 150 / 2;
@@ -1685,8 +1692,8 @@ export function battle(g) {
 					g.kratos.petrified = true;
 					g.kratos.petrifyBreak = 0;
 					sButtonActivate();
-					g.audios.stonify.play();
-					enemy.name === "Gorgon" ? g.audios.snakesHiss.play() : g.audios.medusaLaugh.play()
+					g.audio.stonify.play();
+					enemy.name === "Gorgon" ? g.audio.snakesHiss.play() : g.audio.medusaLaugh.play()
 					if (g.kratos.y <= 340) g.kratos.petrifiedInAir = !g.kratos.onGround;
 				}
 				enemy.state = "idle";
@@ -1724,7 +1731,7 @@ export function battle(g) {
 				const caught = g.kratos.onGround && !g.kratos.dodging && Math.abs(g.kratos.x - graspFX.x) < 125;
 
 				if (caught) {
-					g.audios.held.play();
+					g.audio.held.play();
 					g.kratos.held = true;
 					graspFX.grabbed = true;
 					g.kratos.graspBreak = 0;
@@ -1810,7 +1817,7 @@ export function battle(g) {
 			const now = Date.now();
 
 			if (now >= enemy.nextSmashTime && enemy.smashCount < enemy.maxSmashes) {
-				g.audios.smash.cloneNode().play();
+				g.audio.smash.cloneNode().play();
 
 				document.querySelector(".Olympus-battle").style.animation = "none";
 				document.querySelector(".Olympus-battle").offsetHeight;
@@ -1936,7 +1943,7 @@ export function battle(g) {
 			if (g.kratos.dodging || attackDis > enemy.lR || !inFront) {
 				return
 			} else if (g.kratos.blocking) {
-				g.audios.blockSound.cloneNode().play();
+				g.audio.blockSound.cloneNode().play();
 				if (enemy.name === "Hoplite" || enemy.name === "Satyr") g.kratos.health -= 0 // no damage for Hoplites or Satyrs
 				if (enemy.name === "Minotaur") g.kratos.health -= Math.round(enemy.lD * 0.95) // reduce damage by 95% for the Minotaur
 				if (enemy.name === "Hercules") g.kratos.health -= Math.round(enemy.lD * 0.8) // reduce damage by 80% for Hercules
@@ -1945,11 +1952,11 @@ export function battle(g) {
 				g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'))
 			} else {
 				if (g.currentEnemy <= 4) {
-					!g.kratos.petrified ? g.playCaudio(g.audios.hurt[0], g.damageVolume) : g.audios.stoneBreak.cloneNode().play()
+					!g.kratos.petrified ? g.playCaudio(g.audio.hurt[0], g.sfxVolume) : g.audio.stoneBreak.cloneNode().play()
 				} else if (g.currentEnemy <= 7) {
-					!g.kratos.petrified ? g.playCaudio(g.audios.hurt[1], g.damageVolume) : g.audios.stoneBreak.cloneNode().play()
+					!g.kratos.petrified ? g.playCaudio(g.audio.hurt[1], g.sfxVolume) : g.audio.stoneBreak.cloneNode().play()
 				} else {
-					g.playCaudio(g.audios.hurt[2], g.damageVolume)
+					g.playCaudio(g.audio.hurt[2], g.sfxVolume)
 				}
 				
 				g.kratos.health -= enemy.lD;
@@ -1975,7 +1982,7 @@ export function battle(g) {
 			if (g.kratos.dodging || attackDis > enemy.hR || !inFront) return
 			if (g.kratos.blocking) {
 				function breakBlock() {
-					g.audios.blockSound.cloneNode().play();
+					g.audio.blockSound.cloneNode().play();
 					g.kratos.blocking = false;
 					g.keys['q'] = false;
 				}
@@ -2005,11 +2012,11 @@ export function battle(g) {
 			}
 			
 			if (g.currentEnemy <= 4) {
-				!g.kratos.petrified ? g.playCaudio(g.audios.hurt[2], g.damageVolume) : g.audios.stoneBreak.cloneNode().play()
+				!g.kratos.petrified ? g.playCaudio(g.audio.hurt[2], g.sfxVolume) : g.audio.stoneBreak.cloneNode().play()
 			} else if (g.currentEnemy <= 7) {
-				!g.kratos.petrified ? g.playCaudio(g.audios.hurt[3], g.damageVolume) : g.audios.stoneBreak.cloneNode().play()
+				!g.kratos.petrified ? g.playCaudio(g.audio.hurt[3], g.sfxVolume) : g.audio.stoneBreak.cloneNode().play()
 			} else {
-				g.playCaudio(g.audios.hurt[4], g.damageVolume)
+				g.playCaudio(g.audio.hurt[4], g.sfxVolume)
 			}
 			g.kratos.health -= damage;
 			g.kratos.hitUntil = Date.now() + hitFlashTime;
@@ -2229,15 +2236,15 @@ export function battle(g) {
 	if (enemy.name === "Hades" && !enemy.defeated) {
 		setTimeout(() => { 
 			firstLineC = true;
-			g.audios.hadesLines[1].play();
+			g.audio.hadesLines[1].play();
 		}, 4200);
 		setTimeout(() => { 
 			secondLineC = true;
-			g.audios.hadesLines[2].play();
+			g.audio.hadesLines[2].play();
 		}, 8000);
 		setTimeout(() => { 
 			thirdLineC = true;
-			g.audios.hadesLines[3].play();
+			g.audio.hadesLines[3].play();
 		}, 12000);
 		setTimeout(() => { fourthLineC = true }, 14700);
 		setTimeout(() => { fifthLineC = true }, 19700);
@@ -2413,7 +2420,7 @@ export function battle(g) {
 				if (orb.type === "red") {
 					g.kratos.orbs += orb.size - 2;
 					document.getElementById("Orbs").innerText = g.kratos.orbs;
-					g.audios.redOrbSound.cloneNode().play();
+					g.audio.redOrbSound.cloneNode().play();
 					localStorage.setItem('orbs', g.kratos.orbs);
 				} 
 				if (orb.type === "green") {
@@ -2425,7 +2432,7 @@ export function battle(g) {
 					if (g.kratos.health > 200) g.kratos.health = 200
 					document.getElementById('Health').innerText = g.kratos.health;
 					g.healthUpdate(document.querySelector('.Health-bar'), document.querySelector('.filler'));
-					g.audios.greenOrbSound.cloneNode().play();
+					g.audio.greenOrbSound.cloneNode().play();
 					localStorage.setItem('health', g.kratos.health);
 				} 
 				orbs.splice(i, 1);
@@ -2493,24 +2500,24 @@ export function restart(g) {
 	const reset = document.getElementById('Reset');
 	
 	reset.onmouseover = () => {
-		g.audios.hover.play();
+		g.audio.hover.play();
 		reset.style.animation = 'horizontal-shaking';
 		reset.style.animationDuration = '0.5s';
 	}
 	reset.onmouseout = () => {
-		g.audios.hover.pause();
-		g.audios.hover.currentTime = 0;
+		g.audio.hover.pause();
+		g.audio.hover.currentTime = 0;
 		reset.style.animation = 'no';
 	}
 	reset.onclick = () => { 
         g.stopAmbience();
-        g.audios.exit.play();
-        setTimeout(() => { g.audios.ahShit.play() }, 1800 );
+        g.audio.exit.play();
+        setTimeout(() => { g.audio.ahShit.play() }, 1800 );
         g.kratos.health = 100;
         g.kratos.orbs = 0;
         g.currentWeapon = 0;
         g.potions = 0;
-        g.inventory = ["Blades of chaos"];
+        g.kratos.inventory = ["Blades of chaos"];
         [g.hoplite, g.banshee, g.satyr, g.gorgon, g.minotaur, g.medusa, g.cyclops, g.hades, g.hermes, g.hercules, g.zeus].forEach((enemy) => enemy.defeated = false );
         [ 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'gorgonDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hadesDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated'].forEach(save => localStorage.removeItem(save));
         g.inBattle = false;
@@ -2522,24 +2529,24 @@ export function restart(g) {
 }
 
 export function lowHealth(g) {
-	g.audios.heartbeat.play();
+	g.audio.heartbeat.play();
 	[document.querySelector('.Underworld-battle'), document.querySelector('.Olympus-battle')].forEach((container) => { if (container) container.style.boxShadow = '#880808 0px 20px 30px -10px' });
 }
 
 function victory(g) {
 	g.stopMusic();
 	if (g.currentEnemy <= 4) {
-		g.audios.underworldAm.play()
+		g.audio.underworldAm.play()
 	} else {
-		g.audios.olympusAm.play()
+		g.audio.olympusAm.play()
 	}
 	document.querySelector('.Efiller').style.width = `${g.enemies[g.currentEnemy].health}%`;
 	if (g.currentEnemy < 10) { 
-		g.audios.defeatSound.play();
+		g.audio.defeatSound.play();
 		if (!g.enemies[g.currentEnemy].deated) g.notify();
 		document.getElementById('Text').innerText = 'You have defeated the enemy. You have now earned some orbs from the defeated enemy.';
 	} else { 
-		g.audios.wonned.play();
+		g.audio.wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this absolute SHIT game! 🤩";
 	}
 	[ document.getElementById("Return-Underworld"), document.getElementById("Return-Olympus") ].forEach((button) => { if (button) button.style.display = 'block' });
@@ -2547,11 +2554,11 @@ function victory(g) {
 
 export function death(g) {
 	g.stopMusic();
-	g.audios.heartbeat.pause();
-	g.audios.heartbeat.currentTime = 0;
-	if (g.kratos.petrified) g.audios.stoneBroke.play()
+	g.audio.heartbeat.pause();
+	g.audio.heartbeat.currentTime = 0;
+	if (g.kratos.petrified) g.audio.stoneBroke.play()
 	g.kratos.health = 0;
-	setTimeout(() => { g.audios.deathScream.play() }, 1100 );
+	setTimeout(() => { g.audio.deathScream.play() }, 1100 );
 	document.getElementById('Health').innerText = g.kratos.health;
 	document.querySelector('.Enemy-stats').style.display = 'none';
 	document.querySelector('.Hotbar').style.display = 'none';

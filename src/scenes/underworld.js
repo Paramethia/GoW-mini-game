@@ -1,10 +1,10 @@
 import { settings, settingsInit } from '../components/settings.js';
 import { stats } from '../components/stats.js';
 import { hotbar, hotbarInit } from '../components/hotbar.js';
-import { underworldBattle } from './underworld-battle.js';
-import { sparta } from './sparta.js';
+import underworldBattle from './underworld-battle.js';
+import sparta from './sparta.js';
 
-export function underworld(g) {
+export default function underworld(g) {
 	const creatures = g.enemies.slice(0, 8);
 	const creaturesInfo = [ 
 		"A <strong>Hoplite</strong> that appears to be a skeletal corpse adorned in standard Greek armor, and with two swords for weapons",
@@ -52,7 +52,7 @@ export function underworld(g) {
 				</div>
 			</div>
 			</center>
-			${hotbar(g)}
+			${hotbar}
 		</div>
 	`;
 	
@@ -77,8 +77,8 @@ export function underworld(g) {
 	const defeats = [true, g.hoplite.defeated, g.banshee.defeated, g.satyr.defeated, g.gorgon.defeated, g.minotaur.defeated, g.medusa.defeated, g.cyclops.defeated ];
 
 	function navigateEnemies(i) {
-		g.audios.hover2.currentTime = 0;
-		g.audios.hover2.cloneNode().play();
+		g.audio.hover2.currentTime = 0;
+		g.audio.hover2.cloneNode().play();
 		i ? g.currentEnemy++ : g.currentEnemy--
 		if (g.currentEnemy > 7) { 
 			g.currentEnemy = 0 
@@ -94,7 +94,7 @@ export function underworld(g) {
 		fightB.innerHTML = `Fight ${defeats[g.currentEnemy]? '' : '<i class="fa-solid fa-lock"></i>'}`;
 	}
 	
-	const creatureSounds = [ g.audios.hopliteSound, g.audios.bansheeSound, g.audios.satyrSound, g.audios.gorgonSound, g.audios.minotaurSound, g.audios.medusaSound, g.audios.cyclopsSound, g.audios.hover ];
+	const creatureSounds = [ g.audio.hopliteSound, g.audio.bansheeSound, g.audio.satyrSound, g.audio.gorgonSound, g.audio.minotaurSound, g.audio.medusaSound, g.audio.cyclopsSound, g.audio.hover ];
 	var animationTimes = [ '1.2s', '2.5s', '1.4s', '1.6s', '1s', '1.8s', '1.1s', '1.2' ]
 	
 	fightB.onmouseover = () => {
@@ -123,16 +123,16 @@ export function underworld(g) {
 
 	function goBattle() {
 		if (defeats[g.currentEnemy]) {
-			if (g.currentEnemy === 7 && !g.hades.defeated) g.audios.hadesLines[0].play();
+			if (g.currentEnemy === 7 && !g.hades.defeated) g.audio.hadesLines[0].play();
 			setTimeout(() => {
 				if (g.currentEnemy <= 3) { 
-					g.audios.battleTheme.play() 
+					g.audio.battleTheme.play() 
 				} else if (g.currentEnemy <= 5) { 
-					g.audios.battleTheme2.play() 
+					g.audio.battleTheme2.play() 
 				} else if (g.currentEnemy === 6) {
-					g.audios.cyclopsBattle.play() 
+					g.audio.cyclopsBattle.play() 
 				} else {
-					g.audios.hadesBattle.play()
+					g.audio.hadesBattle.play()
 				}
 			}, g.currentEnemy === 7 && !g.hades.defeated ? 25700 : 1000 );
 			g.stopAmbience();
@@ -142,10 +142,10 @@ export function underworld(g) {
 	}
 	
 	function leaveUnderworld() {
-		g.audios.underworldAm.pause();
-		g.audios.underworldAm.currentTime = 0;
-		g.audios.exit.play();
-        if (g.play) g.audios.mainTheme.play();
+		g.audio.underworldAm.pause();
+		g.audio.underworldAm.currentTime = 0;
+		g.audio.exit.play();
+        if (g.play) g.audio.mainTheme.play();
 		sparta(g);
 	}
 	
