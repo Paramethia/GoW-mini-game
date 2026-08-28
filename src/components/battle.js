@@ -1631,7 +1631,7 @@ export function battle(g) {
 
 		if (!halved && g.currentEnemy > 6 && enemy.health <= g.eHealth / 2) {
 			halved = true;
-			spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, "green", greenOrbs - 12);
+			spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, "green", Math.round(greenOrbs / 2));
 		}
 
 		const enemyXpos = enemy.x + g.eW / 2;
@@ -2469,16 +2469,16 @@ export function battle(g) {
 	function battleLoop() {
 		ctx.clearRect(0, 0, battleArea.width, battleArea.height);
 
-		if (!lineComplete && !enemy.defeated) drawText();
 		if (!g.paused) updateKratos();
 		if (!g.paused) updateEnemy();
-		updateSbuttonPrompt();
-		updateLightnings();
-		if (defeated) updateOrbs();
+		if (!g.paused) updateSbuttonPrompt();
+		if (!g.paused) updateLightnings();
+		if (orbs.length) updateOrbs();
 
 		drawGraspWarning();
 		drawHandGrasp();
 
+		if (!lineComplete && !enemy.defeated) drawText();
 		if (enemy.health <= 0) {
 			drawEnemy();
 			drawKratos();
@@ -2488,7 +2488,7 @@ export function battle(g) {
 		}
 		drawLightnings();
 		drawSbuttonPrompt();
-		if (defeated) drawOrbs();
+		if (orbs.length) drawOrbs();
 
 		frames++;
 		if (g.inBattle) requestAnimationFrame(battleLoop);
