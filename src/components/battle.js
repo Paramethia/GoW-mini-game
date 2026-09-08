@@ -133,25 +133,18 @@ export function battle(g) {
 	const enemyVictoryR = enemy.name === "Zeus" ? bAssets.get("Imagery/battle/Zeus victory pose right.png") : null;
 	const enemyVictoryL = enemy.name === "Zeus" ? bAssets.get("Imagery/battle/Zeus victory pose left.png") : null;
 
-	let weapon = g.kratos.inventory[g.currentWeapon];
-
+	let weapon;
 	function updateKratosSprites() {
-		weapon = g.kratos.inventory[g.currentWeapon];
-
-		const lightableWeapon = !weapon.name.includes("Gauntlet") && !weapon.name.includes("cestus");
-
-		kratosFightingStanceL = bAssets.get(`Imagery/battle/Kratos fighting stance left (${weapon.name})${lightableWeapon && attacked ? "-lit" : ""}.png`);
-		kratosFightingStanceR = bAssets.get(`Imagery/battle/Kratos fighting stance right (${weapon.name})${lightableWeapon && attacked ? "-lit" : ""}.png`);
-
-		lightAttackL = bAssets.get(`Imagery/battle/Kratos light attacks left with ${weapon.name.toLowerCase()} ${g.kratos.lightCombo + 1}.png`);
+		weapon = g.weapons[g.currentWeapon];
+		const lightableWeapon = g.currentWeapon <= 2 || g.currentWeapon === 5;
+		kratosFightingStanceL  = bAssets.get(`Imagery/battle/Kratos fighting stance left (${weapon.name})${lightableWeapon && attacked ? '-lit' : ''}.png`);
+		kratosFightingStanceR  = bAssets.get(`Imagery/battle/Kratos fighting stance right (${weapon.name})${lightableWeapon && attacked ? '-lit' : ''}.png`);
+		lightAttackL  = bAssets.get(`Imagery/battle/Kratos light attacks left with ${weapon.name.toLowerCase()} ${g.kratos.lightCombo + 1}.png`);
 		lightAttackR = bAssets.get(`Imagery/battle/Kratos light attacks right with ${weapon.name.toLowerCase()} ${g.kratos.lightCombo + 1}.png`);
-
 		heavyAttackL = bAssets.get(`Imagery/battle/Kratos heavy attacks left with ${weapon.name.toLowerCase()} ${g.kratos.heavyCombo + 1}.png`);
 		heavyAttackR = bAssets.get(`Imagery/battle/Kratos heavy attacks right with ${weapon.name.toLowerCase()} ${g.kratos.heavyCombo + 1}.png`);
-
 		kratosAirAttackL = bAssets.get(`Imagery/battle/Kratos aerial attack left with ${weapon.name.toLowerCase()}.png`);
 		kratosAirAttackR = bAssets.get(`Imagery/battle/Kratos aerial attack right with ${weapon.name.toLowerCase()}.png`);
-
 		kratosBlocksL = bAssets.get(`Imagery/battle/Kratos blocking left with ${weapon.name.toLowerCase()}.png`);
 		kratosBlocksR = bAssets.get(`Imagery/battle/Kratos blocking right with ${weapon.name.toLowerCase()}.png`);
 	}
