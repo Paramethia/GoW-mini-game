@@ -311,49 +311,41 @@ const battleAssets = [
     "Imagery/battle/Zeus dead right.png",
 ];
 
+export const bAssets = new Map();
+
 export default function loader(g, loadE, scene) {
-    const lastCache = Number(localStorage.getItem("lastCache"));
-    const nextCache = Number(localStorage.getItem("nextCache"));
-    const twoWeeks = 1209600000;
-    if (lastCache && nextCache) {
-        console.log("Last cache:", new Date(lastCache));
-        console.log("Next cache:", new Date(nextCache));
-    }
-
-    if (!nextCache || Date.now() > nextCache) {
-        loadE.style.display = "flex";
-        scene.style.display = "none";
-        preloadImages(UIassets).then(() => {
-            g.audio.mainTheme.play();
-            loadE.style.display = "none";
-            scene.style.display = "block";
-            preloadImages(battleAssets).then(() => {
-                localStorage.setItem("lastCache", Date.now());
-                localStorage.setItem("nextCache", Date.now() + twoWeeks);
-                console.log("Done");
-            });
+    loadE.style.display = "flex";
+    scene.style.display = "none";
+    preloadImages(UIassets).then(() => {
+        g.audio.mainTheme.play();
+        loadE.style.display = "none";
+        scene.style.display = "block";
+        preloadImages(battleAssets).then(() => {
+            console.log("Done");
         });
-    }
+    });
 
-    function preloadImages(images = []) {
+    function preloadImages(srcs = []) {
         const progress = document.getElementById('progress');
-        if (images.length > 100) console.log("Downloading other images in the background...");
+        if (srcs.length > 100) console.log("Downloading battle images in the background...");
         let loaded = 0;
 
         return new Promise(resolve => {
-            if (images.length === 0) resolve();
+            if (srcs.length === 0) resolve();
 
-            images.forEach(src => {
+            srcs.forEach(src => {
                 const img = new Image();
                 
                 img.onload = img.onerror = async () => {
                     await img.decode();
                     loaded++;
-                    images.length <= 100 ? progress.innerText = `${Math.round(loaded / images.length * 100)}%` : console.log(`Download progress: ${Math.round(loaded / images.length * 100)}$`);
+                    srcs.length <= 100 ? progress.innerText = `${Math.round(loaded / srcs.length * 100)}%` : console.log(`Download progress: ${Math.round(loaded / srcs.length * 100)}$`);
 
-                    if (loaded === images.length) resolve();
+                    if (loaded === srcs.length) resolve();
                 };
                 img.src = src;
+
+                bAssets.set(src, img);
             });
         });
     }
