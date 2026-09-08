@@ -133,7 +133,7 @@ export function battle(g) {
 	const enemyVictoryR = enemy.name === "Zeus" ? bAssets.get("Imagery/battle/Zeus victory pose right.png") : null;
 	const enemyVictoryL = enemy.name === "Zeus" ? bAssets.get("Imagery/battle/Zeus victory pose left.png") : null;
 
-	let weapon;
+	let weapon = g.weapons[g.currentWeapon];
 	function updateKratosSprites() {
 		weapon = g.weapons[g.currentWeapon];
 		const lightableWeapon = g.currentWeapon <= 2 || g.currentWeapon === 5;
