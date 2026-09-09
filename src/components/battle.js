@@ -476,7 +476,7 @@ export function battle(g) {
 					enemy.stunned = true;
 					if (g.currentEnemy !== 4 && g.currentEnemy !== 6 && g.currentEnemy !== 7 && g.currentEnemy !== 8 && g.currentEnemy !== 9) {
 						enemy.stunEnd = Date.now() + weapon.lS;
-					} else { // Less stunn for bigger aor stronger enemies
+					} else { // Less stun for bigger/stronger enemies
 						enemy.stunEnd = Date.now() + weapon.lS / 2 
 					} 
 
