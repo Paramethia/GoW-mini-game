@@ -44,7 +44,7 @@ export default function mainMenu(g) {
         </div>
     `;
 
-    loader(g, document.getElementById("Load-screen"), document.querySelector(".Main-menu"))
+    if (!g.loaded) loader(g, document.getElementById("Load-screen"), document.querySelector(".Main-menu"))
 
     const savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
     

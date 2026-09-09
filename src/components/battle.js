@@ -23,8 +23,6 @@ export function battle(g) {
 	const jumpPower = -13;
 	const hitFlashTime = 200; // ms to stay tinted red
 	const enemy = g.enemies[g.currentEnemy];
-
-	// ===== Load images =====
 	
 	// ===== Get images =====
 	
@@ -184,23 +182,6 @@ export function battle(g) {
 	g.kratos.holdEnd = 0;
 	g.kratos.graspBreak = 0;
 
-	// For debugging or just checking things
-	function showKratosXpos(){
-		ctx.strokeStyle = "yellow";
-		ctx.beginPath();
-		ctx.moveTo(g.kratos.x, g.kratos.y);
-		ctx.lineTo(g.kratos.x, g.kratos.y - g.kratos.h);
-		ctx.stroke();
-	}
-	function showKratosMidX() {
-		const kratosMidX = g.kratos.x + 150 / 2;
-		ctx.strokeStyle = "orange";
-		ctx.beginPath();
-		ctx.moveTo(kratosMidX, g.kratos.y);
-		ctx.lineTo(kratosMidX, g.kratos.y - g.kratos.h);
-		ctx.stroke();
-	}
-
 	const kratosHitbox = () => {
 		return {
 			x: g.kratos.x + 75 / 2,
@@ -209,34 +190,11 @@ export function battle(g) {
 			h: g.kratos.h
 		}
 	}
-	
-	function showKratosHitBox() {
-		const hitbox = kratosHitbox();
-
-		ctx.save();
-		ctx.globalAlpha = 0.35;
-		ctx.strokeStyle = "cyan";
-		ctx.strokeRect(hitbox.x, hitbox.y, hitbox.w, hitbox.h);
-		ctx.restore();
-	}
-	function showKratosAttackRange(attackPos) {
-		let attackRange = weapon.lR;
-		if (g.kratos.hAttacking) attackRange = weapon.hR
-		ctx.strokeStyle = "red";
-		ctx.beginPath();
-		ctx.moveTo(attackPos, g.kratos.y);
-		ctx.lineTo(
-			attackPos + (g.kratos.facing === "right" ? attackRange : -attackRange),
-			g.kratos.y
-		);
-		ctx.stroke();
-	}
 
 	function updateKratos() {
 		if (g.kratos.health <= 0) {
 			// Physics will still apply
 			if (sButtonPrompt.active) sButtonPrompt.active = false;
-			//if (g.kratos.petrified) g.audio.stoneBroke.play();
 			physics();
 			return
 		} 
@@ -1329,7 +1287,6 @@ export function battle(g) {
 		if (now - enemy.lastLightning < enemy.lightningCooldown) return;
 
 		enemy.lastLightning = now;
-		//enemy.state = "shoot"; ---- Not needed until I add a sprite of him shooting
 
 		spawnZeusLightning();
 	}
@@ -1374,10 +1331,10 @@ export function battle(g) {
 
 		const dir = enemy.facing === "right" ?  1 : -1;
 		const startX = enemy.x + enemy.w / 2 + 40 * dir;
-		const startY =  enemy.y - 80; // enemy.y + enemy.h / 2
+		const startY =  enemy.y - 80;
 
 		const targetX = g.kratos.x + g.kratos.w / 2;
-		const targetY = g.kratos.y - 70; // g.kratos.y + g.kratos.h / 2
+		const targetY = g.kratos.y - 70;
 
 		const dx = targetX - startX;
 		const dy = targetY - startY;
@@ -1476,23 +1433,6 @@ export function battle(g) {
 		enemy.stunEnd = Date.now() + 450;
 	}
 
-	// For debugging or checking things
-	function showEnemyXpos() {
-		ctx.strokeStyle = "yellow";
-		ctx.beginPath();
-		ctx.moveTo(enemy.x, enemy.y);
-		ctx.lineTo(enemy.x, enemy.y - enemy.h);
-		ctx.stroke();
-	}
-	function showEnemyMidX() {
-		const enemyMidX = enemy.x + g.eW / 2;
-		ctx.strokeStyle = "orange";
-		ctx.beginPath();
-		ctx.moveTo(enemyMidX, enemy.y);
-		ctx.lineTo(enemyMidX, enemy.y - enemy.h);
-		ctx.stroke();
-	}
-
 	const enemyHitbox = () => {
 		return {
 			x: enemy.facing === "left" ? (enemy.x - g.eW / 4) + (g.eW / 2) : enemy.x + g.eW / 4,
@@ -1502,33 +1442,13 @@ export function battle(g) {
 		}
 	}
 
-	function showEnemyHitBox () {
-		const hitbox = enemyHitbox();
-
-		ctx.save();
-		ctx.globalAlpha = 0.35;
-		ctx.strokeStyle = "cyan";
-		ctx.strokeRect(hitbox.x, hitbox.y, hitbox.w, hitbox.h);
-		ctx.restore();
-	}
-	function showEnemyAttackRange(attackPos) {
-		const attackRange = enemy.decision === "lAttack" ? enemy.lR : enemy.hR;
-		ctx.strokeStyle = "red";
-		ctx.beginPath();
-		ctx.moveTo(attackPos, enemy.y);
-		ctx.lineTo(attackPos + (enemy.facing === "right" ? attackRange : -attackRange), enemy.y);
-		ctx.stroke();
-	}
-
 	let halved = false;
 
 	function updateEnemy() {
 		// Handle death
 		if (enemy.health === 0 && !defeated) {
 			defeated = true;
-			spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, "red", redOrbs);
-			spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, "green", greenOrbs);
-
+			enemy.orbs.forEach(orbs => spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, orbs.type, orbs.amount))
 			setTimeout(victory(g), 2500)
 			return;
 		}
@@ -1547,7 +1467,7 @@ export function battle(g) {
 
 		if (!halved && g.currentEnemy > 6 && enemy.health <= g.eHealth / 2) {
 			halved = true;
-			spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, "green", Math.round(greenOrbs / 2));
+			spawnOrbs(enemy.x + enemy.w / 2, enemy.y - 28, "green", Math.round(enemy.orbs[0].amount / 2));
 		}
 
 		const enemyXpos = enemy.x + g.eW / 2;
@@ -1854,7 +1774,7 @@ export function battle(g) {
 			enemy.attackSound[0].cloneNode().play();
 			enemy.hasHit = true;
 			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
-			let knockback = 5 + g.currentEnemy + g.currentEnemy;
+			let knockback = enemy.lK;
 			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 3 + g.currentEnemy
 			if (g.kratos.dodging || attackDis > enemy.lR || !inFront) {
 				return
@@ -1892,7 +1812,7 @@ export function battle(g) {
 			enemy.hasHit = true;
 			const inFront = enemy.facing === "left" ? kratosXpos < enemyXpos : kratosXpos > enemyXpos
 			let damage = enemy.hD;
-			let knockback = 8 + g.currentEnemy + g.currentEnemy;
+			let knockback = enemy.hK;
 			if (g.currentEnemy === 1 || g.currentEnemy === 3 || g.currentEnemy === 5 || g.currentEnemy === 8) knockback = 5 + g.currentEnemy
 			
 			if (g.kratos.dodging || attackDis > enemy.hR || !inFront) return
@@ -2254,24 +2174,6 @@ export function battle(g) {
 	// ====== Orbs ======
 	
 	const orbs = [];
-	let redOrbs = 4 + g.currentEnemy * 2;
-	if (enemy.name === "Gorgon") redOrbs += 2;
-	if (enemy.name === "Minotaur") redOrbs += 2;
-	if (enemy.name === "Medusa") redOrbs += 4;
-	if (enemy.name === "Cyclops") redOrbs += 7;
-	if (enemy.name === "Hades") redOrbs += 11;
-	if (enemy.name === "Hermes") redOrbs += 17;
-	if (enemy.name === "Hercules") redOrbs += 22;
-	if (enemy.name === "Zeus") redOrbs += 29;
-	let greenOrbs = 5 + g.currentEnemy * 2;
-	if (enemy.name === "Gorgon") greenOrbs += 2;
-	if (enemy.name === "Minotaur") greenOrbs += 2;
-	if (enemy.name === "Medusa") greenOrbs += 4;
-	if (enemy.name === "Cyclops") greenOrbs += 7;
-	if (enemy.name === "Hades") greenOrbs += 11;
-	if (enemy.name === "Hermes") greenOrbs += 17;
-	if (enemy.name === "Hercules") greenOrbs += 22;
-	if (enemy.name === "Zeus") greenOrbs += 29;
 
 	function spawnOrbs(x, y, type, count) {
 		for (let i = 0; i < count; i++) {

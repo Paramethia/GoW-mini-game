@@ -357,7 +357,7 @@ export default function loader(g, loadE, scene) {
 
     function preloadImages(srcs = []) {
         const progress = document.getElementById('progress');
-        if (srcs.length > 100) console.log("Downloading battle images in the background...");
+        if (srcs.length === battleAssets.length) console.log("Downloading battle images in the background...");
         let loaded = 0;
 
         return new Promise(resolve => {
@@ -369,13 +369,15 @@ export default function loader(g, loadE, scene) {
                 img.onload = img.onerror = async () => {
                     await img.decode();
                     loaded++;
-                    srcs.length <= 100 ? progress.innerText = `${Math.round(loaded / srcs.length * 100)}%` : console.log(`Download progress: ${Math.round(loaded / srcs.length * 100)}$`);
+                    srcs.length === UIassets.length ? progress.innerText = `${Math.round(loaded / srcs.length * 100)}%` : console.log(`Download progress: ${Math.round(loaded / srcs.length * 100)}$`);
 
                     if (loaded === srcs.length) resolve();
                 };
                 img.src = src;
 
-                bAssets.set(src, img);
+                if (srcs.length === battleAssets.length) {
+                    bAssets.set(src, img)
+                } else { g.loaded = true }
             });
         });
     }
