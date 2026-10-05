@@ -14,8 +14,8 @@ export const stats = (g) => {
 export const enemyStats = (g) => {
     return `
 		<div class="Enemy-stats">
-			<span class="stat"><strong><span id="Enemy-name">${g.enemies[g.currentEnemy].name}</span></strong></span>
-			<div class="Ehealth-bar" style="width:${g.enemies[g.currentEnemy].health}px">
+			<span class="stat"><strong><span id="Enemy-name">${!g.freePlay ? g.currentBattle.enemies[0].name : g.currentEnemy.name}</span></strong></span>
+			<div class="Ehealth-bar" style="width:${!g.freePlay ? g.currentBattle.enemies[0].health : g.currentEnemy.health}px">
 				<div class="Efiller"></div>
 			</div>
 		</div>

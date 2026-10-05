@@ -13,9 +13,10 @@ body {
 	--hover: url("./Imagery/UI/Hand_hover.png");
 	--main-menu-img: url("./Imagery/UI/Opening menu image.png");
 	--sparta-img: url("./Imagery/UI/Sparta.png");
-	--Smithy-img: url("./Imagery/UI/In smithy.png");
+	--smithy-img: url("./Imagery/UI/In smithy.png");
+	--athens-img: url("./Imagery/UI/AT athens.png");
 	--underworld-img: url("./Imagery/UI/In underworld.png");
-	--olympus-img: url("./Imagery/UI/Olympus background.png");
+	--olympus-img: url("./Imagery/UI/AT Olympus.png");
 	--boc-cur: url("./Imagery/UI/boc-cursor.png");
 }
 
@@ -66,8 +67,12 @@ body {
 	padding: 4cm;
 	text-align: center;
 	color: #852c25; 
+	cursor: var(--hover), pointer
 }
-.Game h1:hover { cursor: var(--hover), pointer }
+.Game h1:hover { 
+	border: 4px inset #ffc71d;
+	color: #c56d13;
+}
 
 /* --- Loading screen styling --- */
 
@@ -112,7 +117,7 @@ body {
 
 /* --- Main menu styling --- */
 
-.Main-menu {
+#Main-menu {
 	width: 880px;
 	height: 520px;
 	border-radius: 12px;
@@ -120,7 +125,7 @@ body {
 	padding: 12px;
 }
 
-.Main-menu, .Sparta, .Underworld, .Underworld-battle, .Olympus, .Olympus-battle { cursor: var(--hover), pointer }
+#Main-menu, #Sparta, #Smithy, #Athens, #Underworld, #Olympus, #Battle { cursor: var(--hover), pointer }
 
 .Mm-buttons {
 	max-width: 240px;
@@ -153,19 +158,13 @@ body {
 	color: white;
 }
 
-.Mid {
-	position: relative;
-	width: 85%;
-	min-height: 400px;
-}
-
 #Load-gameB { filter: brightness(70%) }
 
 	/* Options styling */
 
 .Options {
 	display: none;
-	width: 380px;
+	width: 450px;
 	max-height: 400px;
 	background: linear-gradient(rgba(204, 146, 41, 0.8), rgba(70, 52, 40, 0.8), rgba(26, 8, 3, 0.8), rgba(73, 39, 7, 0.8));
 	border-radius: 15px;
@@ -173,11 +172,10 @@ body {
 	padding-bottom: 20px;
 	z-index: 2;
 	position: relative;
-	left: 11cm;
+	left: 5cm;
 	bottom: 25px;
 	font-size: 17px;
 }
-.Options center { margin-top: 40px }
 .Options button {
 	width: 55px;
 	height: 32px;
@@ -192,20 +190,41 @@ body {
 	transition: 0.2s;
 	background-color: #cc9229;
 }
-.Options h3 {
+#audio-o { margin-top: 40px }
+.o-buttons {
+	width: 80%;
 	background: #482708;
+	padding: 8px;
+	border: 2px inset #cc9229;
+	border-radius: 5px;
+	color: white;
+	cursor: var(--pressing), pointer;
+}
+.o-buttons:hover { border: 2px outset #cc9229 }
+
+.Options #Audio, .Options #Controls, .Options #Advanced { 
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
+}
+.Options #Audio center { width: 40% }
+#Audio > :first-child h3 { background-color: rgba(58, 22, 4, 0.8) }
+#Audio h3 {
+	background: rgba(72, 39, 8, 0.6);
 	width: 75%;
+	margin-top: 0;
 	padding: 8px;
 	border-radius: 5px;
 	color: white;
 	font-weight: 100;
 }
-.Options p {
+#Audio p {
 	margin-top: 3px;
 	color: lightgray;
 }
 
-.Options input {
+#Audio input {
 	-webkit-appearance: none;
 	appearance: none;
     width: 150px;
@@ -214,27 +233,23 @@ body {
     outline: none;
     border-radius: 16px;
 }
-
-.Options input::-webkit-slider-runnable-track {
+#Audio input::-webkit-slider-runnable-track {
 	height: 20px;
 	background: #8a6636;
 	border-radius: 16px;
 }
-
-.Options input::-moz-range-track {
+#Audio input::-moz-range-track {
 	height: 17px;
 	border-radius: 16px;
 }
-
-.Options input::-moz-range-thumb {
+#Audio input::-moz-range-thumb {
 	height: 17px;
 	width: 17px;
 	margin-top: 1px;
 	background-color: #463428;
 	border-radius: 50%;
 }
-
-.Options input::-webkit-slider-thumb {
+#Audio input::-webkit-slider-thumb {
 	-webkit-appearance: none;
 	height: 17px;
 	width: 17px;
@@ -244,13 +259,38 @@ body {
 	border: 2px solid #463428;
 }
 
-#music-volume, #ambience-volume, #sfx-volume { color: #cc9229 }
+#Audio #all-vol-slider::-webkit-slider-thumb { 
+	border: 2px solid #cc9229;
+	background-color: rgb(40, 17, 4); 
+}
+
+#Audio p span { color: #cc9229 }
+
+#Advanced { gap: 15px }
+#Advanced .toggle, #Advanved #link, #Advanced #link{
+	width: 60%;
+	background-color: rgba(26, 8, 3, 0.8);
+	border-top: 1px solid #d8c8a8;
+	border-bottom: 1px solid #d8c8a8;
+	padding: 7px;
+	text-align: center;
+	color: #d8c8a8;
+}
+
+#Advanced .toggle:hover, #Advanced #link:hover {
+	border-radius: 5px;
+	corner-shape: bevel;
+	font-style: italic;
+}
+#Advanced #link {
+	text-decoration: underline red;
+}
 
 /* --- Game styling --- */
 
 #Kratos { position: absolute }
 
-.Sparta, .Smithy, .Underworld, .Olympus, .Underworld-battle, .Olympus-battle {
+#Sparta, #Smithy, #Athens, #Underworld, #Olympus, #Battle {
 	width: 1000px;
 	position: relative;
 	border-radius: 12px;
@@ -315,7 +355,7 @@ body {
 	text-align: center;
 }
 
-#Hbar-set, #Music-set, #Ambience-set, #Controls-set {
+#Dev-set, #Music-set, #Ambience-set, #Controls-set {
 	background: #5a2828;
 	padding: 8px;
 	border-radius: 4px;
@@ -323,7 +363,7 @@ body {
 	color: #a88868;
 }
 
-#Hbar-set:hover, #Music-set:hover, #Ambience-set:hover, #Controls-set:hover {
+#Dev-set:hover, #Music-set:hover, #Ambience-set:hover, #Controls-set:hover {
 	cursor: var(--pressing), pointer;
 	background: #490808;
 	transition: 0.25s ease;
@@ -331,7 +371,7 @@ body {
 
 .Music-con, .Ambience-con {
 	display: none;
-	margin-top: 15px;                   
+	margin-top: 15px;   /* #c6bebb */                       
 	padding: 12px;
 	justify-content: space-evenly;
 	align-items: center;
@@ -434,18 +474,24 @@ body {
 	background-color:#cc9229;
 }
 
-/* --- Sparta styling --- */
+/* ---Sparta styling --- */
 
-.Sparta { background-image: var(--sparta-img) }
+#Sparta { background-image: var(--sparta-img) }
 
-.Sparta .Mid { height: 440px }
+#Mid {
+	position: relative;
+	width: 85%;
+	min-height: 400px;
+}
 
-.Sparta #Kratos {
+#Sparta #Mid { height: 440px }
+
+#Sparta #Kratos {
 	bottom: 0;
 	right: 42%;
 }
 
-.Sparta .Places { 
+#Sparta #Places { 
     position: absolute;
     top: 4.7cm;
     right: 2cm;
@@ -454,7 +500,7 @@ body {
 	margin-left: 50px;
 }
 
-.Sparta .Places button {
+#Sparta #Places button {
     height: 45px;
 	width: 5.8cm;
     background-color: #0a0a23;
@@ -467,32 +513,32 @@ body {
 	font-family: GodOfWar;
     animation: rotateX linear .8s;
 }
-.Sparta .Places button:hover { cursor: var(--pressing, pointer) }
+#Sparta #Places button:hover { cursor: var(--pressing, pointer) }
 
-/* --- Smithy styling --- */
+/* ---Smithy styling --- */
 
-.Smithy { background-image: var(--Smithy-img) }
+#Smithy { width: 1200px }
 
-.Smithy .Mid { height: 550px }
+#Smithy { background-image: var(--smithy-img) }
 
-.Smithy .Mid img { 
+#Smithy #Mid { height: 550px }
+
+#Smithy #Mid img { 
 	position: absolute;
 	cursor: var(--hover), pointer;
 	animation: appear 1.2s linear;
 	transition: 0.4s ease;
 }
 
-.Smithy .Mid #Kratos {
-	display: none;
-	height: 280px;
-	width: 184px;
+#Smithy #Mid #Kratos {
+	z-index: 2;
 	animation: none;
 }
 
-.Smithy .Mid button {
+#Smithy #Mid button {
 	position: absolute;
-	top: 4cm;
-	left: 5.8cm;
+	top: 3.7cm;
+	left: 11cm;
 	background-color: #9e5c08;
     border: none;
     padding-bottom: 2px;
@@ -504,7 +550,7 @@ body {
 	font-family: GodOfWar;
 	animation: grow 2s linear;
 }
-.Smithy .Mid button:hover {
+#Smithy #Mid button:hover {
 	cursor: var(--pressing), pointer;
 	transition: all 0.4s ease 0s;
 	background-color: #564328;
@@ -513,70 +559,30 @@ body {
 
 	/* Weapon positioning */
 
+#Arms-of-Sparta {
+	height: 320px;
+	width: 175px;
+	bottom: 0.4cm;
+	left: 1.5cm;
+	margin: 0;
+}
+
 #Nemesis-whip {
-	bottom: 5cm;
-	right: -1cm;
+	bottom: 3.2cm;
+	right: 8.5cm;
 	height: 75px;
 	width: 202px;
 	margin: 0;
-}
-#Nemesis-whip:hover { 
-	transform: rotateZ(22deg);
+	transform: rotateX(55deg);
 	transition: 0.4s;
 }
 
-#Claws-of-Hades {
-	bottom: 1.4cm;
-	right: 2.5cm;
-	height: 75px;
-	width: 170px;
-	margin: 0;
-	transform: rotateX(417deg)
-}
-#Claws-of-Hades:hover {
-	transform: rotateX(360deg) rotateZ(30deg);
-	bottom: 2.4cm;
-	transition: 0.4s ease;
-}
-
 #Gauntlet-of-Zeus {
-	bottom: 1.4cm;
-	left: 0.5cm;
+	top: 1.4cm;
+	right: 1.7cm;
 	height: 170px;
 	width: 97px;
 	margin: 0;
-	transform: rotateZ(435deg) rotateY(300deg)
-}
-#Gauntlet-of-Zeus:hover {
-	transform: rotateZ(400deg) rotateY(360deg);
-	transition: 0.4s ease;
-}
-
-#Nemean-cestus { 
-	top: 4.5cm;
-	left: -1.2cm;
-	height: 95px;
-	width: 190px ;
-	margin: 0;
-	transform: rotateX(400deg) rotateZ(375deg)
-}
-#Nemean-cestus:hover {
-	transform: rotateX(360deg) rotateZ(360deg);
-	transition: 0.4s ease;
-}
-
-#Blade-of-Olympus {
-	height: 55px;
-	width: 195px;
-	bottom: 4.7cm;
-	right: 10.2cm;
-	margin: 0;
-	transform: rotateX(412deg) rotateZ(345deg);
-}
-#Blade-of-Olympus:hover {
-	transform: rotateX(360deg) rotateZ(360deg);
-	bottom: 4.5cm;
-	transition: 0.4s ease;
 }
 
 	/* Weapon or item info stying */
@@ -601,35 +607,27 @@ body {
 	border: 1px dashed #E50110;
 }
 #dialogue {
-	top: 3.5cm;
-	right: 3cm;
+	top: 5.5cm;
+	right: 7.8cm;
 	animation: appear 0.8s linear;
 }
 #weapon-1-info { 
-	bottom: 5.5cm;
-	right: 3.8cm;
+	bottom: 3.5cm;
+	right: 5.8cm;
 }
 #weapon-2-info { 
-	bottom: 3.2cm;
-	right: 6.7cm;
+	bottom: 6cm;
+	left: 4.4cm;
 }
 #weapon-3-info { 
-	bottom: 3.2cm;
-	left: 3.8cm;
-}
-#weapon-4-info {
-	top: 5.4cm;
-	left: 3cm;
-}
-#weapon-5-info { 
-	bottom: 6.2cm; 
-	left: 7.5cm;
+	top: 2cm;
+	right: 4.5cm;
 }
 
 .Item-info {
 	display: block;
 }
-.Item-info img{
+.Item-info img {
 	margin-top: 4px;
 	color: rgb(250, 250, 250);
 }
@@ -640,51 +638,45 @@ body {
 	color: rgb(225, 175, 175);
 }
 
-/* --- Underworld styling --- */
+/* Athens stying --- */
 
-.Underworld { background-image: var(--underworld-img) }
-
-.Underworld .Stats { z-index: 0 }
-
-.Underworld center { margin-top: 2cm }
-
-.Underworld center #Text { height: auto }
-
-.Underworld .Enemy-desc { 
+#Athens { background-image: var(--athens-img) }
+.place .Stats { z-index: 0 }
+.place center { margin-top: 2cm }
+.place center #Text { height: auto }
+.place #Enemy-desc { 
+	transform: translateY(1cm);
 	position: relative;
 	max-width: 580px;
 	height: 465px;
-	transform: translateY(1cm);
-	border: 5px outset rgb(24, 23, 18);
-	background-color: rgb(80, 16, 3, 0.2); 
 	z-index: 1;
+	background-color: rgb(80, 16, 3, 0.2); 
 } 
-
-.Underworld .Enemy-desc img { 
+#Athens #Enemy-desc { border: 5px outset rgba(79, 63, 44) }
+.place #Enemy-desc img { 
 	margin: 11px auto;
 	max-height: 280px;
 }
-
-.Underworld .Enemy-desc button { 
+.place #Enemy-desc button {
 	display: block;
-	background-color: #9e5c08;
-    border: none;
-    padding-bottom: 2px;
-	margin-bottom: 5px;
 	height: 35px;
 	width: 4.5cm;
+	margin-bottom: 5px;
+	border: none;
 	border-radius: 10px;
-    color: #0a0a23;
+    padding-bottom: 2px;
 	font-size: 20px;
 	font-family: GodOfWar;
+	color: #0a0a23;
 	animation: grow linear 2s;
 }
-.Underworld .Enemy-desc button:hover {
+#Athens #Enemy-desc button { background-color: rgb(80, 16, 3); color: rgba(231, 216, 187); }
+.place #Enemy-desc button:hover {
 	cursor: var(--pressing), pointer;
 	transition: all 0.4s ease 0s;
-	background-color: #7c3a06;
 	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
 }
+
 #prev, #next { 
 	position: absolute;
 	bottom: 45%;
@@ -696,80 +688,39 @@ body {
 	color: rgb(126, 91, 23);
 	cursor: var(--pressing), pointer;
 }
-#prev:hover, #next:Hover { background-color: rgba(80, 16, 3, 0.7) }
-
 #prev {
 	left: -1.5cm;
 	transform: rotate(-90deg);
 }
-
 #next {
 	right: -1.5cm;
 	transform: rotate(90deg);
 }
+#prev:hover, #next:hover { background-color: rgba(80, 16, 3, 0.7) }
 
-.Underworld .Hotbar { margin-top: 0 }
+.place .Hotbar { margin-top: 0 }
 
-	/* Battle area styling */
+/* --- Underworld styling --- */
 
-.Underworld-battle { background-image: url("./Imagery/battle/Underworld battle area.png") }
-
-#FPS { color: lightgray }
+#Underworld { background-image: var(--underworld-img) }
+#Underworld #Enemy-desc { border: 5px outset rgb(24, 23, 18) }
+#Underworld #Enemy-desc button { background-color: #9e5c08 }
+#Underworld #Enemy-desc button:hover { background-color: #7c3a06 }
 
 /* --- Olympus styling --- */
 
-.Olympus { background-image: var(--olympus-img) }
-
-.Olympus .Stats { z-index: 0 }
-
-.Olympus center { margin-top: 2cm }
-
-.Olympus center #Text { 
-	height: auto;
-	background-color: #262717;
-}
-
-.Olympus .Enemy-desc { 
-	position: relative;
-	max-width: 580px;
-	height: 465px;
+#Olympus { background-image: var(--olympus-img) }
+#Olympus center #Text { background-color: #262717 }
+#Olympus #Enemy-desc { 
 	transform: translateY(1.2cm);
 	border: 5px outset rgb(80, 16, 3);
 	background-color: rgb(80, 16, 3, 0.2);
-	z-index: 1;
 } 
-
-.Olympus .Enemy-desc img { 
-	margin: 11px auto;
-	max-height: 280px;
-}
-
-.Olympus .Enemy-desc button { 
-	display: block;
+#Olympus #Enemy-desc button { 
 	background-color: #bf8008;
     border: 1px solid #0a0a23;
-    padding-bottom: 2px;
-	margin-bottom: 5px;
-	height: 35px;
-	width: 4.5cm;
-	border-radius: 10px;
-    color: #0a0a23;
-	font-size: 20px;
-	font-family: GodOfWar;
-	animation: grow linear 2s;
 }
-.Olympus .Enemy-desc button:hover {
-	cursor: var(--pressing), pointer;
-	transition: all 0.4s ease 0s;
-	background-color: #adaaa5;
-	box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
-}
-
-.Olympus .Hotbar { margin-top: 0 }
-
-/* Battle area styling */
-
-.Olympus-battle { background-image: url("./Imagery/battle/Olympus battle area.png") }
+#Olympus #Enemy-desc button:hover { background-color: #adaaa5 }
 
 	/* Enemy info styling */
 
@@ -783,7 +734,7 @@ body {
 	background-color: rgba(80, 16, 3, 0.4);
 	text-align: center;
 	font-size: 20px;
-	color: lightgray;
+	color: lightgray; /* #9f7c27 */
 	animation: slide .8s linear;
 }
 
@@ -795,6 +746,7 @@ body {
 	z-index: 2;
 	border-radius: 5px;
 	background-color: #501003;
+	/* font-weight: 800; */
 	color: #9f7c27;
 	cursor: var(--pressing), pointer;
 }
@@ -815,7 +767,7 @@ body {
 	margin: 4px 0;
 	color: lightgray;
 }
-#More-info p, #enemy-damage, #enemy-speed, #enemy-stun { 
+#More-info p, #enemy-damage, #enemy-speed, #enemy-stun {
 	font-size: 15px;
 	color: #9c9a95;
 }
@@ -881,7 +833,7 @@ body {
 .Enemy-stats {
 	position: absolute;
 	top: 6.2cm;
-	right: 7.8cm;
+	right: 9.9cm;
 	z-index: 2;
 	border-radius: 12px;
 	width: 400px;
@@ -926,9 +878,7 @@ body {
 	pointer-events: none;
 }
 
-.Efiller {
-	background: #7c6611;
-}
+.Efiller { background: #7c6611 }
 
 /* --- Description text styling --- */
 
@@ -956,7 +906,9 @@ body {
 
 /* --- Battle styling --- */
 
-.Underworld-battle center #Text, .Olympus-battle center #Text { 
+#Battle { width: 1200px }
+
+#Battle center #Text { 
 	height: auto;
 	margin-top: 2cm;
 }
@@ -966,19 +918,19 @@ canvas {
 	height: 480px;
 }
 
+#FPS { color: lightgray }
+
 #You-dead { 
-	height: 445px;
-	width: 1000px;
+	height: 450px;
+	width: 1200px;
 	position: absolute;
-	bottom: 1.9cm;
+	bottom: 2.2cm;
 	opacity: 0.5;
 }
 
-.Underworld-battle center button, .Olympus-battle center button, #You-dead { display: none }
-
 /* Buttons styling */
 
-.Mm-buttons button, .Underworld-battle center button, .Olympus-battle center button {
+.Mm-buttons button, #Battle center button {
 	background-color: #4b3f33;
     border: none;
     padding-bottom: 2px;
@@ -1005,9 +957,10 @@ canvas {
 	margin: 0 auto;
 }
 .Buttons { display: block; margin-bottom: 15px }
-.Sparta center i { margin-left: 5px }
+#Sparta center i { margin-left: 5px }
+#Battle center button { margin-top: 15px }
 
-.Mm-buttons button:hover, .Underworld-battle center button:hover, .Olympus-battle center button:hover {
+.Mm-buttons button:hover, #Battle center button:hover {
 	cursor: var(--pressing), pointer;
 	transition: all 0.3s ease 0s;
 	background-color: darkgrey;
@@ -1025,7 +978,7 @@ canvas {
 }
 
 #Slot1, #Slot2, #Slot3, #Slot4, #Slot5, #Slot6 {
-	position: relative;;
+	position: relative;
 	display: inline-block;
 	margin: 0 auto;
 	width: 55px;
@@ -1035,29 +988,11 @@ canvas {
 	background-size: cover;
 }
 
-#Slot1 { border: 4px ridge #5a3910 }
-
 #Slot1:hover, #Slot2:hover, #Slot3:hover, #Slot4:hover, #Slot5:hover, #Slot6:hover {
 	cursor: var(--pressing), pointer;
 }
 
-#Slot1 { background-image: url('./Imagery/UI/Blades-of-chaos.png') }
-
-#Slot2 {
-	background-position: center;
-}
-
-#Slot3:hover {
-	transition: all 0.3s ease 0s;
-	background-position: center;
-}
-
-#Slot5:hover {
-	transition: all 0.3s ease 0s;
-	background-position: center;
-}
-
-#slot-num {
+.slot-num {
 	position: absolute;
 	top: -8px;
 	right: 4px;
@@ -1096,7 +1031,7 @@ canvas {
 		background-position: 0 100%, 50% 0 , 100% 0
 	}
   	8%, 42% { 
-		background-position: 0  0   ,50% 0   ,100% 0
+		background-position: 0 0 ,50% 0 ,100% 0
 	}
   	50% { 
 		background-position: 0 0, 50% 100%, 100% 0

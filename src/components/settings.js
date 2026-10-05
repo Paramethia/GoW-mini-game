@@ -1,4 +1,5 @@
 import mainMenu from '../scenes/main-menu.js';
+import { music, ambience } from '../audio.js';
 
 export const settings = (g, show) => { 
     return `
@@ -14,7 +15,7 @@ export const settings = (g, show) => {
 		</div>
         <div class="Settings">
 			<div class="con">
-				<p id="Hbar-set"><i> Turn ${ g.hBarOn ? "off" : "on" } health bar </i></p>
+				<p id="Dev-set"><i> Turn ${g.devMode ? "off" : "on"} dev mode </i></p>
 				<p id="Music-set"><i> Music volume </i></p>
 				<div class="Music-con">
 					<i id="music-mutei" class="fa-solid fa-volume-xmark fa-xl"></i>
@@ -36,6 +37,7 @@ export const settings = (g, show) => {
 					<div class="controls"><span> E </span><font color="#f8f8e0">Light attack</font></div>
 					<div class="controls"><span> R </span><font color="#f8f8e0">Heavy attack</font></div>
 					<div class="controls"><span> Q </span><font color="#f8f8e0">Block</font></div>
+					<div class="controls"><span> F </span><font color="#d8c8a8">Enemy focus</font></div>
 					<div class="controls"><span> Space </span><font color="#f8f8e0">Jump</font></div>
 					<div class="controls"><span> Shift </span><font color="#f8f8e0">Dodge/dash</font></div>
 				</div>
@@ -54,7 +56,7 @@ export function settingsInit(g) {
 	const musicT = document.getElementById('music-t');
 	const settings = document.querySelector('.Settings');
 	const settingsT = document.getElementById('settings-t');
-	const healthBarSet = document.getElementById('Hbar-set');
+	const devModeSet = document.getElementById('Dev-set');
 	const musicSet = document.getElementById('Music-set');
 	const musicSetCon = document.querySelector('.Music-con');
 	const mVoldown = document.getElementById('music-lvi');
@@ -81,19 +83,19 @@ export function settingsInit(g) {
 	let conSetOn = false;
 	
 	function turnOnHealthbar() {
-		healthBarSet.innerText = "Turn off health bar";
+		devModeSet.innerText = "Turn on dev mode";
 		healthBar.style.display = 'inline-block';
 		healthText.style.display = 'none';
 		g.healthUpdate(healthBar, healthFiller);
 	}
 
 	function turnOffHealthbar() {
-		healthBarSet.innerText = "Turn on health bar";
+		devModeSet.innerText = "Turn off dev mode";
 		healthBar.style.display = 'none';
 		healthText.style.display = 'inline';
 	}
 	
-	if (g.hBarOn) { 
+	if (!g.devMode) {
 		turnOnHealthbar();
 	}
 
@@ -154,7 +156,7 @@ export function settingsInit(g) {
 			gear.style.color = '#a88868';
 			document.querySelector('.Settings').style.display = 'flex';
 		} else {
-			g.audio.return.cloneNode().play();
+			g.playCaudio(g.audio.return, g.uiVolume);
 			gear.style.color = '#704028';
 			document.querySelector('.Settings').style.display = 'none';
 		}
@@ -176,17 +178,17 @@ export function settingsInit(g) {
 	settings.onclick = () => { toggleSettings() }
 	document.querySelector(".con").onclick = (event) => event.stopPropagation()
 
-	healthBarSet.onclick = () => { 
-		switch(g.hBarOn) {
+	devModeSet.onclick = () => { 
+		switch(g.devMode) {
 			case false:
-				g.hBarOn = true;
-				localStorage.setItem('healthBarOn', g.hBarOn)
-				turnOnHealthbar();
+				g.devMode = true;
+				localStorage.setItem('devMode', g.devMode);
+				turnOffHealthbar();	
 			break;
 			case true:
-				g.hBarOn = false
-				localStorage.setItem('healthBarOn', g.hBarOn);
-				turnOffHealthbar();
+				g.devMode = false
+				localStorage.setItem('devMode', g.devMode);
+				turnOnHealthbar();
 			break;
 		}
 	}
@@ -236,23 +238,23 @@ export function settingsInit(g) {
 			g.musicVolume = Math.round(g.musicVolume / 10) * 10;
 			g.musicVolume += 10;
 			musicVolText.innerText = g.musicVolume;
-			[g.audio.mainTheme, g.audio.battleTheme, g.audio.battleTheme2, g.audio.battleTheme3, g.audio.cyclopsBattle, g.audio.hadesBattle, g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+			for (const song of Object.values(music)) song.volume = g.musicVolume / 100;
 			localStorage.setItem('musicVolume', g.musicVolume);
-	  }
+	  	}
 	}
 	mVoldown.onclick = () => {
 		if (g.musicVolume > 0) {
 			g.musicVolume = Math.round(g.musicVolume / 10) * 10;
 			g.musicVolume -= 10;
 			musicVolText.innerText = g.musicVolume;
-			[g.audio.mainTheme, g.audio.battleTheme, g.audio.battleTheme2, g.audio.battleTheme3, g.audio.cyclopsBattle, g.audio.hadesBattle, g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
+			for (const song of Object.values(music)) song.volume = g.musicVolume / 100
 			localStorage.setItem('musicVolume', g.musicVolume);
 		}
 	}
 	musicMute.onclick = () => {
-		[g.audio.mainTheme, g.audio.battleTheme, g.audio.battleTheme2, g.audio.battleTheme3, g.audio.cyclopsBattle, g.audio.hadesBattle, g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle].forEach((song) => song.volume = 0);
 		g.musicVolume = 0;
 		musicVolText.innerText = g.musicVolume;
+		for (const song of Object.values(music)) song.volume = 0;
 		localStorage.setItem('musicVolume', g.musicVolume);
 	}
 
@@ -261,23 +263,23 @@ export function settingsInit(g) {
 			g.ambienceVolume = Math.round(g.ambienceVolume / 10) * 10;
 			g.ambienceVolume += 10;
 			ambVolText.innerText = g.ambienceVolume;
-			[g.audio.underworldAm, g.audio.olympusAm].forEach((song) => { song.volume = g.ambienceVolume / 100 });
+			for (const audio of Object.values(ambience)) audio.volume = g.ambienceVolume / 100
 			localStorage.setItem('ambienceVolume', g.ambienceVolume);
-	  }
+	  	}
 	}
 	aVoldown.onclick = () => {
 		if (g.ambienceVolume > 0) {
 			g.ambienceVolume = Math.round(g.ambienceVolume / 10) * 10;
 			g.ambienceVolume -= 10;
 			ambVolText.innerText = g.ambienceVolume;
-			[g.audio.underworldAm, g.audio.olympusAm].forEach((song) => { song.volume = g.ambienceVolume / 100 });
+			for (const audio of Object.values(ambience)) audio.volume = g.ambienceVolume / 100
 			localStorage.setItem('ambienceVolume', g.ambienceVolume);
 		}
 	}
 	ambMute.onclick = () => {
 		g.ambienceVolume = 0;
 		ambVolText.innerText = g.ambienceVolume;
-		[g.audio.underworldAm, g.audio.olympusAm].forEach((song) => { song.volume = 0 });
+		for (const audio of Object.values(ambience)) audio.volume = 0
 		localStorage.setItem('ambienceVolume', g.ambienceVolume);
 	}
 	
@@ -305,7 +307,7 @@ export function settingsInit(g) {
 			g.stopAmbience();
 			g.title.style.display = 'block';
 			mainMenu(g);
-			g.inMainMenu = true;
+			g.inSparta = false;
 			g.set = false;
 			document.removeEventListener('keydown', g.mKey);
 			document.removeEventListener('keydown', g.cKey);

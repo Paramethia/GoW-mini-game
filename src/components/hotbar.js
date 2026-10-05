@@ -2,110 +2,162 @@ export const hotbar = `
 	<div class="Hotbar">
 		<center>
 			<div id="Weapon-identifier"></div>
-			<span id="Slot1"><p id="slot-num">1</p></span>
-			<span id="Slot2"><p id="slot-num">2</p></span>
-			<span id="Slot3"><p id="slot-num">3</p></span>
-			<span id="Slot4"><p id="slot-num">4</p></span>
-			<span id="Slot5"><p id="slot-num">5</p></span>
-			<span id="Slot6"><p id="slot-num">6</p></span>
+
+			${Array.from({ length: 6 }, (_, index) => `
+				<span id="Slot${index + 1}">
+					<p class="slot-num">${index + 1}</p>
+				</span>
+			`).join('')}
 		</center>
 	</div>
 `;
 
 export function hotbarInit(g) {
-	const slot1 = document.getElementById('Slot1');
-		if (g.currentWeapon !== 0) slot1.style.border = '1.8px solid #5a3910'
-	const slot2 = document.getElementById('Slot2');
-		if (g.kratos.inventory.includes(g.whip)) slot2.style.backgroundImage = `url('${g.whipSrc}')`
-		if (g.currentWeapon === 1) slot2.style.border = '3px ridge #5a3910'
-	const slot3 = document.getElementById('Slot3');
-		if (g.kratos.inventory.includes(g.claws)) slot3.style.backgroundImage = `url('${g.clawsSrc}')`
-		if (g.currentWeapon === 2) slot3.style.border = '3px ridge #5a3910'
-	const slot4 = document.getElementById('Slot4');
-		if (g.kratos.inventory.includes(g.gauntlet)) slot4.style.backgroundImage = `url('${g.gauntletSrc}')`
-		if (g.currentWeapon === 3) slot4.style.border = '3px ridge #5a3910'
-	const slot5 = document.getElementById('Slot5');
-		if (g.kratos.inventory.includes(g.cestus)) slot5.style.backgroundImage = `url('${g.cestusSrc}')`
-		if (g.currentWeapon === 4) slot5.style.border = '3px ridge #5a3910'
-	const slot6 = document.getElementById('Slot6');
-		if (g.kratos.inventory.includes(g.blade)) slot6.style.backgroundImage = `url('${g.bladeSrc}')`
-		if (g.currentWeapon === 5) slot6.style.border = '3px ridge #5a3910'
-	const identifier = document.getElementById('Weapon-identifier');
+	const inventory = g.kratos.inventory;
+    const maxSlots = 6;
 
-	const weaponsClaimed = [g.kratos.inventory.includes(g.blades), g.kratos.inventory.includes(g.whip), g.kratos.inventory.includes(g.claws), g.kratos.inventory.includes(g.gauntlet), g.kratos.inventory.includes(g.cestus), g.kratos.inventory.includes(g.blade)];
-	const sounds = [g.audio.bocSound, g.audio.nwSound, g.audio.cohSound, g.audio.gozSound, g.audio.ncSound, g.audio.swordThud];
-	const identifiers = [g.weapons[0].name, g.whip, g.claws, g.gauntlet, g.cestus, g.blade];
-	const lefts = ['7.5cm', '9.4cm', '11cm', '12.4cm', '13.7cm', '15.5cm'];
+    const slots = Array.from(
+        { length: maxSlots },
+        (_, index) => document.getElementById(`Slot${index + 1}`)
+    );
+
+    const kratos = document.getElementById('Kratos');
+    const dimentions = [
+        {which: "Default", width: 82, height: 142},
+        {which: "Arms", width: 130, height: 151},
+        {which: "whip", width: 114, height: 145},
+        {which: "Claws", width: 124, height: 142},
+        {which: "cestus", width: 100, height: 142},
+        {which: "Blade", width: 135, height: 142},
+    ]
+    function updateKratos(wIndex) {
+        if (!g.inSparta) return
+        let currentWeapon = g.kratos.inventory[wIndex];
+        if (!currentWeapon) {
+            console.warn("Current selected weapon index is not included in your inventory.  Resetting the index to the first...");
+            g.currentWeapon = 0;
+            localStorage.removeItem("currentWeapon");
+            currentWeapon = g.kratos.inventory[0];
+        }
+        if (!currentWeapon.name.includes("Blades")) {
+            const dimention = dimentions.find(d => currentWeapon.name.includes(d.which)) || dimentions[0];
+            kratos.style.width = `${dimention.width}px`;
+            kratos.style.height = `${dimention.height}px`;
+            kratos.src = `./Imagery/UI/Kratos standing animation (${currentWeapon.name}).gif`;
+        } else if (kratos) { 
+            kratos.style.width = `${dimentions[0].width}px`;
+            kratos.style.height = `${dimentions[0].height}px`;
+            kratos.src = "./Imagery/UI/Kratos standing animation.gif";
+        }
+    }
+    
+    updateKratos(g.currentWeapon);
+
+    const identifier = document.getElementById('Weapon-identifier');
+
+    // Reset/render slots
+    slots.forEach((slot, index) => {
+        slot.style.backgroundImage = '';
+        slot.style.border = '1.8px solid #5a3910';
+
+		const item = inventory[index];
+        if (!item) return;
+        const itemName = item.name.includes("Arms") ? item.name.replace("Arms", "Arm") : item.name;
+
+        slot.style.backgroundImage = `url('./Imagery/UI/${itemName}.png')`;
+
+        if (g.currentWeapon === index) {
+            slot.style.border = '3px ridge #5a3910';
+        }
+    });
 
 	if (g.hotbarKeys) document.removeEventListener('keydown', g.hotbarKeys)
 	
 	g.hotbarKeys = function(event) {
 		if (event.repeat) return;
 			
-		var keyIndex = parseInt(event.key) - 1; // Convert key to index (1 -> 0, 2 -> 1, etc.)
+		const keyIndex = parseInt(event.key) - 1;
 
-		if (keyIndex >= 0 && keyIndex < slots.length) { 
-			// Reset all borders
-			slots.forEach(slot => slot.style.border = '1.8px solid #5a3910');
+        if (keyIndex < 0 || keyIndex >= maxSlots) return;
 
-			// Highlight the selected slot
-			slots[keyIndex].style.border = '3px ridge #5a3910';
+        const item = inventory[keyIndex];
 
-			// Check if the weapon is in inventory
-			if (weaponsClaimed[keyIndex]) {
-				sounds[keyIndex].cloneNode().play();
-				identifier.style.display = 'inline';
-				identifier.innerText = identifiers[keyIndex];
-				identifier.style.top = '-35px';
-				identifier.style.left = lefts[keyIndex];
-				setTimeout(( ) => {
-					identifier.style.animation = 'disappear 0.7s linear forwards';
-					setTimeout(() => { 
-						identifier.style.display = 'none';
-						identifier.style.animation = 'none';
-					}, 420 );
-				}, 1100 );
-				// If it is, then update and save current weapon
-				if (g.currentWeapon !== keyIndex) {
-					g.currentWeapon = keyIndex;
-					localStorage.setItem('currentWeapon', g.currentWeapon);
-				}
-			}
-		}
+        // Empty slot
+        if (!item) return;
+
+        // Reset borders
+        slots.forEach(slot => {
+            slot.style.border = '1.8px solid #5a3910';
+        });
+
+        // Highlight selected slot
+        slots[keyIndex].style.border = '3px ridge #5a3910';
+
+        // Play item sound
+        g.playCaudio(item.sound, g.sfxVolume);
+
+        // Show identifier
+        identifier.style.display = 'inline';
+        identifier.innerText = item.name;
+        identifier.style.top = '-35px';
+
+        // Probably should improve this later
+        identifier.style.left = `${7.5 + (keyIndex * 1.6)}cm`;
+
+        setTimeout(() => {
+            identifier.style.animation = 'disappear 0.7s linear forwards';
+
+            setTimeout(() => {
+                identifier.style.display = 'none';
+                identifier.style.animation = 'none';
+            }, 420);
+        }, 1100);
+
+        // Change weapon
+        if (g.currentWeapon !== keyIndex) {
+            g.currentWeapon = keyIndex;
+            updateKratos(g.currentWeapon);
+            localStorage.setItem('currentWeapon', g.currentWeapon);
+        }
 	}
 	
 	document.addEventListener('keydown', g.hotbarKeys)
 
-	const slots = [slot1, slot2, slot3, slot4, slot5, slot6];
-
+	// Mouse interactions
 	slots.forEach((slot, index) => {
-		slot.onmouseover = () => {
-			if (g.currentWeapon !== index) slot.style.border = '3px ridge #5a3910';
-			if (weaponsClaimed[index]) identifier.style.display = 'inline';
-			identifier.innerText = identifiers[index];
-			identifier.style.top = '-35px';
-			identifier.style.left = lefts[index];
-		};
+		const item = inventory[index];
 
-		slot.onmouseout = () => {
-			if (g.currentWeapon !== index) slot.style.border = '1.8px solid #5a3910'
-			identifier.style.display = 'none';
-		};
+        if (!item) return;
 
-		slot.onclick = () => {
-			if (weaponsClaimed[index]) {
-				sounds[index].play();
-				if (g.currentWeapon !== index) {
-					g.currentWeapon = index;
-					localStorage.setItem('currentWeapon', g.currentWeapon);
+        slot.onmouseover = () => {
+            if (g.currentWeapon !== index) {
+                slot.style.border = '3px ridge #5a3910';
+            }
 
-					// Reset all slot borders
-					slots.forEach(s => s.style.border = '1.8px solid #5a3910');
-					
-					// Highlight the selected slot
-					slot.style.border = '3px ridge #5a3910';
-				}
-			}
-		};
+            identifier.style.display = 'inline';
+            identifier.innerText = item.name;
+            identifier.style.top = '-35px';
+            identifier.style.left = `${7.5 + (index * 1.6)}cm`;
+        };
+
+        slot.onmouseout = () => {
+            if (g.currentWeapon !== index) {
+                slot.style.border = '1.8px solid #5a3910';
+            }
+
+            identifier.style.display = 'none';
+        };
+
+        slot.onclick = () => {
+            g.playCaudio(item.sound, g.sfxVolume);
+
+            if (g.currentWeapon !== index) {
+                g.currentWeapon = index;
+                localStorage.setItem('currentWeapon', g.currentWeapon);
+                slots.forEach(s => s.style.border = '1.8px solid #5a3910');
+                slot.style.border = '3px ridge #5a3910';
+                updateKratos(g.currentWeapon);
+            }
+        };
 	});
 }
