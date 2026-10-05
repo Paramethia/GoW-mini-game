@@ -465,7 +465,13 @@ export default function enginize(g, config) {
 
 		if (g.kratos.dodging) {
 			speed *= dodgeSpeedMultiplier;
-			if (Date.now() > g.kratos.dodgeEnd) g.kratos.dodging = false
+			if (Date.now() > g.kratos.dodgeEnd) { 
+				g.kratos.dodging = false;
+				g.keys["d"] = false;
+				g.keys["D"] = false;
+				g.keys["a"] = false;
+				g.keys["A"] = false;
+			}
 		}
 
 		// Banshee scream OR Gorgon/Medusa petrification OR Hades abilities cancel
@@ -801,7 +807,7 @@ export default function enginize(g, config) {
 		if (g.keys["q"] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.held && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
 
         // Dodge
-        if (g.keys["Shift"] && g.kratos.velX && !g.kratos.dodging && !g.kratos.blocking && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) {
+        if (g.keys["Shift"] && !g.kratos.dodging && !g.kratos.blocking && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) {
             g.audio.evadeSound.play();
 			g.kratos.dodging = true;
 			g.kratos.dodgeEnd = Date.now() + dodgeDuration;
