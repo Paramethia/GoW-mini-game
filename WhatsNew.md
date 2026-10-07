@@ -1,4 +1,4 @@
-# God of War mini game
+# God of War Mini Game
 
 #### <center><i>Alpha v1.7<i></center>
 
@@ -9,7 +9,7 @@
 - Kratos will now automatically update with each weapon he holds in Sparta.
 - Removed enemy health bars for some battles.
 - Changed some weapon stats & prices to make them more balanced.
-- Reduced enemy stats to make some battles more balanced.
+- Nerfed some enemies to make some battles more balanced.
 - Battle area container width increased by 200 pixels.
 - Kratos will now have increased speed after defeating Hermes.
 - Each of Kratos' weapons will now light up according to which weapon is attacking, instead of all of them lighting up whenever any weapon attacks (only applicable to lightable weapons, of course).
@@ -78,6 +78,16 @@ There will now be gold orbs that you will collect after defeating specific enemi
 Collect gold orbs -> increase max health
 
 ⚠️ Gold orbs are NOT grindable. You can only ever get them ONCE from certain enemies. You can increase your max health from progression only.
+
+### Weapons claiming change
+
+In alpha 1.6 and less, you could only get weapons from the smithy/shop. Which was kinda stupid. Now you will need to get specific weapons from specific bosses/gods.
+
+Claws of _Hades_ from Hades
+Nemean cestus from Hercules
+Blade of Olympus from Zeus
+
+Other weapons can get bought with red orbs from the smithy.
 
 ### New Smithy design
 

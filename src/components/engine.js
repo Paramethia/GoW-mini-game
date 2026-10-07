@@ -596,7 +596,7 @@ export default function enginize(g, config) {
 		const attackDis = Math.abs(Math.round(kratosAttackX - enemyAttackableXpos));
 
 		// Attack with e (light attacks)
-		if (g.keys["e"] && Date.now() - g.kratos.lastLattack > weapon.lC && (!currentBattle?.complete || !g.currentEnemy.defeated) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.hAttacking) {
+		if (g.keys["e"] && Date.now() - g.kratos.lastLattack > weapon.lC && (!currentBattle?.complete || !g.currentEnemy?.defeated) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.hAttacking) {
 			const now = Date.now();
 
 			if (g.currentWeapon === 0 || weapon.name.includes("whip") || weapon.name.includes("Claws")) {
@@ -696,7 +696,7 @@ export default function enginize(g, config) {
 		}
 		
 		// Attack with r (heavy attacks)
-		if (g.keys["r"] && Date.now() - g.kratos.lastHattack > weapon.hC && (!currentBattle?.complete || !g.currentEnemy.defeated) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking) {
+		if (g.keys["r"] && Date.now() - g.kratos.lastHattack > weapon.hC && (!currentBattle?.complete || !g.currentEnemy?.defeated) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking) {
 			const now = Date.now();
 
 			g.kratos.heavyCombo = (g.kratos.heavyCombo + 1) % 2; // 2 hit combo for now
@@ -724,18 +724,18 @@ export default function enginize(g, config) {
 					if (enemy.name === "Zeus") return
 					enemy.knockbackVel = g.kratos.facing === "right" ? knockback : -knockback;
 			
-					if (enemy.name === "Satyr" && (weapon.name.includes("Gauntlet") || weapon.name.includes("cestus") || weapon.name.includes("Blade "))) {
+					if (enemy.name === "Satyr" && (weapon.name.includes("Gauntlet") || weapon.name.includes("Arms") || weapon.name.includes("Claws") || weapon.name.includes("cestus") || weapon.name.includes("Blade "))) {
 						g.audio.blockSound.play();
 						breakBlock();
 						return
-					} else if (enemy.name === "Minotaur" && (weapon.name.includes("Gauntlet") || weapon.name.includes("cestus") || weapon.name.includes("Blade "))) {
+					} else if (enemy.name === "Minotaur" && (weapon.name.includes("Gauntlet") || weapon.name.includes("Arms") || weapon.name.includes("cestus") || weapon.name.includes("Blade "))) {
 						g.audio.minBlock.play();
 						breakBlock();
 						return
-					} else if (enemy.name === "Hercules" && (weapon.name.includes("cestus") || weapon.name.includes("Blade "))) {
+					} else if (enemy.name === "Hercules" && (weapon.name.includes("Arms") || weapon.name.includes("cestus") || weapon.name.includes("Blade "))) {
 						breakBlock();
 						return
-					} else if (enemy.name === "Zeus" && weapon.name.includes("Blade ")) {
+					} else if (enemy.name === "Zeus" && (weapon.name.includes("cestus") || weapon.name.includes("Blade "))) {
 						breakBlock();
 						return
 					}
@@ -2254,32 +2254,32 @@ export default function enginize(g, config) {
 
 			const heavyBlockRules = {
 				"Fallen Legionnaire": {
-					blockedBy: ["whip", "Arms", "Gauntlet", "Claws", "cestus", "Blade "],
+					blockedBy: ["whip", "Gauntlet", "Arms", "Claws", "cestus", "Blade "],
 					damageReduce: 0.85
 				},
 
 				"Satyr": {
-					blockedBy: ["Arms", "Gauntlet", "Claws", "cestus", "Blade "],
+					blockedBy: ["Gauntlet", "Arms", "Claws", "cestus", "Blade "],
 					damageReduce: 0.85
 				},
 
 				"Minotaur": {
-					blockedBy: ["Gauntlet", "Claws", "cestus", "Blade "],
+					blockedBy: ["Gauntlet", "Arms", "Claws", "cestus", "Blade "],
 					damageReduce: 0.75
 				},
 
 				"Hades": {
-					blockedBy: ["Gauntlet", "cestus", "Blade "],
+					blockedBy: ["Gauntlet", "Arms", "cestus", "Blade "],
 					damageReduce: 0.50
 				},
 
 				"Hercules": {
-					blockedBy: ["cestus", "Blade "],
+					blockedBy: ["Arms", "cestus", "Blade "],
 					damageReduce: 0.50
 				},
 
 				"Zeus": {
-					blockedBy: ["Blade "],
+					blockedBy: ["cestus", "Blade "],
 					damageReduce: 0.40
 				}
 			};
@@ -2516,9 +2516,11 @@ export default function enginize(g, config) {
 				if (entity.state === "fall") {
 					entity.state = "idle"
 					entity.decision = null
-				} else if (entity.petrified && entity.petrifiedInAir) {
-					if (g.kratos.health > 0) damageKratos({damage: g.kratos.health});
+				} else if (entity.petrifiedInAir) {
+					entity.petrifiedInAir = false;
 					sButtonPrompt.active = false;
+					if (g.kratos.health > 0) damageKratos({damage: g.kratos.health});
+					console.log("Died from mid-air petrification");
 				}
 			}
 		}
@@ -2855,7 +2857,6 @@ export default function enginize(g, config) {
 		}
 		if (sButtonPrompt.active) drawSbuttonPrompt();
 		if (orbs.length && g.kratos.health > 0) drawOrbs();
-
 		if (!g.freePlay && !lineComplete && enemies[focus].god && !enemies[focus].defeated) drawText();
 
 		frames++;

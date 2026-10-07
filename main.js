@@ -274,11 +274,11 @@ const globals = {
 			},
 			{
 				name: "Fallen & Cursed Legionnaire", location: "Athens docks", bg: "Imagery/battle/Athens legionnaires battle.png", complete: false,
-				get enemies() { return globals.getEnemies(["Fallen Legionnaire", "Cursed Legionnaire"]) }, bT: music.athensBattleT3,
+				get enemies() { return globals.getEnemies(["Fallen Legionnaire", "Cursed Legionnaire"]) }, bT: music.athensBattleT3, gL: 488
 			},
 			{
 				name: "Fallen Legionnaire duo", location: "Athens docks", bg: "Imagery/battle/Athens legionnaires battle.png", complete: false,
-				get enemies() { return globals.getEnemies(["Fallen Legionnaire", "Fallen Legionnaire"]) }, bT: music.athensBattleT3,
+				get enemies() { return globals.getEnemies(["Fallen Legionnaire", "Fallen Legionnaire"]) }, bT: music.athensBattleT3, gL: 488
 			},
 			{
 				name: "Banshee & Cursed Legionnaire", location: "Athens docks bridge", bg: "Imagery/battle/Athens after docks.png", complete: false,
