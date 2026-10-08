@@ -1032,7 +1032,7 @@ export default function enginize(g, config) {
 			}
 		}
 		let drawX = g.kratos.x;
-		if (g.kratos.facing === "left") drawX -= 75 / 2 - 13
+		if (g.kratos.facing === "left" && !g.kratos.velX < 0) drawX -= 75 / 2 - 13
 		if (weapon.name.includes("Arms") && (g.kratos.hAttacking || g.kratos.lAttacking) && g.kratos.facing === "left") drawX -= g.kratos.w - 150
 		if (g.kratos.facing === "left" && g.kratos.hAttacking && (weapon.name.includes("Blades") || weapon.name.includes("whip") || weapon.name.includes("Claws"))) drawX -= g.kratos.w - 150
 		drawCharacter(img, drawX, g.kratos.y, g.kratos.w, g.kratos.h, Date.now() < g.kratos.hitUntil);
@@ -1847,6 +1847,12 @@ export default function enginize(g, config) {
 		ctx.stroke();
 	}
 
+	const enemyStats = document.querySelector('.Enemy-stats');
+	if (enemyStats && enemies.length > 1) enemyStats.style.display = 'none';
+	if (enemyStats && enemies.length === 1) { 
+		document.querySelector('.Ehealth-bar').style.display === 'inline-block';
+		document.querySelector('.Ehealth-bar').style.width === enemies[0].health;
+	}
 	const enemyHealthFiller = document.querySelector('.Efiller');
 
 	function updateEnemy(enemy) {
@@ -1893,7 +1899,11 @@ export default function enginize(g, config) {
 			drawLeapR(enemy);
 		}
 
-		const kratosAttackableX = g.kratos.facing === "left" ? g.kratos.midX + (75 / 2) : g.kratos.midX - (75 / 2) - 10;
+		let leftHitX = g.kratos.velX < 0 || (enemy !== enemies[focus]) ? g.kratos.midX - 40 : g.kratos.midX + 75 / 2;
+		if (enemy !== enemies[focus] && g.kratos.facing === "left" && !g.kratos.velX) { leftHitX = g.kratos.midX + 75 / 2 }
+		let rightHitX = g.kratos.velX || (enemy !== enemies[focus]) ? 0 : (75 / 2) - 10
+		if (enemy !== enemies[focus] && g.kratos.facing === "right" && !g.kratos.velX) rightHitX = (75 / 2) - 10
+		const kratosAttackableX = g.kratos.facing === "left" ? leftHitX : g.kratos.midX - rightHitX;
 		const enemyAttackX = enemy.facing === "right" ? enemy.midX + enemy.oW / 2 : enemy.x;
 		const attackDis = Math.abs(Math.round(enemyAttackX - kratosAttackableX)); 
 
@@ -2699,6 +2709,16 @@ export default function enginize(g, config) {
 
 	const orbs = [];
 
+	let battleRedOrbs = 0;
+	let redOrbsGained = 0;
+	let lastRedOrbs = 0;
+
+	for (const enemy of enemies) {
+		battleRedOrbs += enemy.orbs[1].amount * 2
+	}
+
+	console.log("Orbs you can get from battle:", battleRedOrbs);
+
 	function spawnOrbs(x, y, type, count) {
 		for (let i = 0; i < count; i++) {
 			orbs.push({
@@ -2752,8 +2772,10 @@ export default function enginize(g, config) {
 			// Reached Kratos
 			if (orb.progress >= 1) {
 				if (orb.type === "red") {
-					g.kratos.orbs += orb.size - 2;
-					document.getElementById("Orbs").innerText = g.kratos.orbs;
+					redOrbsGained += orb.size - 2;
+					if (currentBattle?.complete) lastRedOrbs += orb.size - 2
+					const kratosOrbs = g.currentBattle?.complete ? g.kratos.orbs - enemies[focus].orbs[1].amount * 2 : g.kratos.orbs;
+					document.getElementById("Orbs").innerText = kratosOrbs + (g.freePlay || !currentBattle?.complete ? redOrbsGained : lastRedOrbs);
 					g.playCaudio(g.audio.redOrbSound, g.sfxVolume);
 					localStorage.setItem('orbs', g.kratos.orbs);
 				} 
@@ -2806,6 +2828,9 @@ export default function enginize(g, config) {
 			if (deadEnemies.length === enemies.length) { 
 				console.log("Battle complete!");
 				currentBattle.complete = true; g.currentBattle.complete = true;
+				const lastRedOrbs = enemies.length > 1 ? enemies[focus].orbs[1].amount * 2 : 0;
+				g.kratos.orbs += redOrbsGained + lastRedOrbs;
+				localStorage.setItem('orbs', g.kratos.orbs);
 				victory(g);
 			}
 		}
@@ -2881,7 +2906,13 @@ function victory(g) {
 		} else g.audio.athens.play()
 	} else g.audio[g.battlePlace.toLowerCase()].play()
 	const battleI = g.placeBattles?.indexOf(g.currentBattle);
-	if (!g.freePlay) localStorage.setItem("currentBattle", JSON.stringify(g.currentBattle));
+	if (!g.freePlay) {
+		const enemyStats = document.querySelector('.Enemy-stats');
+		if (enemyStats) enemyStats.style.display = 'none';
+		localStorage.setItem("currentBattle", JSON.stringify(g.currentBattle));
+		if (battleI === g.placeBattles?.length - 1) g.notify();
+		if (battleI !== g.placeBattles?.length - 1) document.getElementById("Next").style.display = 'inline';
+	}
 
 	if (g.currentBattle?.name !== "Zeus" || g.freePlay) { 
 		g.audio.defeatSound.play();
@@ -2891,9 +2922,8 @@ function victory(g) {
 		g.audio.wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this absolute SHIT game! 🤩";
 	}
-	if (battleI === g.placeBattles?.length - 1) g.notify();
+
 	document.getElementById("Return").style.display = 'inline';
-	if (!g.freePlay && battleI !== g.placeBattles?.length - 1) document.getElementById("Next").style.display = 'inline';
 	document.querySelector('.Hotbar').style.display = 'none';
 }
 

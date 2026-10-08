@@ -72,8 +72,9 @@ export const sfx = {
     // --- Weapon swtiches ---
     
     bocSound: new Audio('../Audio/UI/Blades of chaos sound.mp3'),
-    gozSound: new Audio('../Audio/UI/Gauntlet of Zeus sound.mp3'),
     nwSound: new Audio('../Audio/UI/Nemesis whip sound.mp3'),
+    gozSound: new Audio('../Audio/UI/Gauntlet of Zeus sound.mp3'),
+    aosSound: new Audio('../Audio/UI/Arms of Sparta switch.mp3'),
     cohSound: new Audio('../Audio/UI/Claws of Hades sound.mp3'),
     ncSound: new Audio('../Audio/UI/Nemean cestus sound.mp3'),
     swordThud: new Audio('../Audio/UI/Sword thud.mp3'),

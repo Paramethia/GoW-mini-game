@@ -558,7 +558,7 @@ const inventory = [{
 	lAttack: sfx.bocLA,
 	hAttack: sfx.bocHA,
 }];
-const weapons = globals.weapons;
+const weapons = [...globals.weapons];
 
 if (localStorage.getItem("inventory")) {
 	weapons.push(globals.getEnemy("Hades").reward, globals.getEnemy("Hercules").reward, globals.getEnemy("Zeus").reward);

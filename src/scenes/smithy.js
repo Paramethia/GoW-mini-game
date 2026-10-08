@@ -62,8 +62,8 @@ export default function smithy(g){
 	}, 40)
 	
 	sellWeaponB.onmouseover = () => {
-		if (!g.currentWeapon || !g.kratos.inventory[g.currentWeapon].price) return
 		const sellingWeapon = g.kratos.inventory[g.currentWeapon];
+		if (!g.currentWeapon || !sellingWeapon.price) return
 		g.playCaudio(g.audio.hover, g.uiVolume);
 		dialogue.style.display = 'inline';
 		dialogueText.innerText = `I'll take your ${sellingWeapon.name} for ${Math.round(sellingWeapon.price / 2)} orbs`;
@@ -76,27 +76,29 @@ export default function smithy(g){
 	sellWeaponB.addEventListener('click', sellWeapon );
 
 	const images = [];
-
-	for (const weapon of stock) {
-		const image = document.getElementById(`${weapon.name.replaceAll(" ", "-")}`)
-		images.push(image);
-		const info = weaponsInfo[weapon.name]; 
-		if (image.style.display !== 'none') {
-			image.onmouseover = () => {
-				g.playCaudio(g.audio.hover, g.uiVolume);
-				image.src = `./Imagery/UI/${weapon.name} (outlined).png`;
-				if (weapon.name.includes("whip")) image.style.transform = 'rotateX(0deg)';
-				dialogue.style.display = 'block';
-				dialogueText.innerText = `${weapon.name.includes("Arms") ? 'Those are' : 'This is'} the ${weapon.name}`;
-				if (info) info.style.display = 'inline-block';
+	
+	if (stock?.length) {
+		for (const weapon of stock) {
+			const image = document.getElementById(`${weapon.name.replaceAll(" ", "-")}`)
+			images.push(image);
+			const info = weaponsInfo[weapon.name]; 
+			if (image.style.display !== 'none') {
+				image.onmouseover = () => {
+					g.playCaudio(g.audio.hover, g.uiVolume);
+					image.src = `./Imagery/UI/${weapon.name} (outlined).png`;
+					if (weapon.name.includes("whip")) image.style.transform = 'rotateX(0deg)';
+					dialogue.style.display = 'block';
+					dialogueText.innerText = `${weapon.name.includes("Arms") ? 'Those are' : 'This is'} the ${weapon.name}`;
+					if (info) info.style.display = 'inline-block';
+				}
+				image.onmouseout = () => {
+					image.src = `./Imagery/UI/${weapon.name}.png`;
+					if (weapon.name.includes("whip")) image.style.transform = 'rotateX(55deg)';
+					dialogue.style.display = 'none';
+					if (info) info.style.display = 'none';
+				}
+				image.onclick = () => buyWeapon(weapon)
 			}
-			image.onmouseout = () => {
-				image.src = `./Imagery/UI/${weapon.name}.png`;
-				if (weapon.name.includes("whip")) image.style.transform = 'rotateX(55deg)';
-				dialogue.style.display = 'none';
-				if (info) info.style.display = 'none';
-			}
-			image.onclick = () => buyWeapon(weapon)
 		}
 	}
 
@@ -115,24 +117,26 @@ export default function smithy(g){
 		currentIndex = index;
 	}
 
-	g.navKeys = function(e) {
-		if (e.repeat) return;
+	if (images.length) {
+		g.navKeys = function(e) {
+			if (e.repeat) return;
 
-		if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
-			let nextIndex = (currentIndex + 1) % images.length;
-			selectImage(nextIndex);
+			if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
+				let nextIndex = (currentIndex + 1) % images.length;
+				selectImage(nextIndex);
+			}
+			if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
+				let prevIndex = (currentIndex - 1 + images.length) % images.length;
+				selectImage(prevIndex);
+			}
+			if (e.key === "Enter") {
+				if (images[currentIndex].onclick) images[currentIndex].onclick()
+			}
+			if (e.key === "Escape") leaveSmithy()
 		}
-		if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
-			let prevIndex = (currentIndex - 1 + images.length) % images.length;
-			selectImage(prevIndex);
-		}
-		if (e.key === "Enter") {
-			if (images[currentIndex].onclick) images[currentIndex].onclick()
-		}
-		if (e.key === "Escape") leaveSmithy()
+
+		document.addEventListener("keydown", g.navKeys);
 	}
-
-	document.addEventListener("keydown", g.navKeys);
 
 	function leaveSmithy() {
 		g.audio.exit.play();
@@ -143,8 +147,7 @@ export default function smithy(g){
 	
 	function sellWeapon() {
 		const sellingWeapon = g.kratos.inventory[g.currentWeapon];
-		const times = [155, 140, 125, 110, 100];
-		if (g.kratos.inventory.length > 1 && g.kratos.inventory.includes(sellingWeapon) && g.kratos.inventory[g.currentWeapon].name !== "Blades of chaos") {
+		if (g.kratos.inventory.length > 1 && g.kratos.inventory.includes(sellingWeapon) && g.currentWeapon && sellingWeapon.price) {
 			g.audio.hmmmm.play();
 			dialogue.style.display = 'none';
 			g.kratos.inventory = g.kratos.inventory.filter(weapon => weapon !== sellingWeapon);
@@ -152,18 +155,18 @@ export default function smithy(g){
 				count++;
 				g.kratos.orbs++;
 				document.getElementById('Orbs').innerText = g.kratos.orbs;
-				if (count == (sellingWeapon.price / 2)) {
+				if (count == (Math.round(sellingWeapon.price / 2))) {
 					count = 0;
 					clearInterval(sell);
 					localStorage.setItem('orbs', g.kratos.orbs);
 				}
-			}, times[g.currentWeapon]);
+			}, 110);
 			images.push[g.currentWeapon];
 			g.currentWeapon = 0;
 			hotbarInit(g);
 			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			localStorage.setItem('currentWeapon', g.currentWeapon);
-			text.innerText = `You sold the ${sellingWeapon.name} for ${(sellingWeapon.price / 2)}.`;
+			text.innerText = `You sold the ${sellingWeapon.name} for ${(Math.round(sellingWeapon.price / 2))}.`;
 		} else {
 			g.audio.bruh.play();
 			dialogue.style.display = 'inilne-block';
@@ -177,7 +180,7 @@ export default function smithy(g){
 		if(g.kratos.orbs >= weapon.price && !g.kratos.inventory.includes(weapon) && g.kratos.inventory.length < 6) {
 			g.audio.achievement.play();
 			dialogue.style.display = 'none';
-			var bought = setInterval (() => {
+			const bought = setInterval (() => {
 				count++;
 				g.kratos.orbs--;
 				document.getElementById('Orbs').innerText = g.kratos.orbs;
@@ -186,14 +189,14 @@ export default function smithy(g){
 					clearInterval(bought);
 					localStorage.setItem('orbs', g.kratos.orbs);
 				}
-			}, 140 );
+			}, 80 );
 			localStorage.setItem('currentWeapon', g.currentWeapon);
 			g.kratos.inventory.push(weapon);
 			g.currentWeapon = g.kratos.inventory.indexOf(weapon);
 			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			weaponGot(weapon);
 			hotbarInit(g);
-			setTimeout(() => { revert() }, 5250 );
+			setTimeout(revert, 5250 );
 		} else {
 			dialogue.style.display = 'inline-block';
 			if (!g.kratos.inventory.includes(weapon)) {
@@ -203,7 +206,7 @@ export default function smithy(g){
 				g.audio.bruh.play();
 				dialogueText.innerText = g.kratos.inventory.length === 6 ? "You have too many weapons" : "You already have that weapon, you twat!";
 			}
-			setTimeout(() => { revert() }, 3000 );
+			setTimeout(revert, 3000 );
 		}
 	}
 
@@ -226,6 +229,7 @@ export default function smithy(g){
 	}
 
 	function revert() {
+		if (g.inSparta || g.inBattle ) return
 		text.style.color = '#ffad15';
 		text.innerText = "You enter the smithy. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie";
 	}
