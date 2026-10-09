@@ -60,7 +60,7 @@ export default function enginize(g, config) {
 			this.hasHit = false;
 			this.hitHuntil = 0;
 			this.lastAttack = 0;
-			if (!enemy.name.includes("Archer")) this.dCooldown = 700;
+			if (!enemy.dCooldown && !enemy.name.includes("Archer")) this.dCooldown = 700;
 			this.stunned = false;
 			this.stunEnd = 0;
 			this.knockbackVel = 0;
@@ -465,18 +465,12 @@ export default function enginize(g, config) {
 
 		if (g.kratos.dodging) {
 			speed *= dodgeSpeedMultiplier;
-			if (Date.now() > g.kratos.dodgeEnd) { 
-				g.kratos.dodging = false;
-				g.keys["d"] = false;
-				g.keys["D"] = false;
-				g.keys["a"] = false;
-				g.keys["A"] = false;
-			}
+			if (Date.now() > g.kratos.dodgeEnd) g.kratos.dodging = false
 		}
 
 		// Banshee scream OR Gorgon/Medusa petrification OR Hades abilities cancel
 		if (g.kratos.covering || g.kratos.petrified || g.kratos.took || g.kratos.held) {
-			const sPressed = g.keys["s"] || g.keys["S"];
+			const sPressed = g.keys["s"];
 			if (g.kratos.covering && sPressed) {
 				g.kratos.screamBreak++;
 
@@ -533,7 +527,6 @@ export default function enginize(g, config) {
 			}
 
 			g.keys['s'] = false;
-			g.keys['S'] = false;
 
 			// No movement or attacks
 			g.kratos.velX = 0;
@@ -552,11 +545,13 @@ export default function enginize(g, config) {
 			g.kratos.velX = 0;
 		} else {
 			if (g.kratos.stunned || g.kratos.knockbackVel || enemy.speedStriking) return
-			if (g.keys["ArrowLeft"] || g.keys["a"] || g.keys["A"]) {
+			if (g.keys["ArrowLeft"] || g.keys["a"]) {
 				if (!g.freeplay && enemy.god && !enemy.defeated) { lineComplete ? g.kratos.velX = -speed : g.kratos.velX = 0 } else { g.kratos.velX = -speed }
+				g.keys["d"] = false;
 				g.kratos.facing = "left";
-			} else if (g.keys["ArrowRight"] || g.keys["d"] || g.keys["D"]) {
+			} else if (g.keys["ArrowRight"] || g.keys["d"]) {
 				if (!g.freePlay && enemy.god && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
+				g.keys["a"] = false;
 				g.kratos.facing = "right";
 			} else {
 				g.kratos.velX = 0;
@@ -572,11 +567,10 @@ export default function enginize(g, config) {
 		}
 
 		// Focus
-		if (g.keys["f"] || g.keys["F"] && (!g.freePlay && enemies.length > 1)) {
+		if (g.keys["f"] && (!g.freePlay && enemies.length > 1)) {
 			changeFocusedEnemy();
 		}
 		g.keys["f"] = false;
-		g.keys["F"] = false;
 
 		// Debug drawings
 		if (g.devMode) {
@@ -590,8 +584,7 @@ export default function enginize(g, config) {
 		if (enemy.name === "Minotaur" || enemy.name === "Hades" || enemy.name === "Hercules") enemy.facing === "right" ? enemyAttackableXpos += (enemy.Ow / 4) : enemyAttackableXpos -= (enemy.oW / 4)
 		if (enemy.name === "Cyclops") enemy.facing === "right" ? enemyAttackableXpos += (enemy.oW / 4) + 43 : enemyAttackableXpos -= (enemy.oW / 4) + 32
 		if (enemy.name === "Hermes" && enemy.facing === "left") enemyAttackableXpos += (enemy.oW / 4)
-		let attackRange = weapon.lR;
-		if (g.kratos.hAttacking) attackRange = weapon.hR
+		const attackRange = g.kratos.hAttacking ? weapon.hR : weapon.lR;
 		const kratosAttackX = g.kratos.facing === "right" ? g.kratos.midX + attackRange : g.kratos.midX - attackRange;
 		const attackDis = Math.abs(Math.round(kratosAttackX - enemyAttackableXpos));
 
@@ -1881,7 +1874,7 @@ export default function enginize(g, config) {
 			return;
 		}
 
-		if (enemies.length === 1) enemyHealthFiller.style.width = `${enemy.health}px`;
+		if (enemies.length === 1 && enemyHealthFiller) enemyHealthFiller.style.width = `${enemy.health}px`;
 
 		if (!enemy.halved && enemy.god && enemy.health <= enemy.maxHealth / 2) {
 			enemy.halved = true;
@@ -2155,7 +2148,10 @@ export default function enginize(g, config) {
 
 		// Enemy decision handling
 
-		if (!enemy.name.includes("Archer") && !enemy.dead && enemy.dCooldown && !enemy.decision && Date.now() - enemy.lastAttack > enemy.dCooldown) enemy.decision = enemyDecides(enemy);
+		if (!enemy.name.includes("Archer") && !enemy.dead && enemy.dCooldown && !enemy.decision && Date.now() - enemy.lastAttack > enemy.dCooldown) {
+			enemy.lastAttack = 0;
+			enemy.decision = enemyDecides(enemy);
+		} 
 		
 		const inChaseRange = distance <= enemy.chaseRange;
 		if (enemy.chaseRange && g.kratos.health > 0 && !enemy.stunned && !enemy.dodging) {
@@ -2166,6 +2162,8 @@ export default function enginize(g, config) {
 			}
 		}
 
+		const inAttackRange = enemy.decision === "lAttack" ? attackDis <= enemy.lR : attackDis <= enemy.hR;
+		if (enemy.state === "chase" && enemy.velX === 0 && Date.now() - enemy.lastAttack < enemy.dCooldown) enemy.state = "idle";
 		if (enemy.state === "chase" || enemy.state === "idle" && g.kratos.health > 0) {
 			if (!g.freePlay && enemy.god && !enemy.defeated && !lineComplete) return
 			if (enemy.decision === "leap" && attackDis <= enemy.leapRange) {
@@ -2189,7 +2187,7 @@ export default function enginize(g, config) {
 			} else if (enemy.decision === "smash") {
 				herculesSmash(enemy);
 			} else {
-				if (enemy.name.includes("Archer") || !inChaseRange || enemy.dead) return
+				if (enemy.name.includes("Archer") || !inChaseRange || inAttackRange || enemy.dead) return
 				enemy.state = "chase";
 				enemy.velX = g.kratos.midX > enemy.midX ? enemy.speed : -enemy.speed;
 				enemy.facing = enemy.velX > 0 ? "right" : "left";
@@ -2200,12 +2198,10 @@ export default function enginize(g, config) {
 
 		if (Date.now() > enemy.stateEnd) {
 			if (enemy.state === "lAttack" || enemy.state === "hAttack") {
-				const inRange = enemy.state === "lAttack" ? attackDis <= enemy.lR : attackDis <= enemy.hR;
-				enemy.state = inRange || enemy.sC ? "idle" : "chase";
+				enemy.state = inAttackRange || enemy.sC ? "idle" : "chase";
 				enemy.hasHit = false;
 				enemy.lAttacking = false;
 				enemy.hAttacking = false;
-				enemy.lastAttack = 0;
 				enemy.decision = null;
 				return
 			} else if (enemy.state === "block") {
@@ -2232,12 +2228,12 @@ export default function enginize(g, config) {
 				g.playCaudio(g.audio.blockSound, g.sfxVolume);
 				
 				if (enemy.name === "Minotaur" && !weapon.name.includes("Gauntlet") && !weapon.name.includes("cestus") && !weapon.name.includes("Blade ")) {
-					damage = Math.round(enemy.lD * 0.9) // reduce damage by 10% for the Minotaur
+					damage = Math.round(enemy.lD * 0.3) // reduce damage by 70% for the Minotaur
 				} else if (enemy.name === "Cyclops" && !weapon.name.includes("Arms") && !weapon.name.includes("Gauntlet") && !weapon.name.includes("cestus") && !weapon.name.includes("Blade ")) { 
 					breakBlock();
-					damage = Math.round(enemy.lD * 0.85); // reduce damage by 15% for the Cyclops & break block
+					damage = Math.round(enemy.lD * 0.4); // reduce damage by 60% for the Cyclops & break block
 				} else if (enemy.name === "Hercules" && !weapon.name.includes("Arms") && !weapon.name.includes("cestus") && !weapon.name.includes("Blade ")) { 
-					damage = Math.round(enemy.lD * 0.8) // reduce damage by 20% for Hercules
+					damage = Math.round(enemy.lD * 0.5) // reduce damage by 50% for Hercules
 				} else { 
 					return
 				}
@@ -2872,9 +2868,9 @@ export default function enginize(g, config) {
 				if (enemy === enemies[focus]) drawKratos(enemy);
 				drawEnemy(enemy);
 			}
+			if (enemy.name.includes("Archer")) drawArrows();
 		})
 
-		if (enemies[focus].name.includes("Archer")) drawArrows();
 		if (enemies[focus].name === "Zeus") drawLightnings();
 		if (enemies[focus].name === "Hades") {
 			drawGraspWarning();

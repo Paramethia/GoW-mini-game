@@ -116,7 +116,7 @@ export default function battle(g, place = null) {
 			setTimeout(() => { g.audio.ahShit.play() }, 1800 );
 			g.restart();
 		}
-		if (!g.hardcore) g.kratos.health = 100
+		if (!g.hardcore) g.kratos.health = g.kratos.maxHealth
         g.inBattle = false;
 		clearInterval(g.frameCount);
 		sparta(g);
@@ -159,6 +159,7 @@ export default function battle(g, place = null) {
 	
 	// Starting dialogue for god battles
 	if (!g.freePlay && g.currentBattle.enemies[0].god) {
+		g.stopAmbience();
 		const boss = g.currentBattle.enemies[0];
 		const intervalTime = boss.name === "Hermes" ? 4200 : boss.name === "Hercules" ? 3000 : boss.name === "Zeus" ? 14200 : 25700;
 		if (boss.name !== "Hades" && !boss.defeated) g.audio[`${g.currentBattle.name.toLowerCase()}Line`].play()

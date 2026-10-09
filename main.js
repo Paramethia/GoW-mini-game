@@ -57,7 +57,7 @@ const globals = {
 		},
 		{ 
 			name: "Gauntlet of Zeus", 
-			lD: 15, hD: 22, lC: 700, hC: 1300, lR: 93, hR: 97, lS: 370, hS: 450, lK: 10, hK: 15,
+			lD: 15, hD: 22, lC: 700, hC: 1300, lR: 102, hR: 102, lS: 370, hS: 450, lK: 10, hK: 15,
 			price: 135, lit: false,
 			sound: sfx.gozSound,
 			lAttack: sfx.gozLA,
@@ -157,7 +157,7 @@ const globals = {
 			name: "Satyr", health: 110, speed: 3.2, x: 580, y: 0, w: 148, h: 227, 
 			lD: 7, hD: 11, lK: 6, hK: 9, lC: 720, hC: 1400, lR: 123, hR: 115, lS: 270, hS: 390,
 			bC: 3000, bD: 4000, lightChance: 0.65, heavyChance: 0.45, blockChance: 0.35, sound: ui.satyrS,
-			orbs: [{type: "green", amount: 13}, {type: "red", amount: 14}],
+			orbs: [{type: "green", amount: 13}, {type: "red", amount: 14}], dCooldown: 850,
 			defeated: localStorage.getItem("satyrDefeated") === "true",
 			attackSound: sfx.satyrAttacks, hitSound: sfx.satyrAttacked, deathSound: sfx.satyrDeath,
 		},
@@ -166,13 +166,13 @@ const globals = {
 			lD: 10.5, hD: 14, lK: 7.5, hK: 11, lC: 1200, hC: 1800, lR: 100, hR: 182, lS: 400, hS: 600, 
 			bC: 5500, bD: 2000, lightChance: 0.65, heavyChance: 0.25, blockChance: 0.3, sound: ui.minotaurS,
 			orbs: [{type: "green", amount: 17}, {type: "red", amount: 17}, {type: "gold", amount: 2}],
-			defeated: localStorage.getItem("minotaurDefeated") === "true",
+			defeated: localStorage.getItem("minotaurDefeated") === "true", dCooldown: 1100,
 			attackSound: sfx.minotaurAttacks, hitSound: sfx.minotaurAttacked, deathSound: sfx.minotaurDeath,
 		},
 		{
 			name: "Cyclops", health: 210, speed: 1.6, x: 542, y: 0, w: 260, h: 350,
 			lD: 15, hD: 21, lK: 10, hK: 14, lC: 1100, hC: 1600, lR: 89, hR: 204, lS: 500, hS: 900,
-			lightChance: 0.6, heavyChance: 0.4, sound: ui.cyclopsS,
+			lightChance: 0.6, heavyChance: 0.4, sound: ui.cyclopsS, dCooldown: 1550,
 			orbs: [{type: "green", amount: 25}, {type: "red", amount: 35}, {type: "gold", amount: 4}],
 			defeated: localStorage.getItem("cyclopsDefeated") === "true",
 			attackSound: sfx.cyclopsAttacks, hitSound: sfx.cyclopsAttacked, deathSound: sfx.cyclopsDeath,
@@ -182,7 +182,7 @@ const globals = {
 			lD: 17, hD: 23, lK: 8.4, hK: 12.7, lC: 750, hC: 1400, lR: 109, hR: 130, lS: 500, hS: 990, 
 			sTC: 4200, sTD: 5000, gC: 5000, gD: 1700, lightChance: 0.55, heavyChance: 0.5, soulTakeChance: 0.2, graspChance: 0.3,
 			orbs: [{type: "green", amount: 29}, {type: "red", amount: 48}, {type: "gold", amount: 7}],
-			god: true, defeated: localStorage.getItem("hadesDefeated") === "true",
+			god: true, defeated: localStorage.getItem("hadesDefeated") === "true", dCooldown: 1500,
 			attackSound: sfx.hadesAttacks, hitSound: sfx.hadesAttacked, deathSound: sfx.hadesDeath,
 			reward: { 
 				name: "Claws of Hades", 
@@ -209,7 +209,7 @@ const globals = {
 			attackSound: sfx.herculesAttacks, hitSound: sfx.herculesAttacked, deathSound: sfx.herculesDeath,
 			reward: { 
 				name: "Nemean cestus", 
-				lD: 22, hD: 30, lC: 800, hC: 1500, lR: 95, hR: 100, lS: 440, hS: 520, lK: 13, hK: 18,
+				lD: 22, hD: 30, lC: 800, hC: 1500, lR: 110, hR: 105, lS: 440, hS: 520, lK: 13, hK: 18,
 				lit: false, sound: sfx.ncSound,
 				lAttack: sfx.ncLA,
 				hAttack: sfx.ncHA,
@@ -331,21 +331,25 @@ const globals = {
 				get enemies() { return globals.getEnemies(["Cyclops"]) }, bT: music.cyclopsBattleT,
 			},
 			{
-				name: "Hades", location: "Blighted sanctum", bg: "Imagery/battle/Hades battle area.png", complete: false,
+				name: "God of the dead", location: "Palace of Hades", bg: "Imagery/battle/Hades battle area.png", complete: false,
 				get enemies() { return globals.getEnemies(["Hades"]) }, bT: music.hadesBattleT,
 			},
 		],
 		olympus: [
 			{
-				name: "Hermes", location: "Blighted sanctum", bg: "Imagery/battle/Hermes battle area.png", complete: false,
+				name: "Cyclops X Minotaur", location: "Halls of Olympus", bg: "Imagery/battle/Olympus battle area.png", complete: false,
+				get enemies() { return globals.getEnemies(["Cyclops", "Minotaur"]) }, bT: music.cyclopsBattleT, gL: 470
+			},
+			{
+				name: "God of speed", location: "Olympian citadel", bg: "Imagery/battle/Hermes battle area.png", complete: false,
 				get enemies() { return globals.getEnemies(["Hermes"]) }, bT: music.underworldBattleT1,
 			},
 			{
-				name: "Hercules", location: "Olmpus pillars", bg: "Imagery/battle/Hermes battle area.png", complete: false,
-				get enemies() { return globals.getEnemies(["Hercules"]) }, bT: music.underworldBattleT1, gL: 480,
+				name: "Demigod", location: "Olympus arena", bg: "Imagery/battle/Hermes battle area.png", complete: false,
+				get enemies() { return globals.getEnemies(["Hercules"]) }, bT: music.underworldBattleT1, gL: 490
 			},
 			{
-				name: "Zeus", location: "Blighted sanctum", bg: "Imagery/battle/Zeus battle area.png", complete: false,
+				name: "King of the gods", location: "Olympus tower", bg: "Imagery/battle/Zeus battle area.png", complete: false,
 				get enemies() { return globals.getEnemies(["Zeus"]) }, bT: music.underworldBattleT1,
 			},
 		]
@@ -402,10 +406,12 @@ const globals = {
 	keys: {},
 	keydownHandler(event) { 
 		if (event.repeat) return;
-		globals.keys[event.key] = true;
+		const key = event.key !== "Shift" ? event.key.toLowerCase() : event.key;
+		if (key === 'tab') event.preventDefault(); // Stop the tab key from focusing on buttons
+		globals.keys[key] = true;
 	},
 	keyupHandler(event) { 
-		globals.keys[event.key] = false; 
+		globals.keys[event.key.toLowerCase()] = false; 
 		if (event.key.toLowerCase() === 'q') globals.kratos.blocking = false;
 	},
 	

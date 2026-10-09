@@ -137,7 +137,8 @@ export function hotbarInit(g) {
             identifier.style.display = 'inline';
             identifier.innerText = item.name;
             identifier.style.top = '-35px';
-            identifier.style.left = `${7.5 + (index * 1.6)}cm`;
+            const leftPos = g.inBattle ? 10.5 : 7.5;
+            identifier.style.left = `${leftPos + (index * 1.6)}cm`;
         };
 
         slot.onmouseout = () => {
