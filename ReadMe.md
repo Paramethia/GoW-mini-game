@@ -3,7 +3,7 @@
 This is a God of War mini game that runs completely on the web.
 
 > [!NOTE]
-> The game is only designed to be played on PC. Right now, I am only using static images instead of animated sprites, because creating all the animations would take way too much of my time. I've already spent over 7 months working on this.
+> The game is only designed to be played on PC. Right now, I am only using static images instead of animated sprites, because creating all the animations would take way too much of my time. I've already spent over 8 months working on this.
 >
 > Also, beware that it is still in the alpha (development) stage, so don't judge it too harshly. I still have a bunch of goals planned for future updates.
 
@@ -33,7 +33,7 @@ While fixing the game, I also came up with a bunch of ideas and features that I 
 
 Now we're here, where the "mini" game has gotten a lot bigger than it honestly should have. At this point, it probably shouldn't even be called a mini game anymore, especially considering how much work I've put into it and how long it takes to beat.
 
-Currently, the game has taken a little over 7 months to develop, with some long breaks in between. Yes, even if it's not that impressive of a game. The reason it took so long is because of all the experimentation I was doing with it.
+Currently, the game has taken a little over 8 months to develop, with some long breaks in between. Yes, even if it's not that impressive of a game. The reason it took so long is because of all the experimentation I was doing with it.
 
 I tried remaking it with React at one point, which I realized was not a good idea about a quarter of the way through. So that was a waste of time. Though, not completely, because I ended up taking some of the ideas I developed during that experiment and bringing them into the pure JavaScript version.
 

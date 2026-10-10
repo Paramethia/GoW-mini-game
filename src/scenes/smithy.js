@@ -117,26 +117,24 @@ export default function smithy(g){
 		currentIndex = index;
 	}
 
-	if (images.length) {
-		g.navKeys = function(e) {
-			if (e.repeat) return;
+	g.navKeys = function(e) {
+		if (e.repeat) return;
 
-			if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
-				let nextIndex = (currentIndex + 1) % images.length;
-				selectImage(nextIndex);
-			}
-			if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
-				let prevIndex = (currentIndex - 1 + images.length) % images.length;
-				selectImage(prevIndex);
-			}
-			if (e.key === "Enter") {
-				if (images[currentIndex].onclick) images[currentIndex].onclick()
-			}
-			if (e.key === "Escape") leaveSmithy()
+		if (e.key === "ArrowLeft" || e.key.toLowerCase() === "a") {
+			let nextIndex = (currentIndex + 1) % images.length;
+			if (images.length) selectImage(nextIndex);
 		}
-
-		document.addEventListener("keydown", g.navKeys);
+		if (e.key === "ArrowRight" || e.key.toLowerCase() === "d") {
+			let prevIndex = (currentIndex - 1 + images.length) % images.length;
+			if (images.length) selectImage(prevIndex);
+		}
+		if (e.key === "Enter") {
+			if (images.legnth && images[currentIndex].onclick) images[currentIndex].onclick()
+		}
+		if (e.key === "Escape") leaveSmithy()
 	}
+
+	document.addEventListener("keydown", g.navKeys);
 
 	function leaveSmithy() {
 		g.audio.exit.play();

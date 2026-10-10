@@ -548,10 +548,12 @@ export default function enginize(g, config) {
 			if (g.keys["ArrowLeft"] || g.keys["a"]) {
 				if (!g.freeplay && enemy.god && !enemy.defeated) { lineComplete ? g.kratos.velX = -speed : g.kratos.velX = 0 } else { g.kratos.velX = -speed }
 				g.keys["d"] = false;
+				g.keys["ArrowRight"] = false;
 				g.kratos.facing = "left";
 			} else if (g.keys["ArrowRight"] || g.keys["d"]) {
 				if (!g.freePlay && enemy.god && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
 				g.keys["a"] = false;
+				g.keys["ArrowLeft"] = false;
 				g.kratos.facing = "right";
 			} else {
 				g.kratos.velX = 0;
@@ -560,6 +562,7 @@ export default function enginize(g, config) {
 
 		// Jump
 		if (g.keys[" "] && g.kratos.onGround && !g.kratos.petrified && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.blocking) {
+			if (!g.freeplay && enemy.god && !enemy.defeated && !lineComplete) return
 			g.playCaudio(g.audio.evadeSound, g.sfxVolume);
 			g.kratos.velY = -13;
 			g.kratos.onGround = false;
@@ -2545,7 +2548,7 @@ export default function enginize(g, config) {
 		ctx.font = "17px GodOfWar";
 		ctx.fillStyle = "#ddd";
 		switch (currentBattle.name) {
-			case "Hades": 
+			case "God of the dead": 
 				if (!firstLineC) ctx.fillText("I sense some bad blood between us, Kratos..", 400, 225);
 				if (firstLineC && !secondLineC) ctx.fillText("How many sins have you commited against me?!", 400, 225);
 				if (secondLineC && !thirdLineC) ctx.fillText("Oh, that's right you murdered my niece, Athena!", 400, 225);
@@ -2554,13 +2557,13 @@ export default function enginize(g, config) {
 				if (fifthLineC && !sixthLineC) ctx.fillText("I will see you suffer as I have suffered!", 400, 225);
 				if (fifthLineC && sixthLineC) ctx.fillText("Your soul is mine!!", 500, 225);
 			break;
-			case "Hermes":
+			case "God of speed":
 				ctx.fillText("You may have brute force... but you lack speed!", 420, 300);
 			break;
-			case "Hercules":
+			case "Demigod":
 				ctx.fillText("Hello... brother.", 450, 300)
 			break;
-			case "Zeus":
+			case "King of the gods":
 				if (!firstLineC && !secondLineC) ctx.fillText("Such chaos... I will have much to do after I kill you.", 420, 285);
 				if (firstLineC && !secondLineC) ctx.fillText("Face me father... it is time to end this!", 35, 295);
 				if (firstLineC && secondLineC) ctx.fillText("Yes my son! It is time!", 670, 285);
@@ -2571,13 +2574,13 @@ export default function enginize(g, config) {
 
 	let lineComplete = false;
 	
-	if (currentBattle.name === "Hermes" || currentBattle.name === "Hercules") {
+	if (currentBattle.name === "God of speed" || currentBattle.name === "Demigod" && !enemies[0].defeated) {
 		setTimeout(() => {
 			lineComplete = true;
-		}, currentBattle.name === "Hermes" ? 5200 : 4000);
+		}, currentBattle.name === "God of speed" ? 5200 : 4000);
 	}
 
-	if (currentBattle.name === "Hades" && !currentBattle.defeated) {
+	if (currentBattle.name === "God of the dead" && !enemies[0].defeated) {
 		setTimeout(() => { 
 			firstLineC = true;
 			g.audio.hadesLines[1].play();
@@ -2596,7 +2599,7 @@ export default function enginize(g, config) {
 		setTimeout(() => { lineComplete = true }, 27000);
 	}
 	
-	if (currentBattle.name === "Zeus") {
+	if (currentBattle.name === "King of the gods" && !enemies[0].defeated) {
 		setTimeout(() => { firstLineC = true }, 6270);
 		setTimeout(() => { secondLineC = true }, 11000);
 		setTimeout(() => { lineComplete = true }, 14200);

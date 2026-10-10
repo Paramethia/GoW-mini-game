@@ -171,7 +171,7 @@ const globals = {
 		},
 		{
 			name: "Cyclops", health: 210, speed: 1.6, x: 542, y: 0, w: 260, h: 350,
-			lD: 15, hD: 21, lK: 10, hK: 14, lC: 1100, hC: 1600, lR: 89, hR: 204, lS: 500, hS: 900,
+			lD: 15, hD: 21, lK: 10, hK: 14, lC: 1100, hC: 1600, lR: 62, hR: 154, lS: 500, hS: 900,
 			lightChance: 0.6, heavyChance: 0.4, sound: ui.cyclopsS, dCooldown: 1550,
 			orbs: [{type: "green", amount: 25}, {type: "red", amount: 35}, {type: "gold", amount: 4}],
 			defeated: localStorage.getItem("cyclopsDefeated") === "true",
@@ -406,12 +406,12 @@ const globals = {
 	keys: {},
 	keydownHandler(event) { 
 		if (event.repeat) return;
-		const key = event.key !== "Shift" ? event.key.toLowerCase() : event.key;
+		const key = event.key !== "Shift" && !event.key.includes("Arrow") ? event.key.toLowerCase() : event.key;
 		if (key === 'tab') event.preventDefault(); // Stop the tab key from focusing on buttons
 		globals.keys[key] = true;
 	},
 	keyupHandler(event) { 
-		globals.keys[event.key.toLowerCase()] = false; 
+		globals.keys[event.key.includes("Arrow") ? event.key : event.key.toLowerCase()] = false; 
 		if (event.key.toLowerCase() === 'q') globals.kratos.blocking = false;
 	},
 	

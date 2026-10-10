@@ -15,7 +15,7 @@ export default function battle(g, place = null) {
 			<center>
 			<p><font color="#a88868">FPS: </font><span id="FPS">0</span></p>
 			<div id="Text">
-				${!g.freePlay ? g.currentBattle?.name + " battle in " + g.currentBattle?.location : g.currentEnemy?.name}
+				${!g.freePlay ? g.currentBattle?.name + " battle in " + g.currentBattle?.location : g.currentEnemy?.name  + " freeplay battle"}
 			</div>
 			${g.currentBattle?.enemies?.length > 1 && !g.freePlay ? "" : enemyStats(g)}
 			<canvas id="Battle-area"></canvas>
@@ -151,19 +151,20 @@ export default function battle(g, place = null) {
 			if (g.currentEnemy.name === "Zeus") g.audio.zeusBattleT.play();
 		}
 	} else { 
-		if (!g.currentBattle.enemies[0].god) {
+		const enemy = g.currentBattle.enemies[0];
+		if (!enemy.god || (enemy.god && enemy.defeated)) {
 			g.currentBattle.bT.play();
 			g.currentBattle.bT.loop = true;
 		}
 	}
 	
 	// Starting dialogue for god battles
-	if (!g.freePlay && g.currentBattle.enemies[0].god) {
+	if (!g.freePlay && g.currentBattle.enemies[0].god && !g.currentBattle.enemies[0].defeated) {
 		g.stopAmbience();
 		const boss = g.currentBattle.enemies[0];
 		const intervalTime = boss.name === "Hermes" ? 4200 : boss.name === "Hercules" ? 3000 : boss.name === "Zeus" ? 14200 : 25700;
-		if (boss.name !== "Hades" && !boss.defeated) g.audio[`${g.currentBattle.name.toLowerCase()}Line`].play()
-		if (boss.name === "Hades" && !boss.defeated) g.audio.hadesLines[0].play()
+		if (boss.name !== "Hades") g.audio[`${g.currentBattle.enemies[0].name.toLowerCase()}Line`].play()
+		if (boss.name === "Hades") g.audio.hadesLines[0].play()
 		setTimeout(() => {
 			g.currentBattle.bT.play();
 			g.currentBattle.bT.loop = true;
