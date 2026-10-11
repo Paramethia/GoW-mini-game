@@ -34,9 +34,9 @@ export const settings = (g, show) => {
 				<div class="Controls-con">
 					<div class="controls"><span> A / ← </span><font color="#f8f8e0">Walk left</font></div>
 					<div class="controls"><span> D / → </span><font color="#f8f8e0">Walk right</font></div>
-					<div class="controls"><span> E </span><font color="#f8f8e0">Light attack</font></div>
-					<div class="controls"><span> R </span><font color="#f8f8e0">Heavy attack</font></div>
-					<div class="controls"><span> Q </span><font color="#f8f8e0">Block</font></div>
+					<div class="controls"><span> ${g.controls.lightA.toUpperCase()} </span><font color="#f8f8e0">Light attack</font></div>
+					<div class="controls"><span> ${g.controls.heavyA.toUpperCase()} </span><font color="#f8f8e0">Heavy attack</font></div>
+					<div class="controls"><span> ${g.controls.block.toUpperCase()} </span><font color="#f8f8e0">Block</font></div>
 					<div class="controls"><span> F </span><font color="#f8f8e0">Enemy focus</font></div>
 					<div class="controls"><span> Space </span><font color="#f8f8e0">Jump</font></div>
 					<div class="controls"><span> Shift </span><font color="#f8f8e0">Dodge/dash</font></div>

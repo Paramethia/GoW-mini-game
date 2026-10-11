@@ -266,6 +266,12 @@ body {
 
 #Audio p span { color: #cc9229 }
 
+#Controls .controls:nth-child(n+3):nth-child(-n+5) span { box-shadow: rgba(216, 200, 168, 0.6) 5px 14px 35px, rgba(0, 0, 0, 0.22) 0px 15px 12px }
+#Controls .controls:nth-child(n+3):nth-child(-n+5) span:hover {
+	cursor: var(--pressing), pointer;
+	background-color: rgba(216, 200, 168, 0.3);
+}
+
 #Advanced { gap: 15px }
 #Advanced .toggle, #Advanved #link, #Advanced #link{
 	width: 60%;
@@ -493,48 +499,60 @@ body {
 
 #Sparta #Places { 
     position: absolute;
-    top: 4.7cm;
+    top: 7.4cm;
     right: 2cm;
-    max-width: 240px;
-	margin-top: 80px;
-	margin-left: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    max-width: 260px;
+	z-index: 2;
 }
-
+#Sparta #Places div {
+	width: 88%;
+	border-radius: 10px;
+	background-color: rgba(10, 10, 35, 0.6);
+}
+#Sparta #Places h5 {
+	margin: 5px 0;
+	text-align: center;
+	color: #B5AEAA;
+	text-decoration: underline double #B5AEAA; 
+}
 #Sparta #Places button {
     height: 45px;
-	width: 5.8cm;
+	width: 100%;
     background-color: #0a0a23;
     border: none;
     border-radius: 10px;
     padding: 8px;
     margin-bottom: 20px;
-    color: #cfac84; /* #4b3f33 */
+    color: #cfac84;
 	font-size: 19px;
 	font-family: GodOfWar;
     animation: rotateX linear .8s;
+	z-index: 1;
 }
+#Sparta #Places button:nth-child(5) { margin-bottom: 0 }
 #Sparta #Places button:hover { cursor: var(--pressing, pointer) }
 
 /* ---Smithy styling --- */
 
-#Smithy { width: 1200px }
-
-#Smithy { background-image: var(--smithy-img) }
+#Smithy { 
+	width: 1200px;
+	background-image: var(--smithy-img)
+}
 
 #Smithy #Mid { height: 550px }
-
 #Smithy #Mid img { 
 	position: absolute;
 	cursor: var(--hover), pointer;
 	animation: appear 1.2s linear;
 	transition: 0.4s ease;
 }
-
 #Smithy #Mid #Kratos {
 	z-index: 2;
 	animation: none;
 }
-
 #Smithy #Mid button {
 	position: absolute;
 	top: 3.7cm;

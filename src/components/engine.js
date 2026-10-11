@@ -530,8 +530,8 @@ export default function enginize(g, config) {
 
 			// No movement or attacks
 			g.kratos.velX = 0;
-			g.keys["e"] = false;
-			g.keys["r"] = false;
+			g.keys[g.controls.lightA] = false;
+			g.keys[g.controls.heavyA] = false;
 
 			// Keep inside still
 			if (g.kratos.x < 0) g.kratos.x = 0;
@@ -587,12 +587,13 @@ export default function enginize(g, config) {
 		if (enemy.name === "Minotaur" || enemy.name === "Hades" || enemy.name === "Hercules") enemy.facing === "right" ? enemyAttackableXpos += (enemy.Ow / 4) : enemyAttackableXpos -= (enemy.oW / 4)
 		if (enemy.name === "Cyclops") enemy.facing === "right" ? enemyAttackableXpos += (enemy.oW / 4) + 43 : enemyAttackableXpos -= (enemy.oW / 4) + 32
 		if (enemy.name === "Hermes" && enemy.facing === "left") enemyAttackableXpos += (enemy.oW / 4)
+		if (enemy.name === "Hades" && enemy.facing === "right") enemyAttackableXpos = enemy.midX - (enemy.oW / 4)
 		const attackRange = g.kratos.hAttacking ? weapon.hR : weapon.lR;
 		const kratosAttackX = g.kratos.facing === "right" ? g.kratos.midX + attackRange : g.kratos.midX - attackRange;
 		const attackDis = Math.abs(Math.round(kratosAttackX - enemyAttackableXpos));
 
 		// Attack with e (light attacks)
-		if (g.keys["e"] && Date.now() - g.kratos.lastLattack > weapon.lC && (!currentBattle?.complete || !g.currentEnemy?.defeated) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.hAttacking) {
+		if (g.keys[g.controls.lightA] && Date.now() - g.kratos.lastLattack > weapon.lC && (!currentBattle?.complete || !g.currentEnemy?.dead) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.hAttacking) {
 			const now = Date.now();
 
 			if (g.currentWeapon === 0 || weapon.name.includes("whip") || weapon.name.includes("Claws")) {
@@ -683,16 +684,16 @@ export default function enginize(g, config) {
 			}
 		}
 
-		g.keys['e'] = false;
+		g.keys[g.controls.lightA] = false;
 
 		// If light attack duration expired, reset
 		if (g.kratos.lAttacking && Date.now() > g.kratos.lAttackEnd) {
 			g.kratos.lAttacking = false;
-			g.keys['e'] = false;
+			g.keys[g.controls.lightA] = false;
 		}
 		
 		// Attack with r (heavy attacks)
-		if (g.keys["r"] && Date.now() - g.kratos.lastHattack > weapon.hC && (!currentBattle?.complete || !g.currentEnemy?.defeated) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking) {
+		if (g.keys[g.controls.heavyA] && Date.now() - g.kratos.lastHattack > weapon.hC && (!currentBattle?.complete || !g.currentEnemy?.dead) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking) {
 			const now = Date.now();
 
 			g.kratos.heavyCombo = (g.kratos.heavyCombo + 1) % 2; // 2 hit combo for now
@@ -792,15 +793,15 @@ export default function enginize(g, config) {
 			}
 		}
 
-		g.keys['r'] = false;
+		g.keys[g.controls.heavyA] = false;
 
 		// If heavy attack duration expired, reset
 		if (g.kratos.hAttacking && Date.now() > g.kratos.hAttackEnd) {
 			g.kratos.hAttacking = false;
-			g.keys['r'] = false;
+			g.keys[g.controls.heavyA] = false;
 		}
 		// Block with q
-		if (g.keys["q"] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.held && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
+		if (g.keys[g.controls.block] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.held && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
 
         // Dodge
         if (g.keys["Shift"] && !g.kratos.dodging && !g.kratos.blocking && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.lAttacking && !g.kratos.hAttacking) {
@@ -1795,7 +1796,7 @@ export default function enginize(g, config) {
 	function breakBlock() {
 		g.playCaudio(g.audio.blockSound, g.sfxVolume);
 		g.kratos.blocking = false;
-		g.keys['q'] = false;
+		g.keys[g.controls.block] = false;
 	}
 
 	// For debugging or checking things
@@ -1816,8 +1817,11 @@ export default function enginize(g, config) {
 	}
 
 	const enemyHitbox = (enemy) => {
+		const exceptions = ["Fallen Legionnaire", "Gorgon", "Medusa", "Hoplite", "Cyclops", "Hades", "Hermes", "Hercules", "Zeus"];
+		let rightX = (enemy.state !== "idle" && enemy.state !== "chase") || exceptions.includes(enemy.name) || (enemy.w > enemy.oW * 1.2) ? enemy.x + enemy.oW / 4 : enemy.x;
+		if (enemy.name === "Hades" && enemy.state === "idle") rightX = enemy.x;
 		return {
-			x: enemy.facing === "left" ? (enemy.x - enemy.oW / 4) + (enemy.oW / 2) : enemy.x + enemy.oW / 4,
+			x: enemy.facing === "left" ? enemy.midX - (enemy.oW / 4) : rightX,
 			y: enemy.y - enemy.h,
 			w: enemy.oW / 2,
 			h: enemy.h
@@ -1826,7 +1830,6 @@ export default function enginize(g, config) {
 
 	function showEnemyHitBox (enemy) {
 		const hitbox = enemyHitbox(enemy);
-
 		ctx.save();
 		ctx.globalAlpha = 0.35;
 		ctx.strokeStyle = "cyan";
@@ -1843,13 +1846,14 @@ export default function enginize(g, config) {
 		ctx.stroke();
 	}
 
-	const enemyStats = document.querySelector('.Enemy-stats');
-	if (enemyStats && enemies.length > 1) enemyStats.style.display = 'none';
-	if (enemyStats && enemies.length === 1) { 
+	const enemyHealthFiller = document.querySelector('.Efiller');
+	function updateEnemyHealthbar(enemy) {
+		const enemyStats = document.querySelector(".Enemy-stats");
+		if (enemyStats.style.display === 'none') enemyStats.style.display = 'block';
 		document.querySelector('.Ehealth-bar').style.display === 'inline-block';
 		document.querySelector('.Ehealth-bar').style.width === enemies[0].health;
+		enemyHealthFiller.style.width = `${enemy.health}px`;
 	}
-	const enemyHealthFiller = document.querySelector('.Efiller');
 
 	function updateEnemy(enemy) {
 		// Handle death
@@ -1877,7 +1881,7 @@ export default function enginize(g, config) {
 			return;
 		}
 
-		if (enemies.length === 1 && enemyHealthFiller) enemyHealthFiller.style.width = `${enemy.health}px`;
+		if (enemyHealthFiller && enemy === enemies[focus] && !enemy.dead) updateEnemyHealthbar(enemy)
 
 		if (!enemy.halved && enemy.god && enemy.health <= enemy.maxHealth / 2) {
 			enemy.halved = true;
@@ -1900,7 +1904,8 @@ export default function enginize(g, config) {
 		let rightHitX = g.kratos.velX || (enemy !== enemies[focus]) ? 0 : (75 / 2) - 10
 		if (enemy !== enemies[focus] && g.kratos.facing === "right" && !g.kratos.velX) rightHitX = (75 / 2) - 10
 		const kratosAttackableX = g.kratos.facing === "left" ? leftHitX : g.kratos.midX - rightHitX;
-		const enemyAttackX = enemy.facing === "right" ? enemy.midX + enemy.oW / 2 : enemy.x;
+		let enemyAttackX = enemy.facing === "right" ? enemy.midX + enemy.oW / 2 : enemy.x;
+		if (enemy.name === "Hades" && enemy.facing === "right") enemyAttackX = enemy.midX + (enemy.oW / 2) - 14;
 		const attackDis = Math.abs(Math.round(enemyAttackX - kratosAttackableX)); 
 
 		// Handle stun
@@ -1992,7 +1997,8 @@ export default function enginize(g, config) {
 
 		// ----- Hades soul take -----
 		if (enemy.soulTaking && g.kratos.health > 0) {
-
+			enemy.velX = 0;
+			enemy.midX < g.kratos.midX ? enemy.facing = "right" : enemy.facing = "left"
 			// Damage over time (3 HP every 0.4s)
 			if (Date.now() - enemy.lastSoulTakeTick > 400) {
 				damageKratos({damage: 3});
@@ -2152,21 +2158,21 @@ export default function enginize(g, config) {
 		// Enemy decision handling
 
 		if (!enemy.name.includes("Archer") && !enemy.dead && enemy.dCooldown && !enemy.decision && Date.now() - enemy.lastAttack > enemy.dCooldown) {
+			if (!g.freeplay && enemy.god && !enemy.defeated && !lineComplete) return
 			enemy.lastAttack = 0;
 			enemy.decision = enemyDecides(enemy);
 		} 
 		
 		const inChaseRange = distance <= enemy.chaseRange;
+		const inAttackRange = enemy.decision === "lAttack" ? attackDis <= enemy.lR : attackDis <= enemy.hR;
 		if (enemy.chaseRange && g.kratos.health > 0 && !enemy.stunned && !enemy.dodging) {
-			if (inChaseRange && enemy.state === "idle") {
+			if (inChaseRange && enemy.state === "idle" && !inAttackRange) {
 				if (enemy.god && !enemy.defeated && !lineComplete) {
 					if (enemy.state !== "dodge") enemy.state = "chase"
 				} else { enemy.state = "chase" }
 			}
 		}
-
-		const inAttackRange = enemy.decision === "lAttack" ? attackDis <= enemy.lR : attackDis <= enemy.hR;
-		if (enemy.state === "chase" && enemy.velX === 0 && Date.now() - enemy.lastAttack < enemy.dCooldown) enemy.state = "idle";
+		
 		if (enemy.state === "chase" || enemy.state === "idle" && g.kratos.health > 0) {
 			if (!g.freePlay && enemy.god && !enemy.defeated && !lineComplete) return
 			if (enemy.decision === "leap" && attackDis <= enemy.leapRange) {
@@ -2201,7 +2207,7 @@ export default function enginize(g, config) {
 
 		if (Date.now() > enemy.stateEnd) {
 			if (enemy.state === "lAttack" || enemy.state === "hAttack") {
-				enemy.state = inAttackRange || enemy.sC ? "idle" : "chase";
+				enemy.state = "idle";
 				enemy.hasHit = false;
 				enemy.lAttacking = false;
 				enemy.hAttacking = false;
@@ -2617,7 +2623,6 @@ export default function enginize(g, config) {
 			focus++
 			if (focus > enemies.length - 1) focus = 0
 		} 
-		console.log("Focused on enemy", focus + 1);
 	}
 		
 

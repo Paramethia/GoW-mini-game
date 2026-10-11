@@ -61,9 +61,9 @@ export default function mainMenu(g) {
                 <div id="Controls" style="display:none">
 					<div class="controls"><span> A / ← </span><font color="#d8c8a8">Walk left</font></div>
 					<div class="controls"><span> D / → </span><font color="#d8c8a8">Walk right</font></div>
-					<div class="controls"><span> E </span><font color="#d8c8a8">Light attack</font></div>
-					<div class="controls"><span> R </span><font color="#d8c8a8">Heavy attack</font></div>
-					<div class="controls"><span> Q </span><font color="#d8c8a8">Block</font></div>
+					<div class="controls"><span> ${g.controls.lightA.toUpperCase()} </span><font color="#d8c8a8">Light attack</font></div>
+					<div class="controls"><span> ${g.controls.heavyA.toUpperCase()} </span><font color="#d8c8a8">Heavy attack</font></div>
+					<div class="controls"><span> ${g.controls.block.toUpperCase()} </span><font color="#d8c8a8">Block</font></div>
                     <div class="controls"><span> F </span><font color="#d8c8a8">Enemy focus</font></div>
 					<div class="controls"><span> Space </span><font color="#d8c8a8">Jump</font></div>
 					<div class="controls"><span> Shift </span><font color="#d8c8a8">Dodge/dash</font></div>
@@ -118,6 +118,8 @@ export default function mainMenu(g) {
     const ambVolSlider = document.getElementById('ambience-vol-slider');
     const dialogVolSlider = document.getElementById('dialogue-vol-slider');
     const sfxVolSlider = document.getElementById('sfx-vol-slider');
+    // Controls options elements
+    const controls = document.querySelectorAll('.controls > span');
     // Advanved options elements
     const toggles = document.querySelectorAll('.toggle');
     
@@ -331,7 +333,47 @@ export default function mainMenu(g) {
         updateAllVolumeSlider();
     });
 
+    // Controls switching
+    const swaps = { e: "j", r: "k", q: "w" }
+
+    controls.forEach(control => {
+        control.onclick = () => {
+            const key = control.innerText.trim().toLowerCase();
+
+            if (!Object.keys(swaps).includes(key) && !Object.values(swaps).includes(key)) return
+
+            if (Object.values(g.controls).includes(key)) console.log("Founded it")
+
+            if (key === "e") {
+                control.innerText = "J";
+                g.controls.lightA = "j";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "j") {
+                control.innerText = "E";
+                g.controls.lightA = "e";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "r") {
+                control.innerText = "K";
+                g.controls.heavyA = "k";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "k") {
+                control.innerText = "R";
+                g.controls.heavyA = "r";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "q") {
+                control.innerText = "W";
+                g.controls.block = "w";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "w") {
+                control.innerText = "Q";
+                g.controls.block = "q";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            }
+        }
+    });
+
     // Toggles options
+
     const togNames = ["Hardcore", "Developer", "Freeplay"];
     const togProps = ["hardcore", "devMode", "freePlay"];
     toggles.forEach((toggle, index) => {

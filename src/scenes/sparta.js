@@ -24,10 +24,13 @@ export default function sparta(g) {
 				</div>
 			</center>
 			<div id="Places">
+				<div>
+				<h5>Locations</h5>
 				<button id="Smithy-button">Smithy</button>
 				<button id="Athens-button">Athens</button>
 				<button id="Underworld-button">Underworld ${g.freePlay || g.getEnemy("Medusa").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
 				<button id="Olympus-button">Mount Olympus ${g.freePlay || g.getEnemy("Hades").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
+				</div>
 			</div>
             ${hotbar}
 		</div>

@@ -7,7 +7,6 @@
 - Health bar will now be on by default.
 - Removed health bar toggle in settings.
 - Kratos will now automatically update with each weapon he holds in Sparta.
-- Removed enemy health bars for some battles.
 - Changed some weapon stats & prices to make them more balanced.
 - Nerfed some enemies to make some battles more balanced.
 - Battle area container width increased by 200 pixels.
@@ -46,7 +45,8 @@ There are now 3 more audio options. Audio options for UI, Dialogue, and _All_. W
 
 **Controls**
 
-Also added controls in main menu to have a clear view of all controls for battles.
+Also added controls in main menu to have a clear view of all controls for battles. You can also click to change controls for light and heavy attacks along with blocks. You can only change to one option for now. 
+This can only be done in the main menu though.
 
 **Advanced options**
 

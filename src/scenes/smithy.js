@@ -11,7 +11,7 @@ export default function smithy(g){
 			${stats(g)}
 			<center>
 			<div id="Text">
-				You enter the smithy. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie. Select weapons using a/← or d/→. Or just hover on them.
+				You enter the smithy. You see a bunch of weapons that vary in power. Get the ones you can, or take a look at them for now if you are currently a brokie. Select weapons using A/← or D/→ keys. Leave with Esc key.
 			</div>
             <div id="Mid">     
                 <img id="Kratos" src="./Imagery/UI/Kratos standing animation.gif">

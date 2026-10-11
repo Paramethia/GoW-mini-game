@@ -17,7 +17,7 @@ export default function battle(g, place = null) {
 			<div id="Text">
 				${!g.freePlay ? g.currentBattle?.name + " battle in " + g.currentBattle?.location : g.currentEnemy?.name  + " freeplay battle"}
 			</div>
-			${g.currentBattle?.enemies?.length > 1 && !g.freePlay ? "" : enemyStats(g)}
+			${enemyStats(g)}
 			<canvas id="Battle-area"></canvas>
 			<img id="You-dead" src="Imagery/battle/You are dead GoW CoO.png" style="display: none;">
 			<button id="Return" style="display: none;"> Return </button>
@@ -171,15 +171,14 @@ export default function battle(g, place = null) {
 		}, boss.defeated ? 12 : intervalTime);
 	}
 	
-	
 	// --- Engine configurations ---
 
 	const config = {
 		gravity: 0.5,
-		groundLevel: place === "Olympus" ? 470 : 480
+		groundLevel: place === "Olympus" ? 480 : 470
 	};
 
-	if (!place && g.currentBattle.gL) config.groundLevel = g.currentBattle.gL // Remove if all battle ground levels are the same for each location (unlikely)
+	if (!place && g.currentBattle.gL) config.groundLevel = g.currentBattle.gL
 
 	enginize(g, config);
 }

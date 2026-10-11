@@ -74,6 +74,11 @@ const globals = {
     ambienceVolume: localStorage.getItem('ambienceVolume') ? Number(localStorage.getItem('ambienceVolume')) : 100,
 	dialogueVolume: localStorage.getItem('dialogueVolume') ? Number(localStorage.getItem('dialogueVolume')) : 100,
 	sfxVolume: localStorage.getItem('sfxVolume') ? Number(localStorage.getItem('sfxVolume')) : 100,
+	controls: JSON.parse(localStorage.getItem('controls')) ||  {
+    	lightA: "e",
+    	heavyA: "r",
+    	block: "q"
+	},
 	paused: false,
 
 	// Advanced options
@@ -182,7 +187,7 @@ const globals = {
 			lD: 17, hD: 23, lK: 8.4, hK: 12.7, lC: 750, hC: 1400, lR: 109, hR: 130, lS: 500, hS: 990, 
 			sTC: 4200, sTD: 5000, gC: 5000, gD: 1700, lightChance: 0.55, heavyChance: 0.5, soulTakeChance: 0.2, graspChance: 0.3,
 			orbs: [{type: "green", amount: 29}, {type: "red", amount: 48}, {type: "gold", amount: 7}],
-			god: true, defeated: localStorage.getItem("hadesDefeated") === "true", dCooldown: 1500,
+			god: true, defeated: localStorage.getItem("hadesDefeated") === "true", dCooldown: 2000,
 			attackSound: sfx.hadesAttacks, hitSound: sfx.hadesAttacked, deathSound: sfx.hadesDeath,
 			reward: { 
 				name: "Claws of Hades", 
@@ -338,19 +343,23 @@ const globals = {
 		olympus: [
 			{
 				name: "Cyclops X Minotaur", location: "Halls of Olympus", bg: "Imagery/battle/Olympus battle area.png", complete: false,
-				get enemies() { return globals.getEnemies(["Cyclops", "Minotaur"]) }, bT: music.cyclopsBattleT, gL: 470
+				get enemies() { return globals.getEnemies(["Cyclops", "Minotaur"]) }, bT: music.cyclopsBattleT, gL: 480
+			},
+			{
+				name: "Cyclops X Minotaur X Satyr X Fallen Legionnaire", location: "Halls of Olympus", bg: "Imagery/battle/Olympus battle area.png", complete: false,
+				get enemies() { return globals.getEnemies(["Cyclops", "Minotaur", "Satyr", "Fallen Legionnaire"]) }, bT: music.cyclopsBattleT, gL: 480
 			},
 			{
 				name: "God of speed", location: "Olympian citadel", bg: "Imagery/battle/Hermes battle area.png", complete: false,
-				get enemies() { return globals.getEnemies(["Hermes"]) }, bT: music.underworldBattleT1,
+				get enemies() { return globals.getEnemies(["Hermes"]) }, bT: music.hermesBattleT,
 			},
 			{
-				name: "Demigod", location: "Olympus arena", bg: "Imagery/battle/Hermes battle area.png", complete: false,
-				get enemies() { return globals.getEnemies(["Hercules"]) }, bT: music.underworldBattleT1, gL: 490
+				name: "Demigod", location: "Olympus arena", bg: "Imagery/battle/Hercules battle area.png", complete: false,
+				get enemies() { return globals.getEnemies(["Hercules"]) }, bT: music.herculesBattleT, gL: 490
 			},
 			{
 				name: "King of the gods", location: "Olympus tower", bg: "Imagery/battle/Zeus battle area.png", complete: false,
-				get enemies() { return globals.getEnemies(["Zeus"]) }, bT: music.underworldBattleT1,
+				get enemies() { return globals.getEnemies(["Zeus"]) }, bT: music.zeusBattleT,
 			},
 		]
 	},
@@ -412,7 +421,7 @@ const globals = {
 	},
 	keyupHandler(event) { 
 		globals.keys[event.key.includes("Arrow") ? event.key : event.key.toLowerCase()] = false; 
-		if (event.key.toLowerCase() === 'q') globals.kratos.blocking = false;
+		if (event.key.toLowerCase() === globals.controls.block) globals.kratos.blocking = false;
 	},
 	
 	mKey: undefined,
