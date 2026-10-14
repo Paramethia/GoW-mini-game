@@ -15,7 +15,7 @@ export default function battle(g, place = null) {
 			<center>
 			<p><font color="#a88868">FPS: </font><span id="FPS">0</span></p>
 			<div id="Text">
-				${!g.freePlay ? g.currentBattle?.name + " battle in " + g.currentBattle?.location : g.currentEnemy?.name  + " freeplay battle"}
+				${!g.freeplay ? g.currentBattle?.name + " battle in " + g.currentBattle?.location : g.currentEnemy?.name  + " freeplay battle"}
 			</div>
 			${enemyStats(g)}
 			<canvas id="Battle-area"></canvas>
@@ -29,8 +29,8 @@ export default function battle(g, place = null) {
 	`;
 
 	const battleCon = document.getElementById("Battle");
-	if (g.freePlay) battleCon.style.backgroundImage = `url("Imagery/battle/${place} battle area.png")`;
-	if (!g.freePlay) battleCon.style.backgroundImage = `url("${g.currentBattle.bg}")`;
+	if (g.freeplay) battleCon.style.backgroundImage = `url("Imagery/battle/${place} battle area.png")`;
+	if (!g.freeplay) battleCon.style.backgroundImage = `url("${g.currentBattle.bg}")`;
 	
 	settingsInit(g);
 
@@ -82,8 +82,8 @@ export default function battle(g, place = null) {
 		document.removeEventListener("keyup", g.keyupHandler);
 		g.inBattle = false;
 		clearInterval(g.frameCount);
-		if (g.freePlay ? goBack() : sparta(g));
-		if (!g.freePlay) g.stopAmbience();
+		if (g.freeplay ? goBack() : sparta(g));
+		if (!g.freeplay) g.stopAmbience();
 		setTimeout(g.resetKratos(), 100);
 	}
 
@@ -159,7 +159,7 @@ export default function battle(g, place = null) {
 	}
 	
 	// Starting dialogue for god battles
-	if (!g.freePlay && g.currentBattle.enemies[0].god && !g.currentBattle.enemies[0].defeated) {
+	if (!g.freeplay && g.currentBattle.enemies[0].god && !g.currentBattle.enemies[0].defeated) {
 		g.stopAmbience();
 		const boss = g.currentBattle.enemies[0];
 		const intervalTime = boss.name === "Hermes" ? 4200 : boss.name === "Hercules" ? 3000 : boss.name === "Zeus" ? 14200 : 25700;

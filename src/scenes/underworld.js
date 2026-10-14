@@ -109,7 +109,7 @@ export default function underworld(g) {
 	document.addEventListener("keydown", g.navKeys);
 
 	function goBattle() {
-		if (!g.freePlay) return
+		if (!g.freeplay) return
 		g.stopAmbience();
 		document.removeEventListener("keydown", g.navKeys);
 		g.currentEnemy = creatures[currentEnemyI];

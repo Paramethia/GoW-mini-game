@@ -104,7 +104,7 @@ export default function olympus(g) {
 	document.addEventListener("keydown", g.navKeys);
 	
 	function goBattle() {
-		if (!g.freePlay) return
+		if (!g.freeplay) return
 		g.stopAmbience();
 		document.removeEventListener("keydown", g.navKeys);
 		g.currentEnemy = enemies[currentEnemyI];

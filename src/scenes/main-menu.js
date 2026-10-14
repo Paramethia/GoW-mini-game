@@ -14,6 +14,13 @@ export default function mainMenu(g) {
             <button id='m-music'>
                 <i id="music-note" class="fa-sharp fa-solid fa-music fa-2xl" style="color: #0d0d0d;"></i>
             </button> <span id="porp"> Play main menu music? </span>
+
+            <div class="Mm-buttons">
+                <button id="New-gameB" class="menubut">New game</button>
+                <button id="Load-gameB" class="menubut">Load game</button>
+                <button id="FreeplayB" class="menubut">Freeplay</button>
+                <button id="OptionsB" class="menubut">Options</button>
+            </div>
         
             <div class="Warning">
                 <center>
@@ -72,15 +79,9 @@ export default function mainMenu(g) {
                 <div id="Advanced" style="display:none">
                     <div class="toggle"> > Hardcore ${g.hardcore ? "on" : "off"} < </div>
 					<div class="toggle"> > Developer mode ${g.devMode ? "on" : "off"} < </div>
-					<div class="toggle"> > Freeplay mode ${g.freePlay ? "on" : "off"} < </div>
                     <div id="link" onClick="window.open('https://github.com/Paramethia/GoW-mini-game/blob/master/WhatsNew.md', '_blank')"> Update changes </div>
+                    <div id="link" onClick="window.open('https://gow-mini-game-old.vercel.app', '_blank')"> Previous </div>
 				</div>
-            </div>
-            
-            <div class="Mm-buttons">
-                <button id="New-gameB" class="menubut">New game</button>
-                <button id="Load-gameB" class="menubut">Load game</button>
-                <button id="OptionsB" class="menubut">Options</button>
             </div>
         </div>
     `;
@@ -97,6 +98,8 @@ export default function mainMenu(g) {
     const newGameB = document.getElementById('New-gameB');
     const loadGameB = document.getElementById('Load-gameB');
         if (savedGame) loadGameB.style.filter = 'brightness(100%)';
+    const freeplayB = document.getElementById('FreeplayB');
+        if (g.beatGame) freeplayB.style.filter = 'brightness(100%)';
     const optionsB = document.getElementById('OptionsB');
     const yesB = document.getElementById('YesB');
     const noB = document.getElementById('NoB');
@@ -155,7 +158,7 @@ export default function mainMenu(g) {
 		g.inMainMenu = false;
 	}
 
-    const buttons = [newGameB, loadGameB, optionsB];
+    const buttons = [newGameB, loadGameB, freeplayB, optionsB];
     let currentIndex = -1;
 
     if (g.navKeys) document.removeEventListener("keydown", g.navKeys);
@@ -194,19 +197,20 @@ export default function mainMenu(g) {
         button.onmouseover = () => {
             g.playCaudio(g.audio.hover, g.uiVolume);
             button.style.scale = '1.2';
-            button.style.background = 'darkgrey';
-            button.style.color = '#630b05';
+            if (button.id !== "FreeplayB") button.style.background = 'darkgrey';
+            if (button.id !== "FreeplayB") button.style.color = '#630b05';
         }
         button.onmouseout = () => {
             button.style.transition = 'all 0.4s ease 0s';
             button.style.scale = '1';
-            button.style.background = '#7a715e';
-            button.style.color = '#0a0a23';
+            if (button.id !== "FreeplayB") button.style.background = '#7a715e';
+            if (button.id !== "FreeplayB") button.style.color = '#0a0a23';
         }
     });
 
     newGameB.onclick = () => {
         g.audio.selection.play();
+        g.freeplay = false;
         mmButtons.style.display = 'none';
         if (savedGame) { 
             warning.style.display = 'block';
@@ -242,8 +246,17 @@ export default function mainMenu(g) {
     loadGameB.onclick = () => {
         if (savedGame) {
             g.audio.selection.play();
+            g.freeplay = false;
             leaveMenu();
         }
+    }
+
+    freeplayB.onclick = () => {
+        if (g.beatGame) {
+            g.audio.selection.play();
+            g.freeplay = true;
+            leaveMenu();
+        } else alert("You can only turn on freeplay mode when you have finished the game");
     }
 
     optionsB.onclick = () => {
@@ -374,14 +387,10 @@ export default function mainMenu(g) {
 
     // Toggles options
 
-    const togNames = ["Hardcore", "Developer", "Freeplay"];
-    const togProps = ["hardcore", "devMode", "freePlay"];
+    const togNames = ["Hardcore", "Developer"];
+    const togProps = ["hardcore", "devMode"];
     toggles.forEach((toggle, index) => {
         toggle.onclick = () => {
-            if (togNames[index] === "Freeplay" && !g.beatGame) {
-                alert("You can only turn on freeplay mode when you have finished the game");
-                return
-            }
             const key = togProps[index];
             g[key] = !g[key];
             toggle.innerText = `> ${togNames[index]} ${index ? "mode" : ""} ${g[key] ? "on" : "off"} <`;

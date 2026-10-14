@@ -9,7 +9,7 @@ import battle from './battle.js';
 
 export default function sparta(g) {
     let defaultText = "Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use w/s to navigate to different places.";
-    if (Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'))) defaultText = "Welcome back to God of War. You already know what to do mos. \n ;-)";
+    if (g.currentBattle || Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'))) defaultText = "Welcome back to God of War. You already know what to do mos. \n ;-)";
 
 	g.game.innerHTML = `
 		<div id="Sparta">
@@ -28,8 +28,8 @@ export default function sparta(g) {
 				<h5>Locations</h5>
 				<button id="Smithy-button">Smithy</button>
 				<button id="Athens-button">Athens</button>
-				<button id="Underworld-button">Underworld ${g.freePlay || g.getEnemy("Medusa").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
-				<button id="Olympus-button">Mount Olympus ${g.freePlay || g.getEnemy("Hades").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
+				<button id="Underworld-button">Underworld ${g.freeplay || g.getEnemy("Medusa").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
+				<button id="Olympus-button">Olympus ${g.freeplay || g.getEnemy("Hades").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
 				</div>
 			</div>
             ${hotbar}
@@ -153,7 +153,7 @@ export default function sparta(g) {
 		g.audio.selection.play();
 		pauseMainMusic();
 		g.inSparta = false;
-		if (g.freePlay) {
+		if (g.freeplay) {
 			athens(g);
 			g.audio.athens.play();
 			g.audio.athens.loop = true;
@@ -192,7 +192,7 @@ export default function sparta(g) {
 			g.inSparta = false;
 			g.audio.underworld.play();
 			g.audio.underworld.loop = true;
-			if (g.freePlay) {
+			if (g.freeplay) {
 				underworld(g);
 			} else { 
 				g.selectBattle("Underworld");
@@ -234,7 +234,7 @@ export default function sparta(g) {
 			g.inSparta = false;
 			g.audio.olympus.play();
 			g.audio.olympus.loop = true;
-			if (g.freePlay) {
+			if (g.freeplay) {
 				olympus(g);
 			} else { 
 				g.selectBattle("Olympus");

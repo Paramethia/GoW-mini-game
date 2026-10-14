@@ -6,12 +6,15 @@
 
 - Health bar will now be on by default.
 - Removed health bar toggle in settings.
+- Improved location buttons containers design slightly.
 - Kratos will now automatically update with each weapon he holds in Sparta.
 - Changed some weapon stats & prices to make them more balanced.
 - Nerfed some enemies to make some battles more balanced.
 - Battle area container width increased by 200 pixels.
 - Kratos will now have increased speed after defeating Hermes.
 - Each of Kratos' weapons will now light up according to which weapon is attacking, instead of all of them lighting up whenever any weapon attacks (only applicable to lightable weapons, of course).
+- Stopped the tab key from focusing on buttons during battle.
+- Improved enemy AI decision cooldowning.
 - Improved enemy AI decision handling for light and heavy attacks to be more consistent.
 - Gorgon, Banshee, and Medusa heavy attacks will no longer break your block.
 - Zeus light attacks can no longer still apply damage while blocking.
@@ -27,7 +30,13 @@
 - Fixed Kratos' dashing/dodging sometimes causing him to continue moving in a certain direction.
 - Fixed enemies not actually breaking their block when Kratos heavy attacks them.
 - Fixed blocking audio not playing for kratos when he is heavy attacked while blocking.
+- Fixed Kratos attackable X position to be correct no matter where he faces.
 - Fixed Kratos being able to block while held by the Underground hands in the Hades battle.
+
+### Freeplay
+
+When you now start the game, you will now be introduced to a new button called "Freeplay". This will basically just allow you to choose which individual enemies you want to fight instead of being forced to progress through the game in my programmed order. Button will be disabled by default.
+⚠️ _This can only be turned on once you have beat the game_
 
 ### Developer mode
 
@@ -56,12 +65,11 @@ There will be a new hardcore option found in the advanced options. This makes su
 <u>Dev mode</u> <br />
 The new developer mode got added in the main menu options as well.
 
-<u>Freeplay</u> <br />
-There will now be a new freeplay mode. This will basically just allow you to choose which individual enemies you want to fight instead of being forced to progress through the game in my programmed order. It will be off by default.
-⚠️ _This can only be turned on once you have beat the game_
-
 <u>Update changes</u> <br />
 Also added a button to link you to the new update changes throughout the development of the game. The link will take you right here. You will read this exact update changes you are reading.
+
+<u>Previous</u> <br />
+A button to link you to the previous update of the game. Where you could check out some differences if you want.
 
 ### Better inventory & hotbar system
 
@@ -165,4 +173,4 @@ The previous version (Alpha 1.6) took up about 160mb. Now with all the optimizat
 - Refactored enemy battle choosing code for all places.
 - Better variable naming & variable definition placements in src/audio.js + comments with organisation.
 
-###### Released 8 October 2026 (hopefully)
+###### Released 15 October 2026

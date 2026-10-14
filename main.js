@@ -69,6 +69,7 @@ const globals = {
 	loaded: false,
     play: true,
     set: false,
+	freeplay: false,
 	uiVolume: localStorage.getItem('uiVolume') ? Number(localStorage.getItem('uiVolume')) : 100,
     musicVolume: localStorage.getItem('musicVolume') ? Number(localStorage.getItem('musicVolume')) : 100,
     ambienceVolume: localStorage.getItem('ambienceVolume') ? Number(localStorage.getItem('ambienceVolume')) : 100,
@@ -84,7 +85,6 @@ const globals = {
 	// Advanced options
 	hardcore: localStorage.getItem('hardcore') === 'true',
 	devMode: localStorage.getItem('developer') === 'true',
-	freePlay: localStorage.getItem('freeplay') === 'true',
 
 	// Conditions
 	inMainMenu: false,
@@ -494,7 +494,7 @@ const globals = {
 		const nextPlace = this.battlePlace === "Athens" ? "Underworld" : this.battlePlace === "Underworld" ? "Olympus" : null
 		this.notification.style.animation = 'notify 0.7s linear forwards';
 		this.notification.style.display = 'inline-block';
-		document.getElementById('noti-text').innerText = nextPlace && !this.beatGame ? `${nextPlace} battles now unlocked` : `Free play mode now unlcoked`;
+		document.getElementById('noti-text').innerText = nextPlace && !this.beatGame ? `${nextPlace} battles now unlocked` : `Freeplay now unlocked`;
 		setTimeout(() => { this.notification.style.animation = 'hide 0.7s linear forwards' }, 5000 );
 	},
 	

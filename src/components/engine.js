@@ -254,7 +254,7 @@ export default function enginize(g, config) {
 		}
 	}
 
-	if (g.freePlay) {
+	if (g.freeplay) {
 		setEnemyAssets(g.currentEnemy);
 		enemies.push(new Enemy(g.currentEnemy));
 	} else {
@@ -551,7 +551,7 @@ export default function enginize(g, config) {
 				g.keys["ArrowRight"] = false;
 				g.kratos.facing = "left";
 			} else if (g.keys["ArrowRight"] || g.keys["d"]) {
-				if (!g.freePlay && enemy.god && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
+				if (!g.freeplay && enemy.god && !enemy.defeated) { lineComplete ? g.kratos.velX = speed : g.kratos.velX = 0 } else { g.kratos.velX = speed }
 				g.keys["a"] = false;
 				g.keys["ArrowLeft"] = false;
 				g.kratos.facing = "right";
@@ -570,7 +570,7 @@ export default function enginize(g, config) {
 		}
 
 		// Focus
-		if (g.keys["f"] && (!g.freePlay && enemies.length > 1)) {
+		if (g.keys["f"] && (!g.freeplay && enemies.length > 1)) {
 			changeFocusedEnemy();
 		}
 		g.keys["f"] = false;
@@ -592,7 +592,7 @@ export default function enginize(g, config) {
 		const kratosAttackX = g.kratos.facing === "right" ? g.kratos.midX + attackRange : g.kratos.midX - attackRange;
 		const attackDis = Math.abs(Math.round(kratosAttackX - enemyAttackableXpos));
 
-		// Attack with e (light attacks)
+		// Light attack
 		if (g.keys[g.controls.lightA] && Date.now() - g.kratos.lastLattack > weapon.lC && (!currentBattle?.complete || !g.currentEnemy?.dead) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.hAttacking) {
 			const now = Date.now();
 
@@ -692,7 +692,7 @@ export default function enginize(g, config) {
 			g.keys[g.controls.lightA] = false;
 		}
 		
-		// Attack with r (heavy attacks)
+		// Heavy attack
 		if (g.keys[g.controls.heavyA] && Date.now() - g.kratos.lastHattack > weapon.hC && (!currentBattle?.complete || !g.currentEnemy?.dead) && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.lAttacking) {
 			const now = Date.now();
 
@@ -800,7 +800,7 @@ export default function enginize(g, config) {
 			g.kratos.hAttacking = false;
 			g.keys[g.controls.heavyA] = false;
 		}
-		// Block with q
+		// Block
 		if (g.keys[g.controls.block] && !g.kratos.blocking && !g.kratos.dodging && !g.kratos.stunned && !g.kratos.petrified && !g.kratos.held && !g.kratos.lAttacking && !g.kratos.hAttacking) g.kratos.blocking = true
 
         // Dodge
@@ -934,7 +934,7 @@ export default function enginize(g, config) {
 					g.kratos.h = 158;
 					g.kratos.w = 150;
 					if (weapon.name.includes("cestus") || weapon.name.includes("Arms")) g.kratos.w = 130
-					if (weapon.name.includes("Gauntlet")) g.kratos.w = 110
+					if (weapon.name.includes("Gauntlet")) g.kratos.w = 112
 					if (weapon.name.includes("Arms")) g.kratos.h = 205;
 				} else if (enemy.health !== 0) { 
 					if (g.kratos.x < enemy.x) {
@@ -968,6 +968,7 @@ export default function enginize(g, config) {
 							g.kratos.w = 150;
 							g.kratos.h = 159;
 							if (weapon.name.includes("whip")) g.kratos.w = 160
+							if (weapon.name.includes("Gauntlet")) g.kratos.w = 112
 							if (weapon.name.includes("Arms")) {
 								g.kratos.w = 120;
 								g.kratos.h = 205;
@@ -1004,6 +1005,7 @@ export default function enginize(g, config) {
 							g.kratos.w = 150;
 							g.kratos.h = 159;
 							if (weapon.name.includes("whip")) g.kratos.w = 160
+							if (weapon.name.includes("Gauntlet")) g.kratos.w = 112
 							if (weapon.name.includes("Arms")) {
 								g.kratos.w = 130;
 								g.kratos.h = 205;
@@ -1312,6 +1314,7 @@ export default function enginize(g, config) {
 		enemy.stateEnd = now + enemy.bD;
 		enemy.blocking = true;
 		enemy.lastBlock = now;
+		enemy.velX = 0;
 	}
 
 	function bansheeScreams(enemy) {
@@ -1846,13 +1849,13 @@ export default function enginize(g, config) {
 		ctx.stroke();
 	}
 
-	const enemyHealthFiller = document.querySelector('.Efiller');
 	function updateEnemyHealthbar(enemy) {
 		const enemyStats = document.querySelector(".Enemy-stats");
 		if (enemyStats.style.display === 'none') enemyStats.style.display = 'block';
-		document.querySelector('.Ehealth-bar').style.display === 'inline-block';
-		document.querySelector('.Ehealth-bar').style.width === enemies[0].health;
-		enemyHealthFiller.style.width = `${enemy.health}px`;
+		document.getElementById('Enemy-name').innerText = enemy.name;
+		document.querySelector('.Ehealth-bar').style.display = 'inline-block';
+		document.querySelector('.Ehealth-bar').style.width = `${enemy.maxHealth}px`;
+		document.querySelector('.Efiller').style.width = `${enemy.health}px`;
 	}
 
 	function updateEnemy(enemy) {
@@ -1877,11 +1880,11 @@ export default function enginize(g, config) {
 				localStorage.setItem(`${enemyNameL}Defeated`, enemy.defeated);
 			}
 
-			if (g.freePlay) setTimeout(victory(g), 2500)
+			if (g.freeplay) setTimeout(victory(g), 2500)
 			return;
 		}
 
-		if (enemyHealthFiller && enemy === enemies[focus] && !enemy.dead) updateEnemyHealthbar(enemy)
+		if (enemy === enemies[focus] && !enemy.dead) updateEnemyHealthbar(enemy)
 
 		if (!enemy.halved && enemy.god && enemy.health <= enemy.maxHealth / 2) {
 			enemy.halved = true;
@@ -2174,7 +2177,7 @@ export default function enginize(g, config) {
 		}
 		
 		if (enemy.state === "chase" || enemy.state === "idle" && g.kratos.health > 0) {
-			if (!g.freePlay && enemy.god && !enemy.defeated && !lineComplete) return
+			if (!g.freeplay && enemy.god && !enemy.defeated && !lineComplete) return
 			if (enemy.decision === "leap" && attackDis <= enemy.leapRange) {
 				enemyLeaps(enemy);
 			} else if (enemy.decision === "block") {
@@ -2779,7 +2782,7 @@ export default function enginize(g, config) {
 					redOrbsGained += orb.size - 2;
 					if (currentBattle?.complete) lastRedOrbs += orb.size - 2
 					const kratosOrbs = g.currentBattle?.complete ? g.kratos.orbs - enemies[focus].orbs[1].amount * 2 : g.kratos.orbs;
-					document.getElementById("Orbs").innerText = kratosOrbs + (g.freePlay || !currentBattle?.complete ? redOrbsGained : lastRedOrbs);
+					document.getElementById("Orbs").innerText = kratosOrbs + (g.freeplay || !currentBattle?.complete ? redOrbsGained : lastRedOrbs);
 					g.playCaudio(g.audio.redOrbSound, g.sfxVolume);
 					localStorage.setItem('orbs', g.kratos.orbs);
 				} 
@@ -2827,7 +2830,7 @@ export default function enginize(g, config) {
 	// ==== Battle completion check ====
 
 	function battleCompletion() {
-		if (!g.freePlay && !g.currentBattle.complete && currentBattle === g.currentBattle) {
+		if (!g.freeplay && !g.currentBattle.complete && currentBattle === g.currentBattle) {
 			const deadEnemies = enemies.filter(enemy => enemy.dead === true);
 			if (deadEnemies.length === enemies.length) { 
 				console.log("Battle complete!");
@@ -2851,13 +2854,24 @@ export default function enginize(g, config) {
 	}, 1000);
 
 	// ===== Engine loop ====
+	
+	let lastFrameTime = 0;
+	const fpsInterval = 1000 / 60; // Cap FPS to 60
 
 	function engineLoop() {
+		if (performance.now() - lastFrameTime < fpsInterval) {
+			if (g.inBattle && currentBattle === g.currentBattle) {
+				requestAnimationFrame(engineLoop);
+			}
+			return;
+		}
+		lastFrameTime = performance.now() - ((performance.now() - lastFrameTime) % fpsInterval);
+
 		ctx.clearRect(0, 0, battleArea.width, battleArea.height);
 
 		if (!g.paused) {
-			if (!g.freePlay && enemies.length > 1 && enemies[focus].dead) changeFocusedEnemy()
-			if (!g.freePlay && enemies.length > 1) drawFocus(enemies[focus])
+			if (!g.freeplay && enemies.length > 1 && enemies[focus].dead) changeFocusedEnemy()
+			if (!g.freeplay && enemies.length > 1) drawFocus(enemies[focus])
 			updateKratos(enemies[focus]);
 			enemies.forEach(enemy => { if (!enemy.dead) updateEnemy(enemy) });
 			physics([g.kratos, ...enemies]);
@@ -2886,7 +2900,7 @@ export default function enginize(g, config) {
 		}
 		if (sButtonPrompt.active) drawSbuttonPrompt();
 		if (orbs.length && g.kratos.health > 0) drawOrbs();
-		if (!g.freePlay && !lineComplete && enemies[focus].god && !enemies[focus].defeated) drawText();
+		if (!g.freeplay && !lineComplete && enemies[focus].god && !enemies[focus].defeated) drawText();
 
 		frames++;
 		if (g.inBattle && currentBattle === g.currentBattle) requestAnimationFrame(engineLoop);
@@ -2901,7 +2915,7 @@ export function lowHealth(g) {
 
 function victory(g) {
 	g.stopMusic();
-	if (g.freePlay) {
+	if (g.freeplay) {
 		const enemyI = g.enemies.indexOf(g.currentEnemy);
 		if (enemyI > 9) {
 			g.audio.olympus.play()
@@ -2910,7 +2924,7 @@ function victory(g) {
 		} else g.audio.athens.play()
 	} else g.audio[g.battlePlace.toLowerCase()].play()
 	const battleI = g.placeBattles?.indexOf(g.currentBattle);
-	if (!g.freePlay) {
+	if (!g.freeplay) {
 		const enemyStats = document.querySelector('.Enemy-stats');
 		if (enemyStats) enemyStats.style.display = 'none';
 		localStorage.setItem("currentBattle", JSON.stringify(g.currentBattle));
@@ -2918,10 +2932,10 @@ function victory(g) {
 		if (battleI !== g.placeBattles?.length - 1) document.getElementById("Next").style.display = 'inline';
 	}
 
-	if (g.currentBattle?.name !== "Zeus" || g.freePlay) { 
+	if (g.currentBattle?.name !== "Zeus" || g.freeplay) { 
 		g.audio.defeatSound.play();
-		if (g.freePlay) document.getElementById('Text').innerText = "You have finished the battle. You can return to the enemies selection.";
-		if (!g.freePlay) document.getElementById('Text').innerText = "You have finished the battle. You can move to the next battle or return to Sparta for maybe a new weapon at the smithy.";
+		if (g.freeplay) document.getElementById('Text').innerText = "You have finished the battle. You can return to the enemies selection.";
+		if (!g.freeplay) document.getElementById('Text').innerText = "You have finished the battle. You can move to the next battle or return to Sparta for maybe a new weapon at the smithy.";
 	} else { 
 		g.audio.wonned.play();
 		document.getElementById('Text').innerText = "You defeated Zeus! You have finally completed this absolute SHIT game! 🤩";

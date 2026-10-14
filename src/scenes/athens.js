@@ -5,7 +5,7 @@ import battle from './battle.js';
 import sparta from './sparta.js';
 
 export default function athens(g) {
-	const creatures = g.getEnemies(["Undead Archer", "Undead Legionnaire", "Cursed Legionnaire", "Banshee", "Fallen Legionnaire", "Gorgon", "Medusa"]); //g.enemies.slice(0, 6)
+	const creatures = g.getEnemies(["Undead Archer", "Undead Legionnaire", "Cursed Legionnaire", "Banshee", "Fallen Legionnaire", "Gorgon", "Medusa"]);
 	let currentEnemyI = 0;
 	const lastIndex = creatures.length - 1;
 	const creaturesInfo = [ 
@@ -115,7 +115,7 @@ export default function athens(g) {
 	document.addEventListener("keydown", g.navKeys);
 
 	function goBattle() {
-		if (!g.freePlay) return
+		if (!g.freeplay) return
 		g.currentEnemy = creatures[currentEnemyI];
 		g.stopAmbience();
 		document.removeEventListener("keydown", g.navKeys);
