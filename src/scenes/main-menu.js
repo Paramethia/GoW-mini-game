@@ -1,4 +1,5 @@
 import loader from '../components/loader.js';
+import { ui, music, ambience, dialogue, sfx } from '../audio.js';
 import sparta from './sparta.js';
 
 export default function mainMenu(g) {
@@ -9,10 +10,17 @@ export default function mainMenu(g) {
                 <span id="progress"></span>
             </div>
         </div>
-        <div class="Main-menu">
+        <div id="Main-menu">
             <button id='m-music'>
                 <i id="music-note" class="fa-sharp fa-solid fa-music fa-2xl" style="color: #0d0d0d;"></i>
             </button> <span id="porp"> Play main menu music? </span>
+
+            <div class="Mm-buttons">
+                <button id="New-gameB" class="menubut">New game</button>
+                <button id="Load-gameB" class="menubut">Load game</button>
+                <button id="FreeplayB" class="menubut">Freeplay</button>
+                <button id="OptionsB" class="menubut">Options</button>
+            </div>
         
             <div class="Warning">
                 <center>
@@ -23,52 +31,103 @@ export default function mainMenu(g) {
 
             <div class="Options">
                 <button id="return"> ESC </button>
-                <center>
-                <h3> Music volume </h3>
-                <input type="range" min="0" max="100" value="${g.musicVolume}" id="music-vol-slider">
-                <p> Current volume: <span id="music-volume"> ${g.musicVolume} </span></p>
-                <h3> Ambience volume </h3>
-                <input type="range" min="0" max="100" value="${g.ambienceVolume}" id="ambience-vol-slider">
-                <p> Current volume: <span id="ambience-volume"> ${g.ambienceVolume} </span></p>
-                <h3> SFX volume </h3>
-                <input type="range" min="0" max="100" value="${g.sfxVolume}" id="sfx-vol-slider">
-                <p> Current volume: <span id="sfx-volume"> ${g.sfxVolume} </span></p>
-                </center>
-            </div>
-            
-            <div class="Mm-buttons">
-                <button id="New-gameB" class="menubut">New game</button>
-                <button id="Load-gameB" class="menubut">Load game</button>
-                <button id="OptionsB" class="menubut">Options</button>
+                <center><h3 class="o-buttons" id="audio-o"> Audio </h3></center>
+                <div id="Audio" style="display:none">
+                    <center>
+                    <h3> All </h3>
+                    <input type="range" min="0" max="100" value="0" id="all-vol-slider">
+                    <p> Current volume: <span id="all-volume"> 0 </span></p>
+                    </center>
+                    <center>
+                    <h3> UI </h3>
+                    <input type="range" min="0" max="100" value="${g.uiVolume}" id="ui-vol-slider">
+                    <p> Current volume: <span id="ui-volume"> ${g.uiVolume} </span></p>
+                    </center>
+                    <center>
+                    <h3> Music </h3>
+                    <input type="range" min="0" max="100" value="${g.musicVolume}" id="music-vol-slider">
+                    <p> Current volume: <span id="music-volume"> ${g.musicVolume} </span></p>
+                    </center>
+                    <center>
+                    <h3> Ambience </h3>
+                    <input type="range" min="0" max="100" value="${g.ambienceVolume}" id="ambience-vol-slider">
+                    <p> Current volume: <span id="ambience-volume"> ${g.ambienceVolume} </span></p>
+                    </center>
+                    <center>
+                    <h3> Dialogue </h3>
+                    <input type="range" min="0" max="100" value="${g.dialogueVolume}" id="dialogue-vol-slider">
+                    <p> Current volume: <span id="dialogue-volume"> ${g.dialogueVolume} </span></p>
+                    </center>
+                    <center>
+                    <h3> SFX </h3>
+                    <input type="range" min="0" max="100" value="${g.sfxVolume}" id="sfx-vol-slider">
+                    <p> Current volume: <span id="sfx-volume"> ${g.sfxVolume} </span></p>
+                    </center>
+                </div>
+                <center><h3 class="o-buttons" id="controls-o"> Controls </h3></center>
+                <div id="Controls" style="display:none">
+					<div class="controls"><span> A / ← </span><font color="#d8c8a8">Walk left</font></div>
+					<div class="controls"><span> D / → </span><font color="#d8c8a8">Walk right</font></div>
+					<div class="controls"><span> ${g.controls.lightA.toUpperCase()} </span><font color="#d8c8a8">Light attack</font></div>
+					<div class="controls"><span> ${g.controls.heavyA.toUpperCase()} </span><font color="#d8c8a8">Heavy attack</font></div>
+					<div class="controls"><span> ${g.controls.block.toUpperCase()} </span><font color="#d8c8a8">Block</font></div>
+                    <div class="controls"><span> F </span><font color="#d8c8a8">Enemy focus</font></div>
+					<div class="controls"><span> Space </span><font color="#d8c8a8">Jump</font></div>
+					<div class="controls"><span> Shift </span><font color="#d8c8a8">Dodge/dash</font></div>
+				</div>
+                <center><h3 class="o-buttons" id="advanved-o"> Advanced </h3></center>
+                <div id="Advanced" style="display:none">
+                    <div class="toggle"> > Hardcore ${g.hardcore ? "on" : "off"} < </div>
+					<div class="toggle"> > Developer mode ${g.devMode ? "on" : "off"} < </div>
+                    <div id="link" onClick="window.open('https://github.com/Paramethia/GoW-mini-game/blob/master/WhatsNew.md', '_blank')"> Update changes </div>
+                    <div id="link" onClick="window.open('https://gow-mini-game-old.vercel.app', '_blank')"> Previous </div>
+				</div>
             </div>
         </div>
     `;
 
-    if (!g.loaded) loader(g, document.getElementById("Load-screen"), document.querySelector(".Main-menu"))
+    const mainMenuCon = document.getElementById("Main-menu");
+    if (!g.loaded) loader(g, document.getElementById("Load-screen"), mainMenuCon)
 
-    const savedGame = Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
+    g.inMainMenu = true;
+
+    const savedGame = g.currentBattle || Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'));
     
     const musicOption = document.getElementById('m-music');
     const musicNote = document.getElementById('music-note');
     const newGameB = document.getElementById('New-gameB');
     const loadGameB = document.getElementById('Load-gameB');
         if (savedGame) loadGameB.style.filter = 'brightness(100%)';
+    const freeplayB = document.getElementById('FreeplayB');
+        if (g.beatGame) freeplayB.style.filter = 'brightness(100%)';
     const optionsB = document.getElementById('OptionsB');
     const yesB = document.getElementById('YesB');
     const noB = document.getElementById('NoB');
     const closeB = document.getElementById('return');
-    const musicVolText = document.getElementById('music-volume');
-    const ambienceVolText = document.getElementById('ambience-volume');
-    const sfxVolText = document.getElementById('sfx-volume');
     const mmButtons = document.querySelector('.Mm-buttons');
     const warning = document.querySelector('.Warning');
     const options = document.querySelector('.Options');
+    const optionsButtons = document.querySelectorAll('.o-buttons');
+    // Music options elements
+    const allVolText = document.getElementById('all-volume');
+    const uiVolText = document.getElementById('ui-volume');
+    const musicVolText = document.getElementById('music-volume');
+    const ambienceVolText = document.getElementById('ambience-volume');
+    const dialogueVolText = document.getElementById('dialogue-volume');
+    const sfxVolText = document.getElementById('sfx-volume');
+    const allVolSlider = document.getElementById('all-vol-slider');
+    const uiVolSlider = document.getElementById('ui-vol-slider');
     const musicVolSlider = document.getElementById('music-vol-slider');
     const ambVolSlider = document.getElementById('ambience-vol-slider');
+    const dialogVolSlider = document.getElementById('dialogue-vol-slider');
     const sfxVolSlider = document.getElementById('sfx-vol-slider');
+    // Controls options elements
+    const controls = document.querySelectorAll('.controls > span');
+    // Advanved options elements
+    const toggles = document.querySelectorAll('.toggle');
     
     musicOption.onmouseover = () => {
-        g.audio.hover.play();
+        g.playCaudio(g.audio.hover, g.uiVolume);
         musicNote.style.color = '#614051';
         porp.style.display = 'inline';
         if (g.play == true) {
@@ -99,7 +158,7 @@ export default function mainMenu(g) {
 		g.inMainMenu = false;
 	}
 
-    const buttons = [newGameB, loadGameB, optionsB];
+    const buttons = [newGameB, loadGameB, freeplayB, optionsB];
     let currentIndex = -1;
 
     if (g.navKeys) document.removeEventListener("keydown", g.navKeys);
@@ -117,8 +176,8 @@ export default function mainMenu(g) {
 	}
 
 	g.navKeys = function(e) {
-        if (e.repeat) return;
-
+        if (warning.style.display === 'block' || options.style.display === 'block' || e.repeat) return
+        
 		if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
 			let nextIndex = (currentIndex + 1) % buttons.length;
 			selectButton(nextIndex);
@@ -136,28 +195,29 @@ export default function mainMenu(g) {
 
     buttons.forEach((button) => {
         button.onmouseover = () => {
-            g.audio.hover.cloneNode().play();
+            g.playCaudio(g.audio.hover, g.uiVolume);
             button.style.scale = '1.2';
-            button.style.background = 'darkgrey';
-            button.style.color = '#630b05';
+            if (button.id !== "FreeplayB") button.style.background = 'darkgrey';
+            if (button.id !== "FreeplayB") button.style.color = '#630b05';
         }
         button.onmouseout = () => {
             button.style.transition = 'all 0.4s ease 0s';
             button.style.scale = '1';
-            button.style.background = '#7a715e';
-            button.style.color = '#0a0a23';
+            if (button.id !== "FreeplayB") button.style.background = '#7a715e';
+            if (button.id !== "FreeplayB") button.style.color = '#0a0a23';
         }
     });
 
     newGameB.onclick = () => {
         g.audio.selection.play();
+        g.freeplay = false;
         mmButtons.style.display = 'none';
         if (savedGame) { 
             warning.style.display = 'block';
         } else {
-            document.querySelector(".Main-menu").style.background = 'url("./Imagery/UI/Game start.gif")';
-            document.querySelector(".Main-menu").style.backgroundSize = 'cover';
-            document.querySelector(".Main-menu").style.backgroundRepeat = 'no-repeat';
+            mainMenuCon.style.background = 'url("Imagery/UI/Game start.gif")';
+            mainMenuCon.style.backgroundSize = 'cover';
+            mainMenuCon.style.backgroundRepeat = 'no-repeat';
             if (g.play) g.audio.mainTheme.pause();
             g.audio.gameStart.play();
             setTimeout(() => {
@@ -168,21 +228,15 @@ export default function mainMenu(g) {
         }
     }
 
-    yesB.onmouseover = () => { g.audio.hover.cloneNode().play() }
+    yesB.onmouseover = () => { g.playCaudio(g.audio.hover, g.uiVolume); }
     yesB.onclick = () => { 
         g.audio.selection.play();
-        [g.hoplite, g.banshee, g.satyr, g.gorgon, g.minotaur, g.medusa, g.cyclops, g.hades, g.hermes, g.hercules, g.zeus].forEach((enemy) => enemy.defeated = false );
-        [ 'health', 'orbs', 'inventory', 'currentWeapon', 'hopliteDefeated', 'bansheeDefeated', 'satyrDefeated', 'gorgonDefeated', 'minotaurDefeated', 'medusaDefeated', 'cyclopsDefeated', 'hadesDefeated', 'hermesDefeated', 'herculesDefeated', 'zeusDefeated'].forEach(save => localStorage.removeItem(save));
-        g.kratos.health = 100;
-        g.kratos.orbs = 0;
-        g.currentWeapon = 0;
-        g.potionquantity = 0;
-        g.kratos.inventory = ["Blades of chaos"];
+        g.restart();
         warning.style.display = 'none';
         leaveMenu();
     }
 
-    noB.onmouseover = () => { g.audio.hover.cloneNode().play() }
+    noB.onmouseover = () => { g.playCaudio(g.audio.hover, g.uiVolume); }
     noB.onclick = () => {
         g.audio.selection.play();
         warning.style.display = 'none';
@@ -192,8 +246,17 @@ export default function mainMenu(g) {
     loadGameB.onclick = () => {
         if (savedGame) {
             g.audio.selection.play();
+            g.freeplay = false;
             leaveMenu();
         }
+    }
+
+    freeplayB.onclick = () => {
+        if (g.beatGame) {
+            g.audio.selection.play();
+            g.freeplay = true;
+            leaveMenu();
+        } else alert("You can only turn on freeplay mode when you have finished the game");
     }
 
     optionsB.onclick = () => {
@@ -202,43 +265,138 @@ export default function mainMenu(g) {
         options.style.display = 'block';
     }
 
-    // Volume functions
+    // Options buttons UI code
 
-    musicVolSlider.addEventListener('change', event => { 
-        g.musicVolume = musicVolSlider.value;
-		musicVolText.innerText = g.musicVolume;
-		[g.audio.mainTheme, g.audio.battleTheme, g.audio.battleTheme2, g.audio.battleTheme3, g.audio.cyclopsBattle, g.audio.hadesBattle, g.audio.hermesBattle, g.audio.herculesBattle, g.audio.zeusBattle].forEach((song) => song.volume = g.musicVolume / 100);
-		localStorage.setItem('musicVolume', g.musicVolume);
+    const opCons = [document.getElementById('Audio'), document.getElementById('Controls'), document.getElementById("Advanced")]
+    optionsButtons.forEach((button, index) => {
+        button.onclick = () => {
+            g.audio.selection.play();
+            optionsButtons.forEach(b => b.style.display = 'none');
+            opCons[index].style.display = 'flex';
+        }
     });
 
-    ambVolSlider.addEventListener('change', event => { 
+    // Volume functions
+
+    function updateAllVolumeSlider() {
+        const volumes = [Number(uiVolSlider.value), Number(musicVolSlider.value), Number(ambVolSlider.value), Number(dialogVolSlider.value), Number(sfxVolSlider.value)];
+
+        const average = volumes.reduce((sum, volume) => sum + volume, 0) / volumes.length;
+
+        allVolSlider.value = Math.round(average);
+        allVolText.innerText = Math.round(average);
+    }
+
+    updateAllVolumeSlider();
+
+    allVolSlider.addEventListener('change', () => { 
+        const allVolume = Number(allVolSlider.value);
+        [allVolSlider, uiVolSlider, musicVolSlider, ambVolSlider, dialogVolSlider, sfxVolSlider].forEach(slider => slider.value = allVolume);
+        [allVolText, uiVolText, musicVolText, ambienceVolText, dialogueVolText, sfxVolText].forEach(volText => volText.innerText = allVolume);
+		g.uiVolume = allVolume;
+        g.musicVolume = allVolume;
+        g.ambienceVolume = allVolume;
+        g.dialogueVolume = allVolume;
+        g.sfxVolume = allVolume;
+        ['ui', 'music', 'ambience', 'dialogue', 'sfx'].forEach(cat => localStorage.setItem(`${cat}Volume`, allVolume));
+        [ui, music, ambience, dialogue, sfx].forEach(category => { 
+            for (const audio of Object.values(category)) {
+                audio.volume = allVolume / 100 
+            }
+        });
+    });
+
+    uiVolSlider.addEventListener('change', () => { 
+        g.uiVolume = uiVolSlider.value;
+		uiVolText.innerText = g.uiVolume;
+		for (const sound of Object.values(ui)) sound.volume = g.uiVolume / 100
+		localStorage.setItem('uiVolume', g.uiVolume);
+        updateAllVolumeSlider();
+    });
+
+    musicVolSlider.addEventListener('change', () => { 
+        g.musicVolume = musicVolSlider.value;
+		musicVolText.innerText = g.musicVolume;
+        for (const song of Object.values(music)) song.volume = g.musicVolume / 100
+		localStorage.setItem('musicVolume', g.musicVolume);
+        updateAllVolumeSlider();
+    });
+
+    ambVolSlider.addEventListener('change', () => { 
         g.ambienceVolume = ambVolSlider.value;
 		ambienceVolText.innerText = g.ambienceVolume;
-		[g.audio.underworldAm, g.audio.olympusAm].forEach((amb) => amb.volume = g.ambienceVolume / 100);
+		for (const amb of Object.values(ambience)) amb.volume =  g.ambienceVolume / 100
 		localStorage.setItem('ambienceVolume', g.ambienceVolume);
+        updateAllVolumeSlider();
+    });
+
+    dialogVolSlider.addEventListener('change', () => { 
+        g.dialogueVolume = dialogVolSlider.value;
+		dialogueVolText.innerText = g.dialogueVolume;
+		for (const dialog of Object.values(dialogue)) dialog.volume = g.dialogueVolume / 100
+		localStorage.setItem('dialogueVolume', g.dialogueVolume);
+        updateAllVolumeSlider();
     });
 
     sfxVolSlider.addEventListener('change', () => { 
         g.sfxVolume = sfxVolSlider.value;
 		sfxVolText.innerText = g.sfxVolume;
-		[
-            g.audio.evadeSound, g.audio.blockSound, 
-            g.audio.stoneHit, g.audio.stoneBreak, g.audio.stoneBroke, g.audio.stonify, g.audio.deathScream, 
-            g.audio.hopliteAttacked, g.audio.hopliteDeath, 
-            g.audio.bansheeAttacked, g.audio.bansheeDeath, g.audio.bansheeScream, 
-            g.audio.satyrAttacked, g.audio.satyrDeath, 
-            g.audio.gorgonAttacked, g.audio.gorgonDeath, g.audio.gorgonPetrify, g.audio.snakesHiss,
-            g.audio.minotaurAttacked, g.audio.minotaurDeath, g.audio.minBlock,
-            g.audio.medusaAttacked, g.audio.medusaDeath, g.audio.medusaPetrify, g.audio.medusaLaugh,
-            g.audio.cyclopsAttacked, g.audio.cyclopsDeath,
-            g.audio.hadesAttacked, g.audio.hadesDeath, g.audio.soulTake, g.audio.handGrasp, g.audio.held,
-            g.audio.hermesAttacked, g.audio.hermesDeath, g.audio.dodge, g.audio.speedStrike,
-            g.audio.herculesAttacked, g.audio.herculesDeath, g.audio.smash,
-            g.audio.zeusDeath, g.audio.electrify, g.audio.teleport, g.audio.lShoot,
-            g.audio.heartbeat, g.audio.achievement, g.audio.defeatSound, g.audio.redOrbSound, g.audio.greenOrbSound, g.audio.wonned
-        ].forEach((sound) => { sound.volume = g.sfxVolume / 100 });
+		for (const sound of Object.values(sfx)) sound.volume = g.sfxVolume / 100
 		localStorage.setItem('sfxVolume', g.sfxVolume);
+        updateAllVolumeSlider();
     });
+
+    // Controls switching
+    const swaps = { e: "j", r: "k", q: "w" }
+
+    controls.forEach(control => {
+        control.onclick = () => {
+            const key = control.innerText.trim().toLowerCase();
+
+            if (!Object.keys(swaps).includes(key) && !Object.values(swaps).includes(key)) return
+
+            if (Object.values(g.controls).includes(key)) console.log("Founded it")
+
+            if (key === "e") {
+                control.innerText = "J";
+                g.controls.lightA = "j";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "j") {
+                control.innerText = "E";
+                g.controls.lightA = "e";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "r") {
+                control.innerText = "K";
+                g.controls.heavyA = "k";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "k") {
+                control.innerText = "R";
+                g.controls.heavyA = "r";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "q") {
+                control.innerText = "W";
+                g.controls.block = "w";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            } else if (key === "w") {
+                control.innerText = "Q";
+                g.controls.block = "q";
+                localStorage.setItem("controls", JSON.stringify(g.controls));
+            }
+        }
+    });
+
+    // Toggles options
+
+    const togNames = ["Hardcore", "Developer"];
+    const togProps = ["hardcore", "devMode"];
+    toggles.forEach((toggle, index) => {
+        toggle.onclick = () => {
+            const key = togProps[index];
+            g[key] = !g[key];
+            toggle.innerText = `> ${togNames[index]} ${index ? "mode" : ""} ${g[key] ? "on" : "off"} <`;
+            localStorage.setItem(togNames[index].toLowerCase(), g[key]);
+        }
+    })
 
     closeB.onclick = () => close()
 
@@ -250,7 +408,15 @@ export default function mainMenu(g) {
     document.addEventListener('keydown', escHandler);
 
     function close() {
-        if (options.style.display === "block") {
+        let noConOpened = true;
+        opCons.forEach(con => {
+            if (con.style.display !== 'none') {
+                con.style.display = 'none';
+                optionsButtons.forEach(button => button.style.display = 'block');
+                noConOpened = false;
+            }
+        })
+        if (options.style.display === 'block' && noConOpened) {
             g.audio.return.play();
             options.style.display = 'none';
             mmButtons.style.display = 'block';
