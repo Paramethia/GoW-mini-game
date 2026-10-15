@@ -214,7 +214,7 @@ const globals = {
 			attackSound: sfx.herculesAttacks, hitSound: sfx.herculesAttacked, deathSound: sfx.herculesDeath,
 			reward: { 
 				name: "Nemean cestus", 
-				lD: 22, hD: 30, lC: 800, hC: 1500, lR: 110, hR: 105, lS: 440, hS: 520, lK: 13, hK: 18,
+				lD: 22, hD: 30, lC: 800, hC: 1400, lR: 110, hR: 105, lS: 640, hS: 920, lK: 13, hK: 18,
 				lit: false, sound: sfx.ncSound,
 				lAttack: sfx.ncLA,
 				hAttack: sfx.ncHA,
@@ -222,7 +222,7 @@ const globals = {
 		},
 		{
 			name: "Zeus", health: 350, speed: 3.2, x: 666, y: 0, w: 130, h: 174, 
-			lD: 21, hD: 27, lK: 11, hK: 15, lC: 550, hC: 1100, lR: 94, hR: 99, lS: 870, hS: 1450, 
+			lD: 17, hD: 24, lK: 11, hK: 15, lC: 550, hC: 1100, lR: 72, hR: 54, lS: 850, hS: 1200, 
 			bC: 7000, bD: 2000, tC: 2760, lightChance: 0.5, heavyChance: 0.5, blockChance: 0.6, teleportChance: 0.35,
 			orbs: [{type: "green", amount: 45}, {type: "red", amount: 89}, {type: "gold", amount: 11}],
 			god: true, defeated: localStorage.getItem("zeusDefeated") === "true",

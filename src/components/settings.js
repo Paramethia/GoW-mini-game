@@ -82,21 +82,21 @@ export function settingsInit(g) {
 	let ambSetOn = false;
 	let conSetOn = false;
 	
-	function turnOnHealthbar() {
+	function turnOnDevMode() {
 		devModeSet.innerText = "Turn on dev mode";
 		healthBar.style.display = 'inline-block';
 		healthText.style.display = 'none';
 		g.healthUpdate(healthBar, healthFiller);
 	}
 
-	function turnOffHealthbar() {
+	function turnOffDevMode() {
 		devModeSet.innerText = "Turn off dev mode";
 		healthBar.style.display = 'none';
 		healthText.style.display = 'inline';
 	}
 	
 	if (!g.devMode) {
-		turnOnHealthbar();
+		turnOnDevMode();
 	}
 
 	function setMusic() {
@@ -182,13 +182,13 @@ export function settingsInit(g) {
 		switch(g.devMode) {
 			case false:
 				g.devMode = true;
-				localStorage.setItem('devMode', g.devMode);
-				turnOffHealthbar();	
+				localStorage.setItem("developer", g.devMode);
+				turnOffDevMode();	
 			break;
 			case true:
 				g.devMode = false
-				localStorage.setItem('devMode', g.devMode);
-				turnOnHealthbar();
+				localStorage.setItem("developer", g.devMode);
+				turnOnDevMode();
 			break;
 		}
 	}

@@ -349,7 +349,7 @@ export default function enginize(g, config) {
 
 	function weaponAirMax() {
 		let airMax = 0;
-		airMax = weapon.name.inludes("Arms") ? 1 : weapon.name.includes("Claws") ? 1.5 : weapon.name.includes("Gauntlet") ? 2 : weapon.name.includes("cestus") ? 3 : weapon.name.includes("Blade ") ? 4 : 0
+		airMax = weapon.name.includes("Arms") ? 1 : weapon.name.includes("Claws") ? 1.5 : weapon.name.includes("Gauntlet") ? 2 : weapon.name.includes("cestus") ? 3 : weapon.name.includes("Blade ") ? 4 : 0
 		return airMax
 	}
 
@@ -655,7 +655,7 @@ export default function enginize(g, config) {
 
 						// Enough light hits knock him down
 						if (enemy.airHits >= enemy.maxAirHits) {
-							knockZeusDown();
+							knockZeusDown(enemy);
 							return;
 						}
 					}
@@ -767,7 +767,7 @@ export default function enginize(g, config) {
 						enemy.airHits += 2;
 						
 						if (enemy.airHits >= enemy.maxAirHits) {
-							knockZeusDown();
+							knockZeusDown(enemy);
 							return;
 						}
 					}
@@ -982,7 +982,7 @@ export default function enginize(g, config) {
 							if (weapon.name.includes("whip") && g.kratos.heavyCombo === 0) g.kratos.w = 295
 							if (weapon.name.includes("whip") && g.kratos.heavyCombo === 1) g.kratos.w = 325
 							if (weapon.name.includes("Claws") && g.kratos.heavyCombo == 1) { g.kratos.h = 180; g.kratos.w = 320 }
-							if (weapon.name.includes("Gauntlet") || weapon.name.includes("cestus") === 4) g.kratos.w = 165
+							if (weapon.name.includes("Gauntlet") || weapon.name.includes("cestus")) g.kratos.w = 160
 							if (weapon.name.includes("Blade ")) { g.kratos.h = 140; g.kratos.w = 170 }
 							if (weapon.name.includes("Arms")) {
 								g.kratos.w = 270;
@@ -2805,7 +2805,7 @@ export default function enginize(g, config) {
 						return
 					} 
 					g.kratos.maxHealth += orb.size - 1;
-					if (g.kratos.maxHealth > 200) g.kratos.maxHealth === 200
+					if (g.kratos.maxHealth > 200) g.kratos.maxHealth = 200
 					if (g.kratos.maxHealth < 200) g.playCaudio(g.audio.goldOrbSound, g.sfxVolume);
 					localStorage.setItem('maxHealth', g.kratos.maxHealth);
 				} 
