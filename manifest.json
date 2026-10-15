@@ -7,12 +7,12 @@
   "theme_color": "#9f6c08",  
   "icons": [
     {
-      "src": "./Icon/God of War mini game symbol (192x186).png",
+      "src": "./Icon/God of War mini game symbol (192x192).png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./Icon/God of War mini game symbol (512x496).png",
+      "src": "./Icon/God of War mini game symbol (512x512).png",
       "sizes": "512x512",
       "type": "image/png"
     }

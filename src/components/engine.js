@@ -1952,6 +1952,8 @@ export default function enginize(g, config) {
 			return
         }
 
+		if (enemy.state === "block") enemy.midX < g.kratos.midX ? enemy.facing = "right" : enemy.facing = "left"
+
 		/* --- Cursed/Fallen legionnaire leap ---*/
 		if (enemy.leapState) {
 			updateLeap(enemy);
