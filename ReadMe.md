@@ -1,46 +1,128 @@
-# God of War Mini Game
+# God of War mini game
 
-This is a God of War mini game that runs completely on the web.
+<h4 align="center"><i> Alpha v1.6 </i></h4>
 
-> [!NOTE]
-> The game is only designed to be played on PC. Right now, I am only using static images instead of animated sprites, because creating all the animations would take way too much of my time. I've already spent over 8 months working on this.
->
-> Also, beware that it is still in the alpha (development) stage, so don't judge it too harshly. I still have a bunch of goals planned for future updates.
+**_Small changes:_**
 
-#### Tech used
+- Main theme music will now be on by default.
+- Removed health potions. I dunno why I added that shi.
+- Changed shop to smithy.
+- You now cannot sell the blades of chaos. Because why would you.
+- Changed some weapon prices and selling prices.
+- Changed Medusa to Gorgan (it was meant to be that).
+- Changed enemy progression a little.
+- Changed some weapon stats.
+- Changed a bunch of enemies' stats.
+- A LOT of new sprites for Kratos. A bunch of new sprites for some enemies.
+- Bunch of new sounds & replaced sounds.
+- Decreased weapons & enemy damages to make battles a little longer.
+- Decreased enemies' red orbs reward for defeating them.
 
-* HTML
-* CSS
-* JavaScript
+**Bug fixes**
 
-#### How to run locally
+- Fixed weapon stats not showing up for some weapons when you have already bought a weapon from the smithy/shop.
+- Fixed Kratos getting smaller after you die and restart.
+- Fixed Kratos not facing the correct way when blocking sometimes.
+- Fixed when the attack "animation" should end while attacking.
+- Fixed enemy & Kratos' health bar not updating correctly during battle.
+- Fixed Kratos' death sprite staying in the air (if you jumped) when you are killed.
+- Fixed sprite sizes to be more consistent for everyone.
+- Fixed Enemy still moving towards you to attack even if they are already in attacking range.
+- Fixed music/ambience volume not staying on 0 (if you set it as that) when you reload the page.
 
-All you need is a local server. You can either use the Live Server extension in VS Code or Python with:
+**_Better weapon stats_**
 
-```bash
-python -m http.server 8000
-```
+Before, there was barely any stats for weapons. They all just had different damages, but all used the same cooldown, attack speed, stun time, knockback, and range. Now that's all improved for each weapon. You'll find _some_ of their new stats at the smithy (previously known as shop).
 
-#### The development of the game
+PS: I also slightly improved the stylng of the stats container.
 
-I started this project as a small little mini game to practice my JavaScript skills as a beginner programmer, as well as to get a little taste of game development instead of just web development. And I lowkey don't like the taste 🙁. It is an insane amount of work.
+**_New weapon_**
 
-The game was working *kind of* alright when I "finished" the much smaller and simpler version of it in the past. I was kind of proud of how it turned out at first, until I showed it to some more experienced developers and realized that it was actually terrible.
+There is now a new weapon. The nemean cestus. They are a pair of large metal gauntlets, each resembling a snarling lion's head, that greatly increased the strength of its wielder as they are worn.
 
-As I was learning more about JavaScript while working on other projects, I noticed that I could improve and reduce a lot of the code. The game had over 3,000 lines of code, much of which could be cleaned up and optimized.
+The cestus was first given to its original owner, Hercules, after he slew the Nemean Lion as one of his 12 Labours.
 
-While fixing the game, I also came up with a bunch of ideas and features that I wanted to add. The number of ideas and features kept increasing until I realized that I would need versioning for each update so I could add everything little by little until I eventually considered the game complete.
+**_New enemies_**
 
-Now we're here, where the "mini" game has gotten a lot bigger than it honestly should have. At this point, it probably shouldn't even be called a mini game anymore, especially considering how much work I've put into it and how long it takes to beat.
+_Gorgon_
 
-Currently, the game has taken a little over 8 months to develop, with some long breaks in between. Yes, even if it's not that impressive of a game. The reason it took so long is because of all the experimentation I was doing with it.
+I renamed the previous version's enemy (Medusa) as Gorgon 'cause it was actually meant to be Gorgon and not Medusa.
 
-I tried remaking it with React at one point, which I realized was not a good idea about a quarter of the way through. So that was a waste of time. Though, not completely, because I ended up taking some of the ideas I developed during that experiment and bringing them into the pure JavaScript version.
+_Medusa_
 
-Aside from experimentation and scrapped ideas causing more time consumption, there was also a lot of image editing, code refactoring, restructuring, organizing, pixel art, audio collecting, and math calculations for my own custom Canvas API game engine.
+I added the correct depiction of Medusa this time.
 
-Not to mention, I programmed the entire thing in JavaScript instead of TypeScript. So you can imagine the amount of bugs I ran into.
+_Hades_
 
-Anyway, I am never making a game again after this. It's an astronomical amount of work. I'll stick to web development.
+He's the God of the dead & the ruler of the underworld so you will find him in the underworld of course. I should've added him long ago. I was just too lazy to make the sprites.
 
-##### About 70% progress until completion
+**_Combat update_**
+
+The combat against enemies from the [previous version](https://gow-mini-game-old.vercel.app) was really basic, and barely had variety with different enemies. The enemy AI was readable, easily adaptable, and just pretty basic overall. There was a lot of things that were making the combat not feel right. Now that is significantly improved with the following:
+
+_Improvements & changes:_
+
+- When opening settings (while in battle), the battle will now pause.
+- There is no longer a blocking duration. You can block however long you want as long as you are holding the Q key.
+- Kratos will now get stunned & knocked back. The effect varies with each enemies.
+- Decreased gravity slightly for jumps to feel smoother.
+- Added proper hitboxes to make attacks more accurate.
+- Improved overlaping prevention thanks to the hitboxes I made.
+- Kratos won't be able to push enemies as he runs into them anymore.
+- Added an FPS counter to check performace.
+
+_Light & heavy attacks:_
+
+Kratos now has a light and heavy attack. Light attack with E key. Heavy attack with R key.
+Each enemy now also has a heavy and light attack.
+
+Heavy attacks obviously deal more damage than light, but they are also slower in return. Heavy attacks against enemies also break kratos' block so it's useless to block when getting heavy attacked. You will have to dodge to avoid damage from it. Light attacks are faster, but has less damage than heavy.
+
+_Enemy variety_
+
+Each enemy now has different knockbacks & stun times depending on which attack they use.
+Some enemies now have unique counters/defenses they will do on you. Some will just block, one will dodge, some will do other things. You can find out each enemy ability when choosing which enemy you want to battle by pressing the new info button. There will be a little animation for you see it when you load into the underworld or Olympus.
+
+_Better enemy AI_
+
+Each enemy will now randomly decide their next move. "Should I block, light attack, heavy attack?". Any will be completely randomly decided without you being able to predict the next move.
+
+Each enemy has a differnt chance of choosing light attack, heavy attack, blocking, etc.
+
+**_Orbs_**
+
+There will now be green & red orbs that you will collect after each enemy you defeat. Of course, the amount of orbs you will get varies for each enemy.
+You will see these green and red orbs come out of the enemy after you defeat them. They will firstly spread out as they spawn, and then each of them will come & get inside you.
+
+_Green orbs_
+
+As I mentioned, potions are removed. They are now replaced by green orbs that increase your health after killing an enemy.
+
+_Red orbs_
+
+Red orbs work pretty much the same as before, use them to buy weapons if you want (you will definitely want to).
+
+**_SFX improvement_**
+
+SFX (sound effects) audio from the previous version was absolute sh**. Every weapon had the same sound to it when attacking. The attack and hit sounds sounded terrible as well and did not match the action that was being done which made the experience worse. That is all much better now with the following:
+
+- Each weapon now has it's own unique attack sound (for both light & heavy attacks).
+- Each of the enemy attacks (light & heavy) will also have improved attack sounds matching it's action (like sword swings, punches etc.)
+- Kratos will now have different grunt sounds he will do as he is getting attacked.
+- Each enemy will also have a different hit/hurting sound as you successfully attack it.
+
+**_Loader_**
+
+There are a lot of new images added this update.
+Since this project is getting much bigger, it is time I add a loading screen to load in the images properly before you can play. Otherwise, things will look terrible like the older version.
+
+**_Installable_**
+
+You can now install the game directly to your device. To quickly access it instead of needing to find my link to play it.
+
+**_Development improvement:_**
+
+- Refactored some code.
+- Organised images to seperate sub-folders like ".Imagery/UI" and ".Imagery/battle". Same with audio
+- Removed some audio and images I accidentally left in their directories that was not being used
+- Better variable naming & variable definition placements in src/audio.js + comments with organisation

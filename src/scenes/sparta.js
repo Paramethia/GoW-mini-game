@@ -2,53 +2,43 @@ import { settings, settingsInit } from '../components/settings.js';
 import { stats } from '../components/stats.js';
 import { hotbar, hotbarInit } from '../components/hotbar.js';
 import smithy from './smithy.js';
-import athens from './athens.js';
 import underworld from './underworld.js';
 import olympus from './olympus.js';
-import battle from './battle.js';
 
 export default function sparta(g) {
     let defaultText = "Welcome to God of War. You must defeat Zeus to get Kratos' revenge and conclude the game. You are currently in Sparta, your home. Where do you want to go first? Use w/s to navigate to different places.";
-    if (g.currentBattle || Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'))) defaultText = "Welcome back to God of War. You already know what to do mos. \n ;-)";
+    if (Number(localStorage.getItem('health')) || Number(localStorage.getItem('orbs'))) defaultText = "Welcome back to God of War. You already know what to do mos. \n ;-)";
 
 	g.game.innerHTML = `
-		<div id="Sparta">
+		<div class="Sparta">
 			${settings(g, true)}
 			${stats(g)}
 			<center>
 				<div id="Main-text">
 					${defaultText.replace('\n', '<br />')}
 				</div>
-				<div id="Mid">
-					<img id="Kratos">
+				<div class="Mid">
+					<img id="Kratos" src="Imagery/UI/Kratos standing animation.gif">
 				</div>
 			</center>
-			<div id="Places">
-				<div>
-				<h5>Locations</h5>
+			<div class="Places">
 				<button id="Smithy-button">Smithy</button>
-				<button id="Athens-button">Athens</button>
-				<button id="Underworld-button">Underworld ${g.freeplay || g.getEnemy("Medusa").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
-				<button id="Olympus-button">Olympus ${g.freeplay || g.getEnemy("Hades").defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
-				</div>
+				<button id="Underworld-button">Underworld</button>
+				<button id="Olympus-button">Mount Olympus ${g.hades.defeated ? '' : '<i id="Olym-lock" class="fa-solid fa-lock"></i>'}</button>
 			</div>
             ${hotbar}
 		</div>
 	`;
 
-	g.inSparta = true;
-
     settingsInit(g)
 	
-	const spartaCon = document.getElementById('Sparta');
 	const mainText = document.getElementById('Main-text');
 	const kratos = document.getElementById('Kratos');
 	const smithyB = document.getElementById('Smithy-button');
-	const athensB = document.getElementById('Athens-button');
 	const underworldB = document.getElementById('Underworld-button');
 	const olympusB = document.getElementById('Olympus-button');
 
-	const buttons = [smithyB, athensB, underworldB, olympusB];
+	const buttons = [smithyB, underworldB, olympusB];
 	let currentIndex = -1;
 
 	function selectButton(index) {
@@ -82,164 +72,96 @@ export default function sparta(g) {
 	}
 
 	document.addEventListener("keydown", g.navKeys);
-
-	const dimentions = [
-        {which: "Default", width: 82, height: 142},
-        {which: "Arms", width: 130, height: 151},
-        {which: "whip", width: 114, height: 145},
-        {which: "Claws", width: 124, height: 142},
-        {which: "cestus", width: 100, height: 142},
-        {which: "Blade ", width: 135, height: 142},
-    ]
-	function getDimentions() {
-		const currentWeapon = g.kratos.inventory[g.currentWeapon];
-		return dimentions.find(d => currentWeapon.name.includes(d.which)) || dimentions[0];
-	}
-	function pauseMainMusic() {
-		if (g.play === true) {
-			g.audio.mainTheme.pause();
-			g.audio.mainTheme.currentTime = 0;
-		}
-	}
 	
 	smithyB.onmouseover = () => {
-		g.playCaudio(g.audio.hover, g.uiVolume);
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Sparta smithy.png")';
+		g.audio.hover.cloneNode().play();
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta smithy.png")';
 		kratos.style.bottom = '-1.4cm';
         kratos.style.right = '65%';
-		const dimention = getDimentions();
-		kratos.style.height = `${dimention.height + 112}px`;
-		kratos.style.width = `${dimention.width + 52}px`
+		kratos.style.height = '254px';
+		kratos.style.width = '134px';
 		mainText.innerText = "You can go to the smithy to get weapons with orbs to get stronger to defeat stronger enemies.";
 		smithyB.style.animation = 'tilt-n-move-shaking 0.5s';
 		smithyB.style.background = '#232d34';
 	}
 	smithyB.onmouseout = () => {
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
 		kratos.style.bottom = '0';
         kratos.style.right = '42%';
-		const dimention = getDimentions();
-		kratos.style.width = `${dimention.width}px`;
-        kratos.style.height = `${dimention.height}px`;
+		kratos.style.height = '142px';
+		kratos.style.width = '82px';
 		mainText.innerText = defaultText;
 		smithyB.style.animation = 'grow';
 		smithyB.style.background = '#0a0a23';
 	}
 	smithyB.onclick = () => {
 		g.audio.selection.play();
-		g.inSparta = false;
 		smithy(g);
 	}
 
-	athensB.onmouseover = () => {
-		g.playCaudio(g.audio.hover, g.uiVolume);
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Athens.png")';
-		kratos.style.right = '62%';
-		const dimention = getDimentions();
-		kratos.style.height = `${dimention.height}px`;
-		kratos.style.width = `${dimention.width}px`;
-		mainText.innerText = "This is the city of Athena, Athens. Defeat the enemies here and get stronger.";
-		athensB.style.animation = 'tilt-n-move-shaking 0.5s';
-		athensB.style.background = '#584B3B';
-	}
-	athensB.onmouseout = () => {;
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
-		kratos.style.right = '42%';
-		mainText.innerText = defaultText;
-		athensB.style.animation = 'grow';
-		athensB.style.background = '#0a0a23';
-	}
-	athensB.onclick = () => {
-		g.audio.selection.play();
-		pauseMainMusic();
-		g.inSparta = false;
-		if (g.freeplay) {
-			athens(g);
-			g.audio.athens.play();
-			g.audio.athens.loop = true;
-		} else { 
-			g.selectBattle("Athens");
-			battle(g);
-		}
-		document.removeEventListener('keydown', g.mHandler);
-	}
-
 	underworldB.onmouseover = () => {
-		g.playCaudio(g.audio.hover, g.uiVolume);
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Underworld.png")';
+		g.audio.hover.cloneNode().play();
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Underworld.png")';
 		kratos.style.right = '62%';
-		const dimention = getDimentions();
-		kratos.style.height = `${dimention.height + 102}px`;
-		kratos.style.width = `${dimention.width + 42}px`
+		kratos.style.height = '244px';
+		kratos.style.width = '124px';
 		mainText.innerText = "This is the underworld. Where you will see a bunch of strange creatures you will have to defeat to get stronger so you can defeat Zeus.";
 		underworldB.style.animation = 'tilt-n-move-shaking 0.5s';
 		underworldB.style.background = '#25201c';
 	}
 	underworldB.onmouseout = () => {;
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
 		kratos.style.right = '42%';
-		const dimention = getDimentions();
-		kratos.style.width = `${dimention.width}px`;
-        kratos.style.height = `${dimention.height}px`;
+		kratos.style.height = '142px';
+		kratos.style.width = '82px';
 		mainText.innerText = defaultText;
 		underworldB.style.animation = 'grow';
 		underworldB.style.background = '#0a0a23';
 	}
 	underworldB.onclick = () => {
-		if (g.getEnemy("Medusa").defeated){
-			g.audio.selection.play();
-			pauseMainMusic();
-			g.inSparta = false;
-			g.audio.underworld.play();
-			g.audio.underworld.loop = true;
-			if (g.freeplay) {
-				underworld(g);
-			} else { 
-				g.selectBattle("Underworld");
-				battle(g);
-			}
-			document.removeEventListener('keydown', g.mHandler);
+		g.audio.selection.play();
+		if (g.play === true) {
+			g.audio.mainTheme.pause();
+			g.audio.mainTheme.currentTime = 0;
 		}
+		underworld(g);
+		g.audio.underworldAm.play();
+		g.audio.underworldAm.loop = true;
 	}
 
 	olympusB.onmouseover = () => {
-		g.playCaudio(g.audio.hover, g.uiVolume);
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Mount Olympus.png")';
-		spartaCon.style.backgroundPosition = 'bottom';
+		g.audio.hover.cloneNode().play();
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Mount Olympus.png")';
+		document.querySelector('.Sparta').style.backgroundPosition = 'bottom';
 		kratos.style.bottom = '1.1cm';
 		kratos.style.right = '60%';
-		const dimention = getDimentions();
-		kratos.style.height = `${dimention.height + 112}px`;
-		kratos.style.width = `${dimention.width + 52}px`
+		kratos.style.height = '244px';
+		kratos.style.width = '124px';
 		mainText.innerText = "This is Mount Olympus. Where you will fight the gods of Olympus when you are ready. You can only go here when you have defeated all the creatures in the underworld.";
 		olympusB.style.animation = 'tilt-n-move-shaking 0.5s';
 		olympusB.style.background = '#5e4915';
 	}
 	olympusB.onmouseout = () => {
-		spartaCon.style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
-		spartaCon.style.backgroundPosition = 'center';
+		document.querySelector('.Sparta').style.backgroundImage = 'url("Imagery/UI/Sparta.png")';
+		document.querySelector('.Sparta').style.backgroundPosition = 'center';
 		kratos.style.bottom = '0cm';
 		kratos.style.right = '42%';
-		const dimention = getDimentions();
-		kratos.style.width = `${dimention.width}px`;
-        kratos.style.height = `${dimention.height}px`;
+		kratos.style.height = '142px';
+		kratos.style.width = '82px';
 		mainText.innerText = defaultText;
 		olympusB.style.animation = 'grow';
 		olympusB.style.background = '#0a0a23';
 	}
 	olympusB.onclick = () => {
-		if (g.getEnemy("Hades").defeated) {
+		if (g.hades.defeated) {
 			g.audio.selection.play();
-			pauseMainMusic();
-			g.inSparta = false;
-			g.audio.olympus.play();
-			g.audio.olympus.loop = true;
-			if (g.freeplay) {
-				olympus(g);
-			} else { 
-				g.selectBattle("Olympus");
-				battle(g);
+			if (g.play === true) {
+				g.audio.mainTheme.pause();
+				g.audio.mainTheme.currentTime = 0;
 			}
+			olympus(g);
+			g.audio.olympusAm.play();
+			g.audio.olympusAm.loop = true;
 			document.removeEventListener('keydown', g.mHandler);
 		}
 	}
