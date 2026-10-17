@@ -149,22 +149,24 @@ export default function smithy(g){
 			g.audio.hmmmm.play();
 			dialogue.style.display = 'none';
 			g.kratos.inventory = g.kratos.inventory.filter(weapon => weapon !== sellingWeapon);
+			let redOrbs = g.kratos.orbs + 0;
 			const sell = setInterval(() => {
+				if (!document.getElementById('Orbs')) return
 				count++;
-				g.kratos.orbs++;
-				document.getElementById('Orbs').innerText = g.kratos.orbs;
+				document.getElementById('Orbs').innerText = redOrbs + count;
 				if (count == (Math.round(sellingWeapon.price / 2))) {
 					count = 0;
 					clearInterval(sell);
-					localStorage.setItem('orbs', g.kratos.orbs);
 				}
-			}, 110);
+			}, 65); 
+			g.kratos.orbs += sellingWeapon.price;
+			localStorage.setItem('orbs', g.kratos.orbs);
 			images.push[g.currentWeapon];
 			g.currentWeapon = 0;
 			hotbarInit(g);
 			localStorage.setItem('inventory', JSON.stringify(g.kratos.inventory));
 			localStorage.setItem('currentWeapon', g.currentWeapon);
-			text.innerText = `You sold the ${sellingWeapon.name} for ${(Math.round(sellingWeapon.price / 2))}.`;
+			text.innerText = `You sold the ${sellingWeapon.name} for ${(Math.round(sellingWeapon.price / 2))} red orbs.`;
 		} else {
 			g.audio.bruh.play();
 			dialogue.style.display = 'inilne-block';
@@ -178,16 +180,18 @@ export default function smithy(g){
 		if(g.kratos.orbs >= weapon.price && !g.kratos.inventory.includes(weapon) && g.kratos.inventory.length < 6) {
 			g.audio.achievement.play();
 			dialogue.style.display = 'none';
+			let redOrbs = g.kratos.orbs + 0;
 			const bought = setInterval (() => {
+				if (!document.getElementById('Orbs')) return
 				count++;
-				g.kratos.orbs--;
-				document.getElementById('Orbs').innerText = g.kratos.orbs;
+				document.getElementById('Orbs').innerText = redOrbs + count;
 				if (count == weapon.price) {
 					count = 0;
 					clearInterval(bought);
-					localStorage.setItem('orbs', g.kratos.orbs);
 				}
 			}, 80 );
+			g.kratos.orbs -= weapon.price;
+			localStorage.setItem('orbs', g.kratos.orbs);
 			localStorage.setItem('currentWeapon', g.currentWeapon);
 			g.kratos.inventory.push(weapon);
 			g.currentWeapon = g.kratos.inventory.indexOf(weapon);

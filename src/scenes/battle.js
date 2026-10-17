@@ -61,6 +61,7 @@ export default function battle(g, place = null) {
 		g.currentBattle.bT.play()
 		if (!place && g.currentBattle.gL) config.groundLevel = g.currentBattle.gL
 		clearInterval(g.frameCount);
+		dialoguer();
 		enginize(g, config);
 	}
 	
@@ -159,17 +160,20 @@ export default function battle(g, place = null) {
 	}
 	
 	// Starting dialogue for god battles
-	if (!g.freeplay && g.currentBattle.enemies[0].god && !g.currentBattle.enemies[0].defeated) {
-		g.stopAmbience();
-		const boss = g.currentBattle.enemies[0];
-		const intervalTime = boss.name === "Hermes" ? 4200 : boss.name === "Hercules" ? 3000 : boss.name === "Zeus" ? 14200 : 25700;
-		if (boss.name !== "Hades") g.audio[`${g.currentBattle.enemies[0].name.toLowerCase()}Line`].play()
-		if (boss.name === "Hades") g.audio.hadesLines[0].play()
-		setTimeout(() => {
-			g.currentBattle.bT.play();
-			g.currentBattle.bT.loop = true;
-		}, boss.defeated ? 12 : intervalTime);
+	function dialoguer() {
+		if (!g.freeplay && g.currentBattle.enemies[0].god && !g.currentBattle.enemies[0].defeated) {
+			g.stopAmbience();
+			const boss = g.currentBattle.enemies[0];
+			const intervalTime = boss.name === "Hermes" ? 4200 : boss.name === "Hercules" ? 3000 : boss.name === "Zeus" ? 14200 : 25700;
+			if (boss.name !== "Hades") g.audio[`${g.currentBattle.enemies[0].name.toLowerCase()}Line`].play()
+			if (boss.name === "Hades") g.audio.hadesLines[0].play()
+			setTimeout(() => {
+				g.currentBattle.bT.play();
+				g.currentBattle.bT.loop = true;
+			}, boss.defeated ? 12 : intervalTime);
+		}
 	}
+	dialoguer();
 	
 	// --- Engine configurations ---
 
